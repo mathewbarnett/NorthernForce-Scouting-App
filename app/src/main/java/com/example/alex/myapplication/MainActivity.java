@@ -70,6 +70,8 @@ public class MainActivity extends ActionBarActivity {
         TextView text = (TextView) findViewById(R.id.textView);
         text.setText("consumed document");
 
+        TextView text2 = new TextView(this);
+        text2.setText("These are some words");
     }
 
     public void runTests(){

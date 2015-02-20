@@ -1,3 +1,2 @@
-Name, Data 1, Data 2
-column 1, data 1.1, data 1.2
-column 2, data 2.1, data 2.2
+Team Name, Can It Lift Totes {bool}, Can It Lift Containers {bool}, How Many Totes Can It Lift {Num 1-5}
+
