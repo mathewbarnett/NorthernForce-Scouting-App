@@ -42,7 +42,7 @@ public class DocumentParser {
     public String getValue(int lineNum, String columnName){
         String value = "";
 
-        int lineCount = 0;
+        int lineCount = 3;
 
         try {
             parser = CSVParser.parse(csvFile, csvFileFormat);
