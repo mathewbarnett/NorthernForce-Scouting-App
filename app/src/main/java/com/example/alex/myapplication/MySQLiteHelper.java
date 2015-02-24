@@ -7,26 +7,20 @@ import android.util.Log;
 
 public class MySQLiteHelper extends SQLiteOpenHelper {
 
-    public static final String TABLE_SCOUTING_DATA = "Scouting Data";
-    public static final String COLUMN_ID = "_id";
-    public static final String COLUMN_DATA = "data";
-
-    private static final String DATABASE_NAME = "commments.db";
-    private static final int DATABASE_VERSION = 1;
-
-    // Database creation sql statement
-    private static final String DATABASE_CREATE = "create table "
-            + TABLE_SCOUTING_DATA + "(" + COLUMN_ID
-            + " integer primary key autoincrement, " + COLUMN_DATA
-            + " text not null);";
-
     public MySQLiteHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(context, "Scouting_Data", null, 1);
     }
 
     @Override
     public void onCreate(SQLiteDatabase database) {
-        database.execSQL(DATABASE_CREATE);
+        database.execSQL("CREATE TABLE " + "Scouting_Data" +
+                " (" +
+                "_id" + " INTEGER PRIMARY KEY" +
+                "Totes_Stacked" + " INTEGER" +
+                "Can_Stack_Bins" + " INTEGER" +
+                "Movement" + " INTEGER" +
+                ");");
+
     }
 
     @Override
@@ -34,7 +28,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         Log.w(MySQLiteHelper.class.getName(),
                 "Upgrading database from version " + oldVersion + " to "
                         + newVersion + ", which will destroy all old data");
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SCOUTING_DATA);
+        db.execSQL("DROP TABLE IF EXISTS " + "Scouting_Data");
         onCreate(db);
     }
 
