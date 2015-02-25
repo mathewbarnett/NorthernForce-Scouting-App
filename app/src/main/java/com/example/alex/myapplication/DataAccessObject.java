@@ -31,7 +31,7 @@ public class DataAccessObject {
         dbHelper.close();
     }
 
-    public String createComment(String data, String columnName ) {
+    public String createData(String data, String columnName ) {
         ContentValues values = new ContentValues();
         values.put(columnName, data);
         long insertId = database.insert("Scouting_Data", null,
@@ -39,8 +39,7 @@ public class DataAccessObject {
         Cursor cursor = database.query("Scouting_Data",
                 allColumns, "_id" + " = " + insertId, null,
                 null, null, null);
-        cursor.moveToFirst();
-        Comment newComment = cursorToComment(cursor);
+        SQLContact contact = new SQLContact(Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)), Integer.parseInt(cursor.getString(2)), Integer.parseInt(cursor.getString(3)));
         cursor.close();
         return newComment;
     }
