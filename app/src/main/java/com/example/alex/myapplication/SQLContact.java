@@ -10,6 +10,10 @@ public class SQLContact {
     int _can_stack_containers;
     int _movement;
 
+    public SQLContact(){
+
+    }
+
     public SQLContact(int id, int totes_stacked, int can_stack_containers, int movement){
         this._id = id;
         this._totes_stacked = totes_stacked;

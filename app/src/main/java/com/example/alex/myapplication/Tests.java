@@ -1,5 +1,6 @@
 package com.example.alex.myapplication;
 
+import android.content.Context;
 import android.util.Log;
 
 import junit.framework.Assert;
@@ -52,5 +53,12 @@ public class Tests {
         else if(!areEqual){
             Log.e("Tests", "The docValue is not correct." + "What was returned was (" + docValue + ")");
         }
+    }
+
+    public void testSQLite(Context context){
+        MySQLiteHelper SQLiteHelper = new MySQLiteHelper(context);
+
+        SQLiteHelper.addContact(new Context(5, 1, 3));
+
     }
 }
