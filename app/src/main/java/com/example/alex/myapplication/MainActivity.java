@@ -84,6 +84,7 @@ public class MainActivity extends ActionBarActivity {
         Tests test = new Tests();
         test.testDocumentParserGetLengthReturnsCorrect();
         test.testDocumentParserGetValueReturnsCorrect();
+        test.testSQLite(this.getBaseContext());
     }
 
     public android.content.Context getMainActivityBaseContext(){
