@@ -87,7 +87,4 @@ public class MainActivity extends ActionBarActivity {
         test.testSQLite(this.getBaseContext());
     }
 
-    public android.content.Context getMainActivityBaseContext(){
-        return getBaseContext();
-    }
 }

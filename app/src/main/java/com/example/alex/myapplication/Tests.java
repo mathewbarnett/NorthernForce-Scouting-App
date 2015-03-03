@@ -55,24 +55,28 @@ public class Tests {
     }
 
     public void testSQLite(Context context) {
+        Log.v("Tests", "Creating MySQLiteHelper");
         MySQLiteHelper db = new MySQLiteHelper(context);
-
+        Log.v("Tests", "Created MySQLiteHelper");
         //creating contacts
 
-        db.addContact(new SQLContact(5, 1, 3));
-        db.addContact(new SQLContact(2, 0, 1));
-        db.addContact(new SQLContact(1, 1, 5));
-        db.addContact(new SQLContact(4, 0, 2));
+        Log.v("Tests", "Creating test contact");
+        SQLContact contact = new SQLContact(5,1,3);
+        Log.v("Tests", "Created test contact");
+
+        db.addContact(new SQLContact(5,1,3));
+        db.addContact(new SQLContact(1,0,5));
+        db.addContact(new SQLContact(2,1,2));
+        Log.v("Tests", "Added contact");
 
         // Reading all contacts
-
         List<SQLContact> contacts = db.getAllContacts();
 
         for (SQLContact cn : contacts) {
-            String log = "Id: " + cn.getID() + " ,Totes Stacked: " + cn.getTotesStacked() + " ,Can stack containers: " + cn.getCanStackContainers() + " ,Movement" + cn.getMovement();
+            String log = "Id: " + cn.getID() + " ,Totes Stacked: " + cn.getTotesStacked() + " ,Can stack containers: " + cn.getCanStackContainers() + " ,Movement: " + cn.getMovement();
 
             // Writing Contacts to log
-            Log.d("Name: ", log);
+            Log.v("Tests", log);
         }
     }
 }

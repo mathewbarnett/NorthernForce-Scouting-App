@@ -26,9 +26,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase database) {
         database.execSQL("CREATE TABLE " + TABLE_NAME +
                 " (" +
-                ID + " INTEGER PRIMARY KEY" +
-                TOTES_STACKED + " INTEGER" +
-                CAN_STACK_CONTAINERS + " INTEGER" +
+                ID + " INTEGER PRIMARY KEY," +
+                TOTES_STACKED + " INTEGER," +
+                CAN_STACK_CONTAINERS + " INTEGER," +
                 MOVEMENT + " INTEGER" +
                 ");");
 
