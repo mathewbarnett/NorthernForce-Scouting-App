@@ -1,6 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
@@ -13,32 +15,70 @@
         android:id="@+id/runTestsButton"
         android:onClick="runTests"/>
 
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/runTestsButton"
-        android:id="@+id/TeamNumber"
-        android:text="Team Number"/>
+        android:orientation="horizontal">
 
-    <Button
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_alignRight="@+id/TeamNumber"
-        android:layout_below="@+id/runTestsButton"
-        android:background="@drawable/round_button"
-        android:gravity="center_vertical|center_horizontal"
-        android:id="@+id/TeamNumberPlus"
-        android:text="+"
-        android:textColor="#fff" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/TeamNumber"
+            android:text="Team Number"
+            android:textSize="16dp"/>
 
-    <Button
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:background="@drawable/round_button"
-        android:gravity="center_vertical|center_horizontal"
-        android:layout_alignRight="@+id/TeamNumberPlus"
-        android:layout_below="@+id/runTestsButton"
-        android:text="-"
-        android:textColor="#fff" />
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Team Number"
+            android:inputType="number"
+            android:id="@+id/TeamNumberNumber"/>
 
-</RelativeLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/TotesStacked"
+            android:text="Totes Stacked"
+            android:textSize="16dp"/>
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignRight="@+id/TotesStacked"
+            android:onClick="totesStacked"
+            android:tag="-"
+            android:background="@drawable/round_button"
+            android:gravity="center_vertical|center_horizontal"
+            android:id="@+id/TeamNumberMinus"
+            android:text="-"
+            android:textColor="#fff" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:id="@+id/TotesStackedNumber"
+            android:text="0"
+            android:textSize="16dp"/>
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:onClick="totesStacked"
+            android:tag="+"
+            android:background="@drawable/round_button"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_alignRight="@+id/TotesStackedPlus"
+            android:text="+"
+            android:textColor="#fff" />
+    </LinearLayout>
+
+</LinearLayout>

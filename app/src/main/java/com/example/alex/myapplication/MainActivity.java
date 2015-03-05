@@ -54,24 +54,24 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void setText(View view){
-        DocumentParser documentParser = new DocumentParser();
-
-        AssetManager assetManager = getBaseContext().getAssets();
-        InputStream inputStream = null;
-        try {
-            inputStream = assetManager.open("sampleCSV.txt");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String csvFileString = DocumentParser.copyInputStreamToString(inputStream);
-
-        documentParser.consumeDocument(csvFileString);
-
-        TextView text = (TextView) findViewById(R.id.textView);
-        text.setText("consumed document");
-
-        TextView text2 = new TextView(this);
-        text2.setText("These are some words");
+//        DocumentParser documentParser = new DocumentParser();
+//
+//        AssetManager assetManager = getBaseContext().getAssets();
+//        InputStream inputStream = null;
+//        try {
+//            inputStream = assetManager.open("sampleCSV.txt");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        String csvFileString = DocumentParser.copyInputStreamToString(inputStream);
+//
+//        documentParser.consumeDocument(csvFileString);
+//
+//        TextView text = (TextView) findViewById(R.id.textView);
+//        text.setText("consumed document");
+//
+//        TextView text2 = new TextView(this);
+//        text2.setText("These are some words");
     }
 
     public void runTests(){
@@ -87,4 +87,42 @@ public class MainActivity extends ActionBarActivity {
         test.testSQLite(this.getBaseContext());
     }
 
+    public void TeamNumber(View view){
+        String tag = (String) (view.getTag());
+
+        TextView textView = (TextView) (findViewById(R.id.TeamNumberNumber));
+
+        if(tag.equals("+")){
+            int textViewValue = Integer.parseInt(textView.getText().toString());
+            textViewValue++;
+            textView.setText(String.valueOf(textViewValue));
+        }
+        else if(tag.equals("-")){
+            int textViewValue = Integer.parseInt(textView.getText().toString());
+            textViewValue--;
+            textView.setText(String.valueOf(textViewValue));
+        }
+    }
+
+    public void totesStacked(View view){
+        String tag = (String) (view.getTag());
+
+        TextView textView = (TextView) (findViewById(R.id.TotesStackedNumber));
+
+        if(tag.equals("+")){
+            int textViewValue = Integer.parseInt(textView.getText().toString());
+            textViewValue++;
+            textView.setText(String.valueOf(textViewValue));
+        }
+        else if(tag.equals("-")){
+            int textViewValue = Integer.parseInt(textView.getText().toString());
+            if(textViewValue == 0){
+
+            }
+            else {
+                textViewValue--;
+                textView.setText(String.valueOf(textViewValue));
+            }
+        }
+    }
 }
