@@ -57,23 +57,24 @@ public class Tests {
     public void testSQLite(Context context) {
         Log.v("Tests", "Creating MySQLiteHelper");
         MySQLiteHelper db = new MySQLiteHelper(context);
+
+        db.onUpgrade(db.getReadableDatabase(), 0, 1);
+
         Log.v("Tests", "Created MySQLiteHelper");
         //creating contacts
 
-        Log.v("Tests", "Creating test contact");
-        SQLContact contact = new SQLContact(5,1,3);
-        Log.v("Tests", "Created test contact");
-
-        db.addContact(new SQLContact(5,1,3));
-        db.addContact(new SQLContact(1,0,5));
-        db.addContact(new SQLContact(2,1,2));
+        db.addContact(new SQLContact("172", "5","1","3"));
+        db.addContact(new SQLContact("2003","1","0","5"));
+        db.addContact(new SQLContact("1524", "2","1","2"));
         Log.v("Tests", "Added contact");
 
         // Reading all contacts
         List<SQLContact> contacts = db.getAllContacts();
 
+        Log.v("Tests", "db.getAllContacts");
+
         for (SQLContact cn : contacts) {
-            String log = "Id: " + cn.getID() + " ,Totes Stacked: " + cn.getTotesStacked() + " ,Can stack containers: " + cn.getCanStackContainers() + " ,Movement: " + cn.getMovement();
+            String log = "Id: " + cn.getID() + " ,Team Number: " + cn.getTeamNumber() +  " ,Totes Stacked: " + cn.getTotesStacked() + " ,Can stack containers: " + cn.getCanStackContainers() + " ,Movement: " + cn.getMovement();
 
             // Writing Contacts to log
             Log.v("Tests", log);

@@ -13,6 +13,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     public static final String TABLE_NAME = "Scouting_Data";
     public static final String ID = "_id";
+    public static final String TEAM_NUMBER = "Team_Number";
     public static final String TOTES_STACKED = "Totes_Stacked";
     public static final String CAN_STACK_CONTAINERS = "Can_Stack_Containers";
     public static final String MOVEMENT = "Movement";
@@ -27,9 +28,10 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         database.execSQL("CREATE TABLE " + TABLE_NAME +
                 " (" +
                 ID + " INTEGER PRIMARY KEY," +
-                TOTES_STACKED + " INTEGER," +
-                CAN_STACK_CONTAINERS + " INTEGER," +
-                MOVEMENT + " INTEGER" +
+                TEAM_NUMBER + " TEXT," +
+                TOTES_STACKED + " TEXT," +
+                CAN_STACK_CONTAINERS + " TEXT," +
+                MOVEMENT + " TEXT" +
                 ");");
 
     }
@@ -47,6 +49,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        values.put(TEAM_NUMBER, contact.getTeamNumber());
         values.put(TOTES_STACKED, contact.getTotesStacked());
         values.put(CAN_STACK_CONTAINERS, contact.getCanStackContainers());
         values.put(MOVEMENT, contact.getMovement());
@@ -59,14 +62,13 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_NAME, new String[] { ID,
-                        TOTES_STACKED, CAN_STACK_CONTAINERS, MOVEMENT }, ID + "=?",
+                        TEAM_NUMBER, TOTES_STACKED, CAN_STACK_CONTAINERS, MOVEMENT }, ID + "=?",
                 new String[] { String.valueOf(id) }, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
 
-        SQLContact contact = new SQLContact(Integer.parseInt(cursor.getString(0)),
-                Integer.parseInt(cursor.getString(1)), Integer.parseInt(cursor.getString(2)), Integer.parseInt(cursor.getString(3)));
-        // return contact
+        SQLContact contact = new
+                SQLContact(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4));
         return contact;
     }
 
@@ -78,14 +80,17 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
+        Log.v("Tests", "cursor.get Count: " + String.valueOf(cursor.getCount()));
+
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
                 SQLContact contact = new SQLContact();
-                contact.setID(Integer.parseInt(cursor.getString(0)));
-                contact.setTotesStacked(Integer.parseInt(cursor.getString(1)));
-                contact.setCanStackContainers(Integer.parseInt(cursor.getString(2)));
-                contact.setMovement(Integer.parseInt(cursor.getString(3)));
+                contact.setID(cursor.getString(0));
+                contact.setTeamNumber(cursor.getString(1));
+                contact.setTotesStacked(cursor.getString(2));
+                contact.setCanStackContainers(cursor.getString(3));
+                contact.setMovement(cursor.getString(4));
                 // Adding contact to list
                 contactList.add(contact);
             } while (cursor.moveToNext());
