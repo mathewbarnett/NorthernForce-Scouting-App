@@ -5,6 +5,7 @@ import android.content.res.AssetManager;
 import android.provider.DocumentsContract;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -22,11 +23,14 @@ public class MainActivity extends ActionBarActivity {
 
     boolean textChanged = false;
     boolean hasDoneTests = false;
+    MySQLiteHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        db = new MySQLiteHelper(this.getBaseContext());
 
     }
 
@@ -124,5 +128,17 @@ public class MainActivity extends ActionBarActivity {
                 textView.setText(String.valueOf(textViewValue));
             }
         }
+    }
+
+    public void addDataToTable(View view){
+        SQLContact contact = new SQLContact("0", "0", "0", "0");
+
+        EditText editText =  (EditText) findViewById(R.id.TeamNumberNumber);
+        TextView textView = (TextView) findViewById(R.id.TotesStacked);
+
+        contact.setTeamNumber(editText.toString());
+        contact.setTotesStacked(textView.getText().toString());
+
+        Log.v("Saving Data", "Team Number: " + findViewById(R.id.TeamNumber).toString() + " Totes Stacked: " + findViewById(R.id.TotesStacked).toString());
     }
 }
