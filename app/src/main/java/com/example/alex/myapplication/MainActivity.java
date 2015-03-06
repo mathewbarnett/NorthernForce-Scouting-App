@@ -134,11 +134,11 @@ public class MainActivity extends ActionBarActivity {
         SQLContact contact = new SQLContact("0", "0", "0", "0");
 
         EditText editText =  (EditText) findViewById(R.id.TeamNumberNumber);
-        TextView textView = (TextView) findViewById(R.id.TotesStacked);
+        TextView textView = (TextView) findViewById(R.id.TotesStackedNumber);
 
-        contact.setTeamNumber(editText.toString());
+        contact.setTeamNumber(editText.getText().toString());
         contact.setTotesStacked(textView.getText().toString());
 
-        Log.v("Saving Data", "Team Number: " + findViewById(R.id.TeamNumber).toString() + " Totes Stacked: " + findViewById(R.id.TotesStacked).toString());
+        Log.v("Saving Data", "Team Number: " + editText.getText().toString() + " Totes Stacked: " + textView.getText().toString());
     }
 }
