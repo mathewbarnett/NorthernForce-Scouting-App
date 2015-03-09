@@ -1,6 +1,7 @@
 package com.example.alex.myapplication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.provider.DocumentsContract;
 import android.support.v7.app.ActionBarActivity;
@@ -165,5 +166,11 @@ public class MainActivity extends ActionBarActivity {
 
         // Writing Contacts to log
         Log.v("Saving Data", log);
+    }
+
+    public void viewData(View view){
+        Intent i = new Intent(this, ViewDataActivity.class);
+
+        startActivity(i);
     }
 }
