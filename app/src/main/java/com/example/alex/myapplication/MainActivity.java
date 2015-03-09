@@ -8,12 +8,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CheckBox;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.view.View;
-
-import org.xmlpull.v1.XmlPullParser;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,6 +31,15 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         db = new MySQLiteHelper(this.getBaseContext());
+
+        Spinner spinner = (Spinner) findViewById(R.id.MovementSpinner);
+// Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.movement_array, android.R.layout.simple_spinner_item);
+// Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+// Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
 
     }
 
@@ -135,10 +144,26 @@ public class MainActivity extends ActionBarActivity {
 
         EditText editText =  (EditText) findViewById(R.id.TeamNumberNumber);
         TextView textView = (TextView) findViewById(R.id.TotesStackedNumber);
+        CheckBox checkBox = (CheckBox) findViewById(R.id.CanStackContainersValue);
+        Spinner spinner = (Spinner) findViewById(R.id.MovementSpinner);
 
+        String stackContainers;
+        if(checkBox.isChecked()){
+            stackContainers = "yes";
+        }
+        else{
+            stackContainers = "no";
+        }
         contact.setTeamNumber(editText.getText().toString());
         contact.setTotesStacked(textView.getText().toString());
+        contact.setCanStackContainers(stackContainers);
+        contact.setMovement(spinner.getSelectedItem().toString());
 
-        Log.v("Saving Data", "Team Number: " + editText.getText().toString() + " Totes Stacked: " + textView.getText().toString());
+        db.addContact(contact);
+
+        String log = "Id: " + contact.getID() + " ,Team Number: " + contact.getTeamNumber() +  " ,Totes Stacked: " + contact.getTotesStacked() + " ,Can stack containers: " + contact.getCanStackContainers() + " ,Movement: " + contact.getMovement();
+
+        // Writing Contacts to log
+        Log.v("Saving Data", log);
     }
 }

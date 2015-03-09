@@ -94,7 +94,7 @@
             android:text="Can It Stack Containers"
             android:textSize="16dp"/>
 
-        <RadioButton
+        <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/CanStackContainersValue"/>
