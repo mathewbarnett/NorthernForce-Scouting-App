@@ -21,10 +21,6 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:21.0.3'
-    compile files('com.example.alex.myapplication/test/commons-csv-1.1.jar')
-    //compile 'libs/commons-csv-1.1.jar'
-    compile files('src/main/java/com.example.alex.myapplication/commons-csv-1.1.jar')
-    compile files('src/main/res/libs/commons-csv-1.1.jar')
+    compile files('libs/commons-csv-1.1.jar')
 }

@@ -63,9 +63,9 @@ public class Tests {
         Log.v("Tests", "Created MySQLiteHelper");
         //creating contacts
 
-        db.addContact(new SQLContact("172", "5","1","3"));
-        db.addContact(new SQLContact("2003","1","0","5"));
-        db.addContact(new SQLContact("1524", "2","1","2"));
+        db.addContact(new SQLContact("172", "5","Yes","Fair"));
+        db.addContact(new SQLContact("2003","1","No","Great"));
+        db.addContact(new SQLContact("1524", "2","Yes","Not Good"));
         Log.v("Tests", "Added contact");
 
         // Reading all contacts

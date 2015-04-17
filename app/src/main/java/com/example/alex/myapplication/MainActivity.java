@@ -34,12 +34,12 @@ public class MainActivity extends ActionBarActivity {
         db = new MySQLiteHelper(this.getBaseContext());
 
         Spinner spinner = (Spinner) findViewById(R.id.MovementSpinner);
-// Create an ArrayAdapter using the string array and a default spinner layout
+
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.movement_array, android.R.layout.simple_spinner_item);
-// Specify the layout to use when the list of choices appears
+
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-// Apply the adapter to the spinner
+
         spinner.setAdapter(adapter);
 
     }
@@ -62,6 +62,16 @@ public class MainActivity extends ActionBarActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+
+        if (id == R.id.action_enterData){
+
+        }
+
+        if (id == R.id.action_viewData){
+            Intent i = new Intent(this, ViewDataActivity.class);
+
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);
@@ -150,10 +160,10 @@ public class MainActivity extends ActionBarActivity {
 
         String stackContainers;
         if(checkBox.isChecked()){
-            stackContainers = "yes";
+            stackContainers = "Yes";
         }
         else{
-            stackContainers = "no";
+            stackContainers = "No";
         }
         contact.setTeamNumber(editText.getText().toString());
         contact.setTotesStacked(textView.getText().toString());
