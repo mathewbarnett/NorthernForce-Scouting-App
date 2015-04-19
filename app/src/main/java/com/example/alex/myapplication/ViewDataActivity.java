@@ -25,8 +25,7 @@ public class ViewDataActivity extends ListActivity {
     private CursorAdapter dataSource;
 
     private String fields[] =
-            {MySQLiteHelper.TEAM_NUMBER, MySQLiteHelper.TOTES_STACKED,
-                    MySQLiteHelper.CAN_STACK_CONTAINERS, MySQLiteHelper.MOVEMENT, MySQLiteHelper.ID};
+            {MySQLiteHelper.TEAM_NUMBER, MySQLiteHelper.AVERAGE_SCORE, MySQLiteHelper.ID};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,7 +36,7 @@ public class ViewDataActivity extends ListActivity {
 
         SQLiteDatabase database = mySQLiteHelper.getWritableDatabase();
 
-        Cursor data = database.query(MySQLiteHelper.TABLE_NAME, fields, null, null, null, null, null);
+        Cursor data = database.query(MySQLiteHelper.TEAM_TABLE, fields, null, null, null, null, null);
 
         dataSource = new SimpleCursorAdapter(this,
                 R.layout.data_view_row, data, fields,

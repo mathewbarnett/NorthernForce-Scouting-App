@@ -1,0 +1,128 @@
+package com.example.alex.myapplication;
+
+import android.content.Context;
+import android.content.res.AssetManager;
+import android.provider.ContactsContract;
+import android.util.Log;
+import android.widget.LinearLayout;
+
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+/**
+ * Created by alex on 4/18/15.
+ */
+public class UIDatabaseInterface {
+
+    private DatabaseTable teamTable;
+    private DatabaseTable matchTable;
+    private ArrayList<ConfigEntry> teamTableColumns;
+    private ArrayList<ConfigEntry> matchTableColumns;
+
+    private MySQLiteHelper database;
+    private Context context;
+
+    private boolean doesTeamTableExist;
+    private boolean doesMatchTableExist;
+
+    public UIDatabaseInterface(Context context){
+        this.context = context;
+        this.database = new MySQLiteHelper(context);
+
+        ConfigParser configParser = new ConfigParser();
+        AssetManager am = this.context.getAssets();
+        try {
+            InputStream is = am.open("configuration_file");
+            Log.v("Tests", "opened config file");
+            ArrayList<DatabaseTable> tables = configParser.parse(is);
+
+            teamTable = tables.get(0);
+            matchTable = tables.get(1);
+
+            if(teamTable.getName().equals("Team_Table")){
+                teamTableColumns = tables.get(0).getColumns();
+            }
+            if(matchTable.getName().equals("Match_Table")){
+                matchTableColumns = tables.get(1).getColumns();
+            }
+
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        this.doesTeamTableExist = database.doesTableExists(teamTable.getName(), true);
+        this.doesMatchTableExist = database.doesTableExists(matchTable.getName(), true);
+
+        this.makeTables();
+        this.makeUI();
+    }
+
+    public void makeTables(){
+        if(!doesTeamTableExist) {
+            Iterator<ConfigEntry> teamTableIterator = teamTableColumns.iterator();
+            database.dropTable(teamTable.getName());
+            String createTeamTable = "CREATE TABLE " + teamTable.getName() + "( _id INTEGER PRIMARY KEY ";
+
+            while (teamTableIterator.hasNext()) {
+                createTeamTable += ", ";
+                ConfigEntry entry = teamTableIterator.next();
+                String name = entry.getText();
+                String type = "";
+                if (entry.getType().equals("String")) {
+                    type = "TEXT";
+                }
+                if (entry.getType().equals("int")) {
+                    type = "INTEGER";
+                }
+                createTeamTable += name + " " + type;
+            }
+
+            createTeamTable += ")";
+
+            database.createTable(createTeamTable);
+        }
+
+        if(!doesMatchTableExist) {
+            Iterator<ConfigEntry> matchTableIterator = matchTableColumns.iterator();
+
+            database.dropTable(matchTable.getName());
+            String createMatchTable = "CREATE TABLE " + matchTable.getName() + "( _id INTEGER PRIMARY KEY ";
+            while (matchTableIterator.hasNext()) {
+                createMatchTable += ", ";
+                ConfigEntry entry = matchTableIterator.next();
+                String name = entry.getText();
+                String type = "";
+                if (entry.getType().equals("String")) {
+                    type = "TEXT";
+                }
+                if (entry.getType().equals("int")) {
+                    type = "INTEGER";
+                }
+                createMatchTable += name + " " + type;
+            }
+
+            createMatchTable += ")";
+
+            database.createTable(createMatchTable);
+        }
+    }
+
+    public void makeUI() {
+        Iterator<ConfigEntry> matchEntry = matchTableColumns.iterator();
+        while(matchEntry.hasNext()){
+            ConfigEntry entry = matchEntry.next();
+            if(entry.getType() == "String"){
+                LinearLayout layout = new LinearLayout(context);
+                LinearLayout.LayoutParams LLParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+                //LLParams.setLayoutDirection();
+            }
+        }
+
+    }
+}

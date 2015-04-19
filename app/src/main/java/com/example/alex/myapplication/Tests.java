@@ -1,10 +1,19 @@
 package com.example.alex.myapplication;
 
 import android.content.Context;
+import android.content.res.AssetManager;
+import android.provider.ContactsContract;
 import android.util.Log;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.Assert;
+
+import org.xmlpull.v1.XmlPullParserException;
 
 /**
  * Created by Alex on 2/19/2015.
@@ -63,21 +72,49 @@ public class Tests {
         Log.v("Tests", "Created MySQLiteHelper");
         //creating contacts
 
-        db.addContact(new SQLContact("172", "5","Yes","Fair"));
-        db.addContact(new SQLContact("2003","1","No","Great"));
-        db.addContact(new SQLContact("1524", "2","Yes","Not Good"));
+        db.addContact(new TeamTable("172", 0));
+        db.addContact(new TeamTable("2003",0));
+        db.addContact(new TeamTable("1524", 0));
         Log.v("Tests", "Added contact");
 
         // Reading all contacts
-        List<SQLContact> contacts = db.getAllContacts();
+        List<TeamTable> contacts = db.getAllContacts();
 
         Log.v("Tests", "db.getAllContacts");
 
-        for (SQLContact cn : contacts) {
-            String log = "Id: " + cn.getID() + " ,Team Number: " + cn.getTeamNumber() +  " ,Totes Stacked: " + cn.getTotesStacked() + " ,Can stack containers: " + cn.getCanStackContainers() + " ,Movement: " + cn.getMovement();
+        for (TeamTable cn : contacts) {
+            String log = "Id: " + cn.getID() + " ,Team Number: " + cn.getTeamNumber() +  " ,Average Score: " + cn.getAverageScore();
 
             // Writing Contacts to log
             Log.v("Tests", log);
         }
+
+
+    }
+
+    public void testConfigParser(Context context){
+        ConfigParser configParser = new ConfigParser();
+        AssetManager am = context.getAssets();
+        try {
+            InputStream is = am.open("configuration_file");
+            Log.v("Tests", "opened config file");
+            ArrayList<DatabaseTable> tables = configParser.parse(is);
+            Iterator<DatabaseTable> tableIterator = tables.iterator();
+            while(tableIterator.hasNext()){
+                ArrayList<ConfigEntry> entries = tableIterator.next().getColumns();
+                Iterator<ConfigEntry> entryIterator = entries.iterator();
+                while(entryIterator.hasNext()){
+                    Log.v("Tests", "entries: "+entryIterator.next().getText());
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.v("Tests", "ConfigParser IOExepction");
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+            Log.v("Tests", "ConfigParser XMLPullParserException");
+        }
+
+
     }
 }

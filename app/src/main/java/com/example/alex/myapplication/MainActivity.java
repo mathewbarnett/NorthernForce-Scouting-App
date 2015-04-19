@@ -30,7 +30,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+/*
         db = new MySQLiteHelper(this.getBaseContext());
 
         Spinner spinner = (Spinner) findViewById(R.id.MovementSpinner);
@@ -41,6 +41,9 @@ public class MainActivity extends ActionBarActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinner.setAdapter(adapter);
+*/
+        UIDatabaseInterface uiDatabaseInterface = new UIDatabaseInterface(this.getBaseContext());
+
 
     }
 
@@ -98,23 +101,18 @@ public class MainActivity extends ActionBarActivity {
 //        text2.setText("These are some words");
     }
 
-    public void runTests(){
-        Tests test = new Tests();
-        test.testDocumentParserGetLengthReturnsCorrect();
-        test.testDocumentParserGetValueReturnsCorrect();
-    }
-
     public void runTests(View view){
         Tests test = new Tests();
         test.testDocumentParserGetLengthReturnsCorrect();
         test.testDocumentParserGetValueReturnsCorrect();
         test.testSQLite(this.getBaseContext());
+        test.testConfigParser(this.getBaseContext());
     }
 
     public void TeamNumber(View view){
         String tag = (String) (view.getTag());
 
-        TextView textView = (TextView) (findViewById(R.id.TeamNumberNumber));
+        /*TextView textView = (TextView) (findViewById(R.id.TeamNumberNumber));
 
         if(tag.equals("+")){
             int textViewValue = Integer.parseInt(textView.getText().toString());
@@ -125,11 +123,11 @@ public class MainActivity extends ActionBarActivity {
             int textViewValue = Integer.parseInt(textView.getText().toString());
             textViewValue--;
             textView.setText(String.valueOf(textViewValue));
-        }
+        }*/
     }
 
     public void totesStacked(View view){
-        String tag = (String) (view.getTag());
+        /*String tag = (String) (view.getTag());
 
         TextView textView = (TextView) (findViewById(R.id.TotesStackedNumber));
 
@@ -147,11 +145,11 @@ public class MainActivity extends ActionBarActivity {
                 textViewValue--;
                 textView.setText(String.valueOf(textViewValue));
             }
-        }
+        }*/
     }
 
     public void addDataToTable(View view){
-        SQLContact contact = new SQLContact("0", "0", "0", "0");
+        /*TeamTable contact = new TeamTable("0", 0);
 
         EditText editText =  (EditText) findViewById(R.id.TeamNumberNumber);
         TextView textView = (TextView) findViewById(R.id.TotesStackedNumber);
@@ -166,16 +164,14 @@ public class MainActivity extends ActionBarActivity {
             stackContainers = "No";
         }
         contact.setTeamNumber(editText.getText().toString());
-        contact.setTotesStacked(textView.getText().toString());
-        contact.setCanStackContainers(stackContainers);
-        contact.setMovement(spinner.getSelectedItem().toString());
+
 
         db.addContact(contact);
 
-        String log = "Id: " + contact.getID() + " ,Team Number: " + contact.getTeamNumber() +  " ,Totes Stacked: " + contact.getTotesStacked() + " ,Can stack containers: " + contact.getCanStackContainers() + " ,Movement: " + contact.getMovement();
+        String log = "Id: " + contact.getID() + " ,Team Number: " + contact.getTeamNumber() +  " ,Average Score: " + contact.getAverageScore();
 
         // Writing Contacts to log
-        Log.v("Saving Data", log);
+        Log.v("Saving Data", log);*/
     }
 
     public void viewData(View view){
