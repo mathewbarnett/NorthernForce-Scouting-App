@@ -1,6 +1,7 @@
 package com.example.alex.myapplication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -28,6 +29,8 @@ public class UIDatabaseInterface {
 
     private boolean doesTeamTableExist;
     private boolean doesMatchTableExist;
+
+    private DataEntryRow[] dataEntryRows;
 
     public UIDatabaseInterface(Context context){
         this.context = context;
@@ -114,15 +117,24 @@ public class UIDatabaseInterface {
     }
 
     public void makeUI() {
-        Iterator<ConfigEntry> matchEntry = matchTableColumns.iterator();
-        while(matchEntry.hasNext()){
-            ConfigEntry entry = matchEntry.next();
-            if(entry.getType() == "String"){
-                LinearLayout layout = new LinearLayout(context);
-                LinearLayout.LayoutParams LLParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-                //LLParams.setLayoutDirection();
-            }
-        }
+        dataEntryRows = new DataEntryRow[matchTableColumns.size()];
 
+        Iterator<ConfigEntry> matchIterator = matchTableColumns.iterator();
+        int counter = 0;
+        while(matchIterator.hasNext()){
+            ConfigEntry entry = matchIterator.next();
+
+            String type = entry.getType();
+            String columnName = entry.getText();
+
+            DataEntryRow row = new DataEntryRow(type, columnName);
+            dataEntryRows   [counter] = row;
+
+            counter++;
+        }
+    }
+
+    public DataEntryRow[] getDataEntryRows(){
+        return this.dataEntryRows;
     }
 }

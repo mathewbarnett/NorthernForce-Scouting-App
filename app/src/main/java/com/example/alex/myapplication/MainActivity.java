@@ -25,11 +25,12 @@ public class MainActivity extends ActionBarActivity {
     boolean textChanged = false;
     boolean hasDoneTests = false;
     MySQLiteHelper db;
+    public static UIDatabaseInterface uiDatabaseInterface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        /*setContentView(R.layout.activity_main);
 /*
         db = new MySQLiteHelper(this.getBaseContext());
 
@@ -42,9 +43,12 @@ public class MainActivity extends ActionBarActivity {
 
         spinner.setAdapter(adapter);
 */
-        UIDatabaseInterface uiDatabaseInterface = new UIDatabaseInterface(this.getBaseContext());
 
+        uiDatabaseInterface = new UIDatabaseInterface(this.getBaseContext());
 
+        Intent i = new Intent(this, DataEntryListView.class);
+
+        startActivity(i);
     }
 
 
@@ -178,5 +182,9 @@ public class MainActivity extends ActionBarActivity {
         Intent i = new Intent(this, ViewDataActivity.class);
 
         startActivity(i);
+    }
+
+    public UIDatabaseInterface getUiDatabaseInterface(){
+        return this.uiDatabaseInterface;
     }
 }
