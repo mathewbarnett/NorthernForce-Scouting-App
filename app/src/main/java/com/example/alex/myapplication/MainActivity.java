@@ -7,11 +7,15 @@ import android.provider.DocumentsContract;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.view.View;
@@ -30,25 +34,15 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*setContentView(R.layout.activity_main);
-/*
-        db = new MySQLiteHelper(this.getBaseContext());
-
-        Spinner spinner = (Spinner) findViewById(R.id.MovementSpinner);
-
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.movement_array, android.R.layout.simple_spinner_item);
-
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spinner.setAdapter(adapter);
-*/
+        setContentView(R.layout.activity_main);
 
         uiDatabaseInterface = new UIDatabaseInterface(this.getBaseContext());
 
-        Intent i = new Intent(this, DataEntryListView.class);
+        ListView listView = (ListView) (findViewById(R.id.list));
 
-        startActivity(i);
+        DataEntryAdapter adapter = new DataEntryAdapter(this.getBaseContext(), uiDatabaseInterface.getDataEntryRows());
+        listView.setAdapter(adapter);
+
     }
 
 
@@ -111,71 +105,6 @@ public class MainActivity extends ActionBarActivity {
         test.testDocumentParserGetValueReturnsCorrect();
         test.testSQLite(this.getBaseContext());
         test.testConfigParser(this.getBaseContext());
-    }
-
-    public void TeamNumber(View view){
-        String tag = (String) (view.getTag());
-
-        /*TextView textView = (TextView) (findViewById(R.id.TeamNumberNumber));
-
-        if(tag.equals("+")){
-            int textViewValue = Integer.parseInt(textView.getText().toString());
-            textViewValue++;
-            textView.setText(String.valueOf(textViewValue));
-        }
-        else if(tag.equals("-")){
-            int textViewValue = Integer.parseInt(textView.getText().toString());
-            textViewValue--;
-            textView.setText(String.valueOf(textViewValue));
-        }*/
-    }
-
-    public void totesStacked(View view){
-        /*String tag = (String) (view.getTag());
-
-        TextView textView = (TextView) (findViewById(R.id.TotesStackedNumber));
-
-        if(tag.equals("+")){
-            int textViewValue = Integer.parseInt(textView.getText().toString());
-            textViewValue++;
-            textView.setText(String.valueOf(textViewValue));
-        }
-        else if(tag.equals("-")){
-            int textViewValue = Integer.parseInt(textView.getText().toString());
-            if(textViewValue == 0){
-
-            }
-            else {
-                textViewValue--;
-                textView.setText(String.valueOf(textViewValue));
-            }
-        }*/
-    }
-
-    public void addDataToTable(View view){
-        /*TeamTable contact = new TeamTable("0", 0);
-
-        EditText editText =  (EditText) findViewById(R.id.TeamNumberNumber);
-        TextView textView = (TextView) findViewById(R.id.TotesStackedNumber);
-        CheckBox checkBox = (CheckBox) findViewById(R.id.CanStackContainersValue);
-        Spinner spinner = (Spinner) findViewById(R.id.MovementSpinner);
-
-        String stackContainers;
-        if(checkBox.isChecked()){
-            stackContainers = "Yes";
-        }
-        else{
-            stackContainers = "No";
-        }
-        contact.setTeamNumber(editText.getText().toString());
-
-
-        db.addContact(contact);
-
-        String log = "Id: " + contact.getID() + " ,Team Number: " + contact.getTeamNumber() +  " ,Average Score: " + contact.getAverageScore();
-
-        // Writing Contacts to log
-        Log.v("Saving Data", log);*/
     }
 
     public void viewData(View view){

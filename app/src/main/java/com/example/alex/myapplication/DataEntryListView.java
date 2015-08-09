@@ -1,6 +1,7 @@
 package com.example.alex.myapplication;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,9 +12,10 @@ import android.widget.Toast;
 /**
  * Created by alex on 4/19/15.
  */
-public class DataEntryListView extends Activity {
+public class DataEntryListView extends Activity  {
 
     ListView listView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

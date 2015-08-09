@@ -1,6 +1,7 @@
 package com.example.alex.myapplication;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import java.util.Arrays;
 
 /**
  * Created by alex on 4/20/15.
@@ -21,6 +24,12 @@ public class DataEntryAdapter extends ArrayAdapter<DataEntryRow> {
         super(context, R.layout.data_entry_layout, objects);
         this.context = context;
         this.values = objects;
+
+        Log.v("DataEntryAdapter", "values length is  " + values.length);
+
+        for(int i = 0; i < values.length; i++) {
+            Log.v("DataEntryAdapter", "value at " + i + " is " + values[i].getColumnName());
+        }
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -44,6 +53,10 @@ public class DataEntryAdapter extends ArrayAdapter<DataEntryRow> {
             EditText editText = (EditText) rowView.findViewById(R.id.int_entry_editText);
             editText.setHint(values[position].getColumnName());
         }
+        if(rowView == null){
+            Log.e("DataEntryAdapter", "rowView was null at position: " + position);
+        }
+        Log.v("DataEntryAdapter", "position is " + position);
         return rowView;
     }
 }

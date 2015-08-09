@@ -54,9 +54,11 @@ public class UIDatabaseInterface {
             }
 
         } catch (XmlPullParserException e) {
+            Log.e("UIDatabaseInterface", "XmlPullParserException");
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+            Log.e("UIDatabaseInterface", "IOException");
         }
 
         this.doesTeamTableExist = database.doesTableExists(teamTable.getName(), true);
@@ -128,7 +130,7 @@ public class UIDatabaseInterface {
             String columnName = entry.getText();
 
             DataEntryRow row = new DataEntryRow(type, columnName);
-            dataEntryRows   [counter] = row;
+            dataEntryRows[counter] = row;
 
             counter++;
         }

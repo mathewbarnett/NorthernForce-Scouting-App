@@ -3,11 +3,11 @@
     <TeamTable>
         <String>Team_Number</String>
         <String>Defining Characteristics</String>
-        <int>Average_Score</int>
+        <int>Average Score</int>
     </TeamTable>
     <MatchTable>
-        <String>Team_Number</String>
-        <String>Match_Number</String>
+        <String>Team Number</String>
+        <String>Match Number</String>
         <int>Score</int>
         <String>Performance</String>
     </MatchTable>

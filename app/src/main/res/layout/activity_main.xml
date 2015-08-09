@@ -2,136 +2,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
+    tools:context=".MainActivity"
     android:orientation="vertical"
     android:id = "@+id/mainLinearLayout">
 
-    <!--<Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Run Tests"
-        android:id="@+id/runTestsButton"
-        android:onClick="runTests"/>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/TeamNumber"
-            android:text="Team Number"
-            android:textSize="16dp"/>
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Team Number"
-            android:inputType="number"
-            android:id="@+id/TeamNumberNumber"/>
-
-    </LinearLayout>
-
-
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/TotesStacked"
-            android:text="Totes Stacked"
-            android:textSize="16dp"/>
-
-        <Button
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignRight="@+id/TotesStacked"
-            android:onClick="totesStacked"
-            android:tag="-"
-            android:background="@drawable/round_button"
-            android:gravity="center_vertical|center_horizontal"
-            android:id="@+id/TeamNumberMinus"
-            android:text="-"
-            android:textColor="#fff" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:id="@+id/TotesStackedNumber"
-            android:text="0"
-            android:textSize="16dp"/>
-        <Button
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:onClick="totesStacked"
-            android:tag="+"
-            android:background="@drawable/round_button"
-            android:gravity="center_vertical|center_horizontal"
-            android:layout_alignRight="@+id/TotesStackedPlus"
-            android:text="+"
-            android:textColor="#fff" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/CanStackContainers"
-            android:text="Can It Stack Containers"
-            android:textSize="16dp"/>
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/CanStackContainersValue"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/Movement"
-            android:text="Rate The Movement"
-            android:textSize="16dp"/>
-
-        <Spinner
-            android:id="@+id/MovementSpinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="addDataToTable"
-        android:id="@+id/saveData"
-        android:text="Save Data"/>
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="viewData"
-        android:id="@+id/viewData"
-        android:text="View Data"/>
-    -->
+        android:id="@+id/submitButton"
+        android:text="Submit"/>
+
 </LinearLayout>

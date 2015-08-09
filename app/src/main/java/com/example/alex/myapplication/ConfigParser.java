@@ -24,7 +24,7 @@ public class ConfigParser {
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
             parser.setInput(in, null);
             parser.nextTag();
-            Log.v("Tests", "returning readFeed");
+            Log.v("ConfigParser", "returning readFeed");
             return readFeed(parser);
         } finally {
             in.close();
@@ -35,7 +35,7 @@ public class ConfigParser {
         ArrayList<DatabaseTable> tables = new ArrayList<DatabaseTable>();
 
         parser.require(XmlPullParser.START_TAG, ns, "config");
-        Log.v("Tests", "did parser.require");
+        Log.v("ConfigParser", "did parser.require");
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
                 continue;
@@ -45,10 +45,10 @@ public class ConfigParser {
             // Starts by looking for the entry tag
             if (name.equals("TeamTable")) {
                 tables.add(new DatabaseTable("Team_Table",readTeamTable(parser, new ArrayList<ConfigEntry>())));
-                Log.v("Tests", "added read team table");
+                Log.v("ConfigParser", "added read team table");
             } else if(name.equals("MatchTable")) {
                 tables.add(new DatabaseTable("Match_Table",readTeamTable(parser, new ArrayList<ConfigEntry>())));
-                Log.v("Tests", "added read match table");
+                Log.v("ConfigParser", "added read match table");
             }
             else{
                 skip(parser);
@@ -67,11 +67,11 @@ public class ConfigParser {
 
             String name = parser.getName();
             entry.setType(name);
-            Log.v("Tests", name);
+            Log.v("ConfigParser", name);
 
             String text = readText(parser);
             entry.setText(text);
-            Log.v("Tests", text);
+            Log.v("ConfigParser", text);
             list.add(entry);
         }
 
@@ -87,11 +87,11 @@ public class ConfigParser {
 
             String name = parser.getName();
             entry.setType(name);
-            Log.v("Tests", name);
+            Log.v("ConfigParser", name);
 
             String text = readText(parser);
             entry.setText(text);
-            Log.v("Tests", text);
+            Log.v("ConfigParser", text);
             list.add(entry);
         }
 
@@ -121,7 +121,7 @@ public class ConfigParser {
             result = parser.getText();
             parser.nextTag();
         }
-        Log.v("Tests", "result: " + result);
+        Log.v("ConfigParser", "result: " + result);
         return result;
     }
 
