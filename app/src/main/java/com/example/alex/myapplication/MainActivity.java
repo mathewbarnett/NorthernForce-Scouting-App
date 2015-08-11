@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -34,6 +35,9 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        this.runTests();
+
         setContentView(R.layout.activity_main);
 
         uiDatabaseInterface = new UIDatabaseInterface(this.getBaseContext());
@@ -42,6 +46,13 @@ public class MainActivity extends ActionBarActivity {
 
         DataEntryAdapter adapter = new DataEntryAdapter(this.getBaseContext(), uiDatabaseInterface.getDataEntryRows());
         listView.setAdapter(adapter);
+
+        Button submitButton = (Button) findViewById(R.id.submitButton);
+        submitButton.setOnClickListener(new View.OnClickListener() {
+                                           public void onClick(View v){
+                                               uiDatabaseInterface.submitDataEntry(v);
+                                           }
+                                        });
 
     }
 
@@ -99,7 +110,7 @@ public class MainActivity extends ActionBarActivity {
 //        text2.setText("These are some words");
     }
 
-    public void runTests(View view){
+    public void runTests(){
         Tests test = new Tests();
         test.testDocumentParserGetLengthReturnsCorrect();
         test.testDocumentParserGetValueReturnsCorrect();

@@ -1,10 +1,14 @@
 package com.example.alex.myapplication;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import org.xmlpull.v1.XmlPullParserException;
@@ -40,16 +44,16 @@ public class UIDatabaseInterface {
         AssetManager am = this.context.getAssets();
         try {
             InputStream is = am.open("configuration_file");
-            Log.v("Tests", "opened config file");
+            //Log.v("Tests", "opened config file");
             ArrayList<DatabaseTable> tables = configParser.parse(is);
 
             teamTable = tables.get(0);
             matchTable = tables.get(1);
 
-            if(teamTable.getName().equals("Team_Table")){
+            if(teamTable.getName().equals("TeamTable")){
                 teamTableColumns = tables.get(0).getColumns();
             }
-            if(matchTable.getName().equals("Match_Table")){
+            if(matchTable.getName().equals("MatchTable")){
                 matchTableColumns = tables.get(1).getColumns();
             }
 
@@ -134,6 +138,23 @@ public class UIDatabaseInterface {
 
             counter++;
         }
+    }
+
+    public void submitDataEntry(View v){
+        SQLiteDatabase db = database.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        for(DataEntryRow row : dataEntryRows){
+            if(row.getType().equals("int")){
+                values.put(row.getColumnName(), Integer.parseInt(row.getValue()));
+            }
+            if(row.getType().equals(("string"))){
+                values.put(row.getColumnName(), row.getValue());
+            }
+
+        }
+
+        db.insert(matchTable.getName(), null, values);
     }
 
     public DataEntryRow[] getDataEntryRows(){

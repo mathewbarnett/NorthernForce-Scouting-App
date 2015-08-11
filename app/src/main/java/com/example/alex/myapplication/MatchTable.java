@@ -13,6 +13,11 @@ public class MatchTable {
         
     }
 
+    public MatchTable(String teamNumber, int score){
+        this._teamNumber = teamNumber;
+        this._score = score;
+    }
+
     public MatchTable(String id, String teamNumber, int score){
         this._id = id;
         this._teamNumber = teamNumber;

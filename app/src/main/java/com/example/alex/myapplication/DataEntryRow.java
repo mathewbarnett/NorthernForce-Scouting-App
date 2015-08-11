@@ -7,6 +7,7 @@ public class DataEntryRow {
 
     private String type;
     private String columnName;
+    private String value;
 
     public DataEntryRow(String type, String columnName){
         this.type = type;
@@ -19,5 +20,13 @@ public class DataEntryRow {
 
     public String getColumnName(){
         return this.columnName;
+    }
+
+    public String getValue(){
+        return value;
+    }
+
+    public void setValue(String value){
+        this.value = value;
     }
 }

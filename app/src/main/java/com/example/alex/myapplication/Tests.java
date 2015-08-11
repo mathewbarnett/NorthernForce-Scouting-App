@@ -64,23 +64,15 @@ public class Tests {
     }
 
     public void testSQLite(Context context) {
-        Log.v("Tests", "Creating MySQLiteHelper");
         MySQLiteHelper db = new MySQLiteHelper(context);
 
         db.onUpgrade(db.getReadableDatabase(), 0, 1);
 
-        Log.v("Tests", "Created MySQLiteHelper");
-        //creating contacts
-
         db.addContact(new TeamTable("172", 0));
         db.addContact(new TeamTable("2003",0));
         db.addContact(new TeamTable("1524", 0));
-        Log.v("Tests", "Added contact");
 
-        // Reading all contacts
         List<TeamTable> contacts = db.getAllContacts();
-
-        Log.v("Tests", "db.getAllContacts");
 
         for (TeamTable cn : contacts) {
             String log = "Id: " + cn.getID() + " ,Team Number: " + cn.getTeamNumber() +  " ,Average Score: " + cn.getAverageScore();
@@ -95,16 +87,18 @@ public class Tests {
     public void testConfigParser(Context context){
         ConfigParser configParser = new ConfigParser();
         AssetManager am = context.getAssets();
+
         try {
             InputStream is = am.open("configuration_file");
-            Log.v("Tests", "opened config file");
+
             ArrayList<DatabaseTable> tables = configParser.parse(is);
             Iterator<DatabaseTable> tableIterator = tables.iterator();
+
             while(tableIterator.hasNext()){
                 ArrayList<ConfigEntry> entries = tableIterator.next().getColumns();
                 Iterator<ConfigEntry> entryIterator = entries.iterator();
                 while(entryIterator.hasNext()){
-                    Log.v("Tests", "entries: "+entryIterator.next().getText());
+                    Log.v("Tests", "entries: " + entryIterator.next().getText());
                 }
             }
         } catch (IOException e) {
