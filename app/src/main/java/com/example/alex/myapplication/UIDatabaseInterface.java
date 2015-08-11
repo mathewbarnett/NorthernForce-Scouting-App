@@ -97,6 +97,8 @@ public class UIDatabaseInterface {
             database.createTable(createTeamTable);
         }
 
+        Log.v("Interface", "does match table exist = " + doesMatchTableExist);
+
         if(!doesMatchTableExist) {
             Iterator<ConfigEntry> matchTableIterator = matchTableColumns.iterator();
 
@@ -117,6 +119,8 @@ public class UIDatabaseInterface {
             }
 
             createMatchTable += ")";
+
+            Log.v("Interface", "Creating table " + createMatchTable);
 
             database.createTable(createMatchTable);
         }
@@ -146,10 +150,17 @@ public class UIDatabaseInterface {
         ContentValues values = new ContentValues();
         for(DataEntryRow row : dataEntryRows){
             if(row.getType().equals("int")){
-                values.put(row.getColumnName(), Integer.parseInt(row.getValue()));
+                if(row.getValue().equals("")){
+                    Log.v("Interface", "row for column name " + row.getColumnName() + " was empty");
+                }
+                else {
+                    values.put(row.getColumnName(), Integer.parseInt(row.getValue()));
+                }
+                Log.v("Interface", "type was int, and column name was " + row.getColumnName());
             }
             if(row.getType().equals(("string"))){
                 values.put(row.getColumnName(), row.getValue());
+                Log.v("Interface", "type was string");
             }
 
         }

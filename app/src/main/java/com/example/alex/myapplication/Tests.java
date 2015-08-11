@@ -66,7 +66,7 @@ public class Tests {
     public void testSQLite(Context context) {
         MySQLiteHelper db = new MySQLiteHelper(context);
 
-        db.onUpgrade(db.getReadableDatabase(), 0, 1);
+        db.onUpgrade(db.getWritableDatabase(), 0, 1);
 
         db.addContact(new TeamTable("172", 0));
         db.addContact(new TeamTable("2003",0));
