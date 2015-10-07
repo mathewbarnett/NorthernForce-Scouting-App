@@ -29,7 +29,7 @@ public class MainActivity extends ActionBarActivity {
 
     boolean textChanged = false;
     boolean hasDoneTests = false;
-    MySQLiteHelper db;
+    private MySQLiteHelper db;
     public static UIDatabaseInterface uiDatabaseInterface;
 
     @Override
@@ -50,6 +50,7 @@ public class MainActivity extends ActionBarActivity {
         Button submitButton = (Button) findViewById(R.id.submitButton);
         submitButton.setOnClickListener(new View.OnClickListener() {
                                            public void onClick(View v){
+                                               Log.v("MainActivity", "Submit was pressed");
                                                uiDatabaseInterface.submitDataEntry(v);
                                            }
                                         });
@@ -81,33 +82,10 @@ public class MainActivity extends ActionBarActivity {
         }
 
         if (id == R.id.action_viewData){
-            Intent i = new Intent(this, ViewDataActivity.class);
-
-            startActivity(i);
+            uiDatabaseInterface.viewData();
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    public void setText(View view){
-//        DocumentParser documentParser = new DocumentParser();
-//
-//        AssetManager assetManager = getBaseContext().getAssets();
-//        InputStream inputStream = null;
-//        try {
-//            inputStream = assetManager.open("sampleCSV.txt");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        String csvFileString = DocumentParser.copyInputStreamToString(inputStream);
-//
-//        documentParser.consumeDocument(csvFileString);
-//
-//        TextView text = (TextView) findViewById(R.id.textView);
-//        text.setText("consumed document");
-//
-//        TextView text2 = new TextView(this);
-//        text2.setText("These are some words");
     }
 
     public void runTests(){
@@ -116,12 +94,6 @@ public class MainActivity extends ActionBarActivity {
         test.testDocumentParserGetValueReturnsCorrect();
         test.testSQLite(this.getBaseContext());
         test.testConfigParser(this.getBaseContext());
-    }
-
-    public void viewData(View view){
-        Intent i = new Intent(this, ViewDataActivity.class);
-
-        startActivity(i);
     }
 
     public UIDatabaseInterface getUiDatabaseInterface(){

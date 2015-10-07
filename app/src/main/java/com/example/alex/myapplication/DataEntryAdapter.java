@@ -41,26 +41,20 @@ public class DataEntryAdapter extends ArrayAdapter<DataEntryRow> {
 
             EditText editText = (EditText) rowView.findViewById(R.id.string_entry_editText);
             editText.setHint(values[position].getColumnName());
-            editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                boolean hadFocus = false;
+            editText.setOnKeyListener(new View.OnKeyListener() {
                 @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    if (hasFocus) {
-                        hadFocus = !hadFocus;
-                        return;
-                    }
-                    if (!hasFocus && hadFocus) {
-                        EditText editText = (EditText) v;
-                        Log.v("FOO", "Text was " + editText.getText());
-                        Log.v("FOO", "ColumnName is " + editText.getHint());
-                        for (int i = 0;i<values.length;i++) {
-                            if (values[i].getColumnName().equals(editText.getHint())) {
-                                Log.v("FOO", "The position you need in values is " + i);
-                                values[i].setValue(editText.getText().toString());
-                                return;
-                            }
+                public boolean onKey(View v, int keyCode, KeyEvent event) {
+                    EditText editText = (EditText) v;
+                    Log.v("FOO", "Text was " + editText.getText());
+                    Log.v("FOO", "ColumnName is " + editText.getHint());
+                    for (int i = 0;i<values.length;i++) {
+                        if (values[i].getColumnName().equals(editText.getHint())) {
+                            Log.v("FOO", "The position you need in values is " + i);
+                            values[i].setValue(editText.getText().toString());
+                            return false;
                         }
                     }
+                    return false;
                 }
             });
         }
@@ -71,34 +65,20 @@ public class DataEntryAdapter extends ArrayAdapter<DataEntryRow> {
 
             EditText editText = (EditText) rowView.findViewById(R.id.int_entry_editText);
             editText.setHint(values[position].getColumnName());
-            editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                boolean hadFocus = false;
-
-                /**
-                 *  This code is a little Kluge.
-                 *  It uses the editText hint to relocate its data source inside of values
-                 *  Then it will be able ot store the value anytime it loses focus
-                 * @param v
-                 * @param hasFocus
-                 */
+            editText.setOnKeyListener(new View.OnKeyListener() {
                 @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    if (hasFocus) {
-                        hadFocus = !hadFocus;
-                        return;
-                    }
-                    if (!hasFocus && hadFocus) {
-                        EditText editText = (EditText) v;
-                        Log.v("FOO", "Text was " + editText.getText());
-                        Log.v("FOO", "ColumnName is " + editText.getHint());
-                        for (int i = 0;i<values.length;i++) {
-                            if (values[i].getColumnName().equals(editText.getHint())) {
-                                Log.v("FOO", "The position you need in values is " + i);
-                                values[i].setValue(editText.getText().toString());
-                                return;
+                public boolean onKey(View v, int keyCode, KeyEvent event) {
+                    EditText editText = (EditText) v;
+                    Log.v("FOO", "Text was " + editText.getText());
+                    Log.v("FOO", "ColumnName is " + editText.getHint());
+                    for (int i = 0;i<values.length;i++) {
+                        if (values[i].getColumnName().equals(editText.getHint())) {
+                            Log.v("FOO", "The position you need in values is " + i);
+                            values[i].setValue(editText.getText().toString());
+                            return false;
                             }
                         }
-                    }
+                    return false;
                 }
             });
         }

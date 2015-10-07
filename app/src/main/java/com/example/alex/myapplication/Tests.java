@@ -68,7 +68,7 @@ public class Tests {
 
         db.onUpgrade(db.getWritableDatabase(), 0, 1);
 
-        db.addContact(new TeamTable("172", 0));
+        /*db.addContact(new TeamTable("172", 0));
         db.addContact(new TeamTable("2003",0));
         db.addContact(new TeamTable("1524", 0));
 
@@ -79,7 +79,7 @@ public class Tests {
 
             // Writing Contacts to log
             Log.v("Tests", log);
-        }
+        }*/
 
 
     }
