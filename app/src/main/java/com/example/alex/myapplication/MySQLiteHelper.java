@@ -60,14 +60,15 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         return db.rawQuery("SELECT " + column + " FROM " + table + " WHERE " + condition, null);
     }
 
-    public boolean doesTableExists(String tableName, boolean openDb) {
-        Cursor cursor = db.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '"+tableName+"'", null);
-        if(cursor!=null) {
-            if(cursor.getCount()>0) {
-                cursor.close();
-                return true;
-            }
-            cursor.close();
+    public Cursor selectFromTableExcept(String column, String table, String condition){
+        return db.rawQuery("SELECT " + column + " FROM " + table + " EXCEPT " + condition, null);
+    }
+
+    boolean doesTableExists(String tableName){
+        Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE name = '" + tableName + "' and type='table'" , null);
+        Log.v("AAAHHH", "does " + tableName + " exists? cursor length is " + cursor.getCount());
+        if(cursor.getCount() == 1){
+            return true;
         }
         return false;
     }
@@ -119,7 +120,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public void addTeamToTeamTable(String teamNumberColumnName, String teamNumber){
         ContentValues values = new ContentValues();
         values.put(teamNumberColumnName, teamNumber);
-        this.addValues(TEAM_TABLE, values);
+        db.insert(TEAM_TABLE, null, values);
     }
 
 }

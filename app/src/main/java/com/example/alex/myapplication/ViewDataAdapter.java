@@ -22,7 +22,7 @@ public class ViewDataAdapter extends BaseAdapter {
     private MySQLiteHelper mySQLiteHelper;
     private int count;
     private ViewDataActivity viewDataActivity;
-    private boolean isMatchTable = true;
+    private boolean isMatchTable = false;
 
     public ViewDataAdapter(MySQLiteHelper mySQLiteHelper, ViewDataActivity viewDataActivity){
         this.mySQLiteHelper = mySQLiteHelper;

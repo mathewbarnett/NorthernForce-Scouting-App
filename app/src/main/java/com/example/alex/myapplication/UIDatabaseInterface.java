@@ -28,25 +28,25 @@ public class UIDatabaseInterface {
 
     public static DatabaseTable teamTable;
     public static DatabaseTable matchTable;
-    private ArrayList<ConfigEntry> teamTableColumns;
-    private ArrayList<ConfigEntry> matchTableColumns;
+    private static ArrayList<ConfigEntry> teamTableColumns;
+    private static ArrayList<ConfigEntry> matchTableColumns;
 
     public static MySQLiteHelper database;
-    private Context context;
 
-    private boolean doesTeamTableExist;
-    private boolean doesMatchTableExist;
+    private static boolean doesTeamTableExist;
+    private static boolean doesMatchTableExist;
 
-    private DataEntryRow[] dataEntryRows;
+    private static DataEntryRow[] dataEntryRows;
 
-    private ArrayList<String> teamsInTeamTable;
+    private static ArrayList<String> teamsInTeamTable;
+
+    private boolean hasDatabaseBeenLoaded = false;
 
     public UIDatabaseInterface(Context context){
-        this.context = context;
         this.database = new MySQLiteHelper(context);
 
         ConfigParser configParser = new ConfigParser();
-        AssetManager am = this.context.getAssets();
+        AssetManager am = context.getAssets();
         try {
             InputStream is = am.open("configuration_file");
             ArrayList<DatabaseTable> tables = configParser.parse(is);
@@ -69,8 +69,9 @@ public class UIDatabaseInterface {
             Log.e("UIDatabaseInterface", "IOException");
         }
 
-        this.doesTeamTableExist = database.doesTableExists(teamTable.getName(), true);
-        this.doesMatchTableExist = database.doesTableExists(matchTable.getName(), true);
+        this.doesTeamTableExist = database.doesTableExists(teamTable.getName());
+        this.doesMatchTableExist = database.doesTableExists(matchTable.getName());
+        Log.w("AHHHHH", "team table name is " + teamTable.getName() + ", does Team Table Exist? " + doesTeamTableExist);
 
         this.makeTables();
         this.makeUI();
@@ -81,7 +82,7 @@ public class UIDatabaseInterface {
         if(!doesTeamTableExist) {
             Iterator<ConfigEntry> teamTableIterator = teamTableColumns.iterator();
             database.dropTable(teamTable.getName());
-            String createTeamTable = "CREATE TABLE " + teamTable.getName() + "( _id INTEGER PRIMARY KEY ";
+            String createTeamTable = "CREATE TABLE IF NOT EXISTS " + teamTable.getName() + "( _id INTEGER PRIMARY KEY ";
 
             while (teamTableIterator.hasNext()) {
                 createTeamTable += ", ";
@@ -106,7 +107,7 @@ public class UIDatabaseInterface {
             Iterator<ConfigEntry> matchTableIterator = matchTableColumns.iterator();
 
             database.dropTable(matchTable.getName());
-            String createMatchTable = "CREATE TABLE " + matchTable.getName() + "( _id INTEGER PRIMARY KEY ";
+            String createMatchTable = "CREATE TABLE IF NOT EXISTS " + matchTable.getName() + "( _id INTEGER PRIMARY KEY ";
             while (matchTableIterator.hasNext()) {
                 createMatchTable += ", ";
                 ConfigEntry entry = matchTableIterator.next();
@@ -127,7 +128,7 @@ public class UIDatabaseInterface {
         }
     }
 
-    public void makeUI() {
+    public static void makeUI() {
         dataEntryRows = new DataEntryRow[matchTableColumns.size()];
 
         Iterator<ConfigEntry> matchIterator = matchTableColumns.iterator();
@@ -145,7 +146,7 @@ public class UIDatabaseInterface {
         }
     }
 
-    public void submitDataEntry(View v) {
+    public static void submitDataEntry(View v) {
         SQLiteDatabase db = database.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -166,43 +167,42 @@ public class UIDatabaseInterface {
         }
         database.addValues(matchTable.getName(), values);
 
-        this.updateTeamTable();
+        updateTeamTable();
     }
 
-    public void populateDatabase(){
+    public static void populateDatabase(){
         for(int i = 0; i<10; i++){
             ContentValues values = new ContentValues();
+            if(i>5)
+                values.put("Team_Number", "1");
+            else
+                values.put("Team_Number", "2");
 
-            values.put("Team_Number", "1");
             values.put("Match_Number", "1");
             values.put("Score", "" + Math.ceil(Math.random()*100));
             values.put("Performance", "5");
 
-            database.addValues(this.matchTable.getName(), values);
+            database.addValues(matchTable.getName(), values);
 
             Log.v("UIdatabase", "populated the database and size is: " + database.getTeamTableContactsCount());
         }
-        this.updateTeamTable();
+        updateTeamTable();
     }
 
-    public void updateTeamTable(){
+    public static void updateTeamTable(){
         Cursor teams;
-        teams = this.getTeamsNotInTeamTable();
+        teams = getTeamsNotInTeamTable();
 
         Log.v("foo", "teams not in team table length is " + teams.getCount());
         if(teams.moveToFirst()){
             do{
-                Log.v("foo", "team number is " + teams.getString(0));
-                database.addTeamToTeamTable("Team_Number", teams.getString(1));
+                Log.v("foo", "added team number " + teams.getString(0));
+                database.addTeamToTeamTable("Team_Number", teams.getString(0));
             }while(teams.moveToNext());
         }
-
-        int count = database.getTeamTableContactsCount();
-
-        Log.v("foo", "count = " + count);
     }
 
-    public int averageScoreForTeam(String teamNumber){
+    public static int averageScoreForTeam(String teamNumber){
         Cursor matches = database.selectFromTableWhere("Score", "MatchTable", "TeamNumber = " + teamNumber);
         int count = matches.getCount();
         if(count == 0){
@@ -218,24 +218,16 @@ public class UIDatabaseInterface {
         return average;
     }
 
-    public void viewData(){
-        Intent i = new Intent(context, ViewDataActivity.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        context.startActivity(i);
-    }
-
-    public Cursor getTeamsNotInTeamTable(){
-        Cursor teams = database.selectFromTableWhere("*", "Match_Table", "NOT EXISTS(SELECT NULL FROM TEAM_TABLE WHERE TEAM_TABLE.TEAM_NUMBER = MATCH_TABLE.TEAM_NUMBER)");
-        Log.v("foo", "team not in team table length " + teams.getCount());
+    public static Cursor getTeamsNotInTeamTable(){
+        Cursor teams = database.selectFromTableExcept("Team_Number", "Match_Table", "SELECT Team_Number FROM Team_Table");
         return teams;
     }
 
-    public DataEntryRow[] getDataEntryRows(){
-        return this.dataEntryRows;
+    public static DataEntryRow[] getDataEntryRows(){
+        return dataEntryRows;
     }
 
-    public MySQLiteHelper getDatabase(){
-        return this.database;
+    public static MySQLiteHelper getDatabase(){
+        return database;
     }
 }

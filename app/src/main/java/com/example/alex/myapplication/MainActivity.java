@@ -40,7 +40,7 @@ public class MainActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_main);
 
-        uiDatabaseInterface = new UIDatabaseInterface(this.getBaseContext());
+        UIDatabaseInterface uidi = new UIDatabaseInterface(this.getBaseContext());
 
         ListView listView = (ListView) (findViewById(R.id.list));
 
@@ -51,7 +51,7 @@ public class MainActivity extends ActionBarActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
                                            public void onClick(View v){
                                                Log.v("MainActivity", "Submit was pressed");
-                                               uiDatabaseInterface.submitDataEntry(v);
+                                               UIDatabaseInterface.submitDataEntry(v);
                                            }
                                         });
 
@@ -82,7 +82,11 @@ public class MainActivity extends ActionBarActivity {
         }
 
         if (id == R.id.action_viewData){
-            uiDatabaseInterface.viewData();
+            Context context = this.getBaseContext();
+            Intent i = new Intent(context, ViewDataActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            context.startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);
