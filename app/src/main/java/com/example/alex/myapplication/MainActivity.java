@@ -36,7 +36,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.runTests();
+        //this.runTests();
 
         setContentView(R.layout.activity_main);
 

@@ -40,8 +40,6 @@ public class UIDatabaseInterface {
 
     private static ArrayList<String> teamsInTeamTable;
 
-    private boolean hasDatabaseBeenLoaded = false;
-
     public UIDatabaseInterface(Context context){
         this.database = new MySQLiteHelper(context);
 
@@ -54,10 +52,10 @@ public class UIDatabaseInterface {
             this.teamTable = tables.get(0);
             this.matchTable = tables.get(1);
 
-            if(teamTable.getName().equals("Team_Table")){
+            if(teamTable.getName().equals("Teams")){
                 teamTableColumns = tables.get(0).getColumns();
             }
-            if(matchTable.getName().equals("Match_Table")){
+            if(matchTable.getName().equals("Matches")){
                 matchTableColumns = tables.get(1).getColumns();
             }
 
@@ -71,14 +69,21 @@ public class UIDatabaseInterface {
 
         this.doesTeamTableExist = database.doesTableExists(teamTable.getName());
         this.doesMatchTableExist = database.doesTableExists(matchTable.getName());
-        Log.w("AHHHHH", "team table name is " + teamTable.getName() + ", does Team Table Exist? " + doesTeamTableExist);
 
         this.makeTables();
         this.makeUI();
         this.populateDatabase();
     }
 
-    public void makeTables(){
+    public static void listTables(){
+        Cursor tables = database.rawQuery("SELECT name FROM sqlite_master WHERE type='table'");
+        if(tables.moveToFirst()){
+            do{
+                Log.v("tables", "one table is " + tables.getString(0));
+            }while(tables.moveToNext());
+        }
+    }
+    public static void makeTables(){
         if(!doesTeamTableExist) {
             Iterator<ConfigEntry> teamTableIterator = teamTableColumns.iterator();
             database.dropTable(teamTable.getName());
@@ -184,7 +189,7 @@ public class UIDatabaseInterface {
 
             database.addValues(matchTable.getName(), values);
 
-            Log.v("UIdatabase", "populated the database and size is: " + database.getTeamTableContactsCount());
+            //Log.v("UIdatabase", "populated the database and size is: " + database.getTeamTableContactsCount());
         }
         updateTeamTable();
     }
@@ -219,7 +224,7 @@ public class UIDatabaseInterface {
     }
 
     public static Cursor getTeamsNotInTeamTable(){
-        Cursor teams = database.selectFromTableExcept("Team_Number", "Match_Table", "SELECT Team_Number FROM Team_Table");
+        Cursor teams = database.selectFromTableExcept("Team_Number", "Matches", "SELECT Team_Number FROM Teams");
         return teams;
     }
 

@@ -73,10 +73,10 @@ public class ViewDataAdapter extends BaseAdapter {
 
             Cursor cursor = mySQLiteHelper.getAllMatchTableRows();
             cursor.moveToPosition(position);
-            Log.i("ViewDataAdapter", "column count is " + cursor.getColumnCount());
+            //Log.i("ViewDataAdapter", "column count is " + cursor.getColumnCount());
             //i = 1 to skip _id column
             for (int i = 1; i < cursor.getColumnCount(); i++) {
-                Log.i("ViewDataAdapter", "adding following to text view " + cursor.getColumnName(i) + ": " + cursor.getString(i));
+                //Log.i("ViewDataAdapter", "adding following to text view " + cursor.getColumnName(i) + ": " + cursor.getString(i));
                 view.setText(view.getText() + "\n" + cursor.getColumnName(i) + ": " + cursor.getString(i));
             }
         }
@@ -87,10 +87,10 @@ public class ViewDataAdapter extends BaseAdapter {
 
             Cursor cursor = mySQLiteHelper.getAllTeamTableRows();
             cursor.moveToPosition(position);
-            Log.i("ViewDataAdapter", "column count is " + cursor.getColumnCount());
+            //Log.i("ViewDataAdapter", "column count is " + cursor.getColumnCount());
             //i = 1 to skip _id column
             for (int i = 1; i < cursor.getColumnCount(); i++) {
-                Log.i("ViewDataAdapter", "adding following to text view " + cursor.getColumnName(i) + ": " + cursor.getString(i));
+                //Log.i("ViewDataAdapter", "adding following to text view " + cursor.getColumnName(i) + ": " + cursor.getString(i));
                 view.setText(view.getText() + "\n" + cursor.getColumnName(i) + ": " + cursor.getString(i));
             }
         }

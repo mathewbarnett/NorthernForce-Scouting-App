@@ -43,11 +43,11 @@ public class ConfigParser {
 
             String name = parser.getName();
             // Starts by looking for the entry tag
-            if (name.equals("Team_Table")) {
-                tables.add(new DatabaseTable("Team_Table",readTeamTable(parser, new ArrayList<ConfigEntry>())));
+            if (name.equals("Teams")) {
+                tables.add(new DatabaseTable("Teams",readTeamTable(parser, new ArrayList<ConfigEntry>())));
                 //Log.v("ConfigParser", "added read team table");
-            } else if(name.equals("Match_Table")) {
-                tables.add(new DatabaseTable("Match_Table",readTeamTable(parser, new ArrayList<ConfigEntry>())));
+            } else if(name.equals("Matches")) {
+                tables.add(new DatabaseTable("Matches",readTeamTable(parser, new ArrayList<ConfigEntry>())));
                 //Log.v("ConfigParser", "added read match table");
             }
             else{

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-    <Team_Table>
+    <Teams>
         <int>Team_Number</int>
         <String>Defining_Characteristics</String>
         <int>Average_Score</int>
-    </Team_Table>
-    <Match_Table>
+    </Teams>
+    <Matches>
         <int>Team_Number</int>
         <int>Match_Number</int>
         <int>Score</int>
         <int>Performance</int>
-    </Match_Table>
+    </Matches>
 </config>

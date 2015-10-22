@@ -13,9 +13,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     public static final String ID = "_id";
 
-    public static final String TEAM_TABLE = "Team_Table";
+    public static final String TEAM_TABLE = "Teams";
 
-    public static final String MATCH_TABLE = "Match_Table";
+    public static final String MATCH_TABLE = "Matches";
 
     private SQLiteDatabase db;
 
@@ -52,6 +52,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
+    public Cursor rawQuery(String query){
+        return db.rawQuery(query, null);
+    }
     public Cursor selectFromTable(String table, String column){
         return db.rawQuery("SELECT " + column + " FROM " + table, null);
     }
@@ -66,7 +69,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     boolean doesTableExists(String tableName){
         Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE name = '" + tableName + "' and type='table'" , null);
-        Log.v("AAAHHH", "does " + tableName + " exists? cursor length is " + cursor.getCount());
+        //Log.v("AAAHHH", "does " + tableName + " exists? cursor length is " + cursor.getCount());
         if(cursor.getCount() == 1){
             return true;
         }
