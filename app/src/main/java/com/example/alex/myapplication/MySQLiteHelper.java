@@ -40,6 +40,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     public void execSQL(String sqlCommand){
         db.execSQL(sqlCommand);
+        Log.v("MySQLiteHelper", "Exec SQL :" + sqlCommand);
     }
 
     public void dropTable(String table){
@@ -49,7 +50,14 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public void addValues(String table ,ContentValues values){
         synchronized (db) {
             db.insert(table, null, values);
+            Log.v("MySQLiteHelper", "added a value to the database");
         }
+    }
+
+    public void updateCell(String table, String columnToChange, String newValue, String identifyStatement){
+        String sqlStatement = "update " + table + " set " + columnToChange + "='" + newValue + "' where " + identifyStatement;
+        Log.v("MySQLiteHelper", sqlStatement);
+        db.execSQL(sqlStatement);
     }
 
     public Cursor rawQuery(String query){
@@ -66,6 +74,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public Cursor selectFromTableExcept(String column, String table, String condition){
         return db.rawQuery("SELECT " + column + " FROM " + table + " EXCEPT " + condition, null);
     }
+
+
 
     boolean doesTableExists(String tableName){
         Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE name = '" + tableName + "' and type='table'" , null);
@@ -120,10 +130,5 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public void addTeamToTeamTable(String teamNumberColumnName, String teamNumber){
-        ContentValues values = new ContentValues();
-        values.put(teamNumberColumnName, teamNumber);
-        db.insert(TEAM_TABLE, null, values);
-    }
 
 }

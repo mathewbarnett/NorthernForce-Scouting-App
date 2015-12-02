@@ -67,10 +67,17 @@ public class UIDatabaseInterface {
             Log.e("UIDatabaseInterface", "IOException");
         }
 
+        database.onUpgrade(database.getWritableDatabase(), 0, 1);
+
         this.doesTeamTableExist = database.doesTableExists(teamTable.getName());
         this.doesMatchTableExist = database.doesTableExists(matchTable.getName());
 
         this.makeTables();
+
+        listTables();
+
+        listMatchesColumns();
+
         this.makeUI();
         this.populateDatabase();
     }
@@ -79,15 +86,29 @@ public class UIDatabaseInterface {
         Cursor tables = database.rawQuery("SELECT name FROM sqlite_master WHERE type='table'");
         if(tables.moveToFirst()){
             do{
-                Log.v("tables", "one table is " + tables.getString(0));
+                Log.v("UIdatabase", "one table is " + tables.getString(0));
             }while(tables.moveToNext());
+        }
+    }
+
+    public static void listMatchesColumns(){
+        Cursor c = database.selectFromTable("Matches", "*");
+        String columns[] = c.getColumnNames();
+
+        int columnCount = c.getColumnCount();
+        Log.v("UIdatabase", "Matches column count is " + columnCount);
+
+        for(String columnName : columns){
+            Log.v("UIdatabase", "COLUMN IN MATCHES : " + columnName);
         }
     }
     public static void makeTables(){
         if(!doesTeamTableExist) {
+            Log.v("UIdatabase", "Creating Matches table");
             Iterator<ConfigEntry> teamTableIterator = teamTableColumns.iterator();
             database.dropTable(teamTable.getName());
-            String createTeamTable = "CREATE TABLE IF NOT EXISTS " + teamTable.getName() + "( _id INTEGER PRIMARY KEY ";
+
+            String createTeamTable = "CREATE TABLE  " + teamTable.getName() + "( _id INTEGER PRIMARY KEY ";
 
             while (teamTableIterator.hasNext()) {
                 createTeamTable += ", ";
@@ -109,10 +130,11 @@ public class UIDatabaseInterface {
         }
 
         if(!doesMatchTableExist) {
+            Log.v("UIdatabase", "Creating Teams table");
             Iterator<ConfigEntry> matchTableIterator = matchTableColumns.iterator();
 
             database.dropTable(matchTable.getName());
-            String createMatchTable = "CREATE TABLE IF NOT EXISTS " + matchTable.getName() + "( _id INTEGER PRIMARY KEY ";
+            String createMatchTable = "CREATE TABLE " + matchTable.getName() + "( _id INTEGER PRIMARY KEY ";
             while (matchTableIterator.hasNext()) {
                 createMatchTable += ", ";
                 ConfigEntry entry = matchTableIterator.next();
@@ -178,10 +200,8 @@ public class UIDatabaseInterface {
     public static void populateDatabase(){
         for(int i = 0; i<10; i++){
             ContentValues values = new ContentValues();
-            if(i>5)
-                values.put("Team_Number", "1");
-            else
-                values.put("Team_Number", "2");
+
+            values.put("Team_Number", 1);
 
             values.put("Match_Number", "1");
             values.put("Score", "" + Math.ceil(Math.random()*100));
@@ -189,7 +209,7 @@ public class UIDatabaseInterface {
 
             database.addValues(matchTable.getName(), values);
 
-            //Log.v("UIdatabase", "populated the database and size is: " + database.getTeamTableContactsCount());
+            Log.v("UIdatabase", "populated " + matchTable.getName() + " and size is: " + database.getTeamTableContactsCount());
         }
         updateTeamTable();
     }
@@ -202,13 +222,38 @@ public class UIDatabaseInterface {
         if(teams.moveToFirst()){
             do{
                 Log.v("foo", "added team number " + teams.getString(0));
-                database.addTeamToTeamTable("Team_Number", teams.getString(0));
+                ContentValues values = new ContentValues();
+                values.put("Team_Number", teams.getString(0));
+                database.addValues(teamTable.getName(), values);
+            }while(teams.moveToNext());
+        }
+        averageScoreForTeams();
+    }
+
+    public static Cursor getAllTeams(){
+        return database.selectFromTable("Matches", "Team_Number");
+    }
+
+    public static void averageScoreForTeams(){
+        Cursor teams = database.selectFromTable("Teams", "Team_Number");
+
+        int teamCount = teams.getCount();
+
+        if(teamCount == 0){
+            return;
+        }
+
+        if(teams.moveToFirst()){
+            do{
+                database.updateCell(teamTable.getName(),
+                        "Average_Score", "" + getAverageScoreForTeams(teams.getInt(teams.getColumnIndex("Team_Number"))),
+                        "Team_Number = " + teams.getInt(teams.getColumnIndex("Team_Number")));
             }while(teams.moveToNext());
         }
     }
 
-    public static int averageScoreForTeam(String teamNumber){
-        Cursor matches = database.selectFromTableWhere("Score", "MatchTable", "TeamNumber = " + teamNumber);
+    public static int getAverageScoreForTeams(int teamNumber){
+        Cursor matches = database.selectFromTableWhere("Score", "Matches", "Team_Number = " + teamNumber);
         int count = matches.getCount();
         if(count == 0){
             return 0;
@@ -216,12 +261,13 @@ public class UIDatabaseInterface {
         int average = 0;
         if(matches.moveToFirst()){
             do{
-               average += matches.getInt(0);
+                average += matches.getInt(0);
             }while(matches.moveToNext());
         }
         average = average / count;
         return average;
     }
+
 
     public static Cursor getTeamsNotInTeamTable(){
         Cursor teams = database.selectFromTableExcept("Team_Number", "Matches", "SELECT Team_Number FROM Teams");

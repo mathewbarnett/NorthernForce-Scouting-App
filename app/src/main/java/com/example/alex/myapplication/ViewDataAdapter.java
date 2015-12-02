@@ -22,13 +22,18 @@ public class ViewDataAdapter extends BaseAdapter {
     private MySQLiteHelper mySQLiteHelper;
     private int count;
     private ViewDataActivity viewDataActivity;
-    private boolean isMatchTable = false;
+    private boolean isMatchTable;
 
-    public ViewDataAdapter(MySQLiteHelper mySQLiteHelper, ViewDataActivity viewDataActivity){
+    public ViewDataAdapter(MySQLiteHelper mySQLiteHelper, ViewDataActivity viewDataActivity, boolean isMatchTable){
+        this.isMatchTable = isMatchTable;
         this.mySQLiteHelper = mySQLiteHelper;
 
-        this.count = mySQLiteHelper.getTeamTableContactsCount();
-
+        if(isMatchTable){
+            this.count = mySQLiteHelper.getMatchTableContactsCount();
+        }
+        else {
+            this.count = mySQLiteHelper.getTeamTableContactsCount();
+        }
         this.viewDataActivity = viewDataActivity;
     }
 
@@ -95,5 +100,9 @@ public class ViewDataAdapter extends BaseAdapter {
             }
         }
         return view;
+    }
+
+    public boolean getIsMatchTable(){
+        return isMatchTable;
     }
 }

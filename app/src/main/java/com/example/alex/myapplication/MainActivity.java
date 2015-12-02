@@ -31,6 +31,7 @@ public class MainActivity extends ActionBarActivity {
     boolean hasDoneTests = false;
     private MySQLiteHelper db;
     public static UIDatabaseInterface uiDatabaseInterface;
+    boolean isStart = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,10 @@ public class MainActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_main);
 
-        UIDatabaseInterface uidi = new UIDatabaseInterface(this.getBaseContext());
+        if(isStart) {
+            UIDatabaseInterface uidi = new UIDatabaseInterface(this.getBaseContext());
+            isStart = false;
+        }
 
         ListView listView = (ListView) (findViewById(R.id.list));
 

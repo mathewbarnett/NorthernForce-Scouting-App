@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.GridView;
 import android.widget.ListView;
@@ -27,26 +28,50 @@ public class ViewDataActivity extends ActionBarActivity {
 
     private CursorAdapter dataSource;
     private MySQLiteHelper mySQLiteHelper;
-    private UIDatabaseInterface uiDatabaseInterface;
+    private static UIDatabaseInterface uiDatabaseInterface;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.data_view);
 
-        uiDatabaseInterface = MainActivity.uiDatabaseInterface;
+        mySQLiteHelper = UIDatabaseInterface.getDatabase();
 
-        mySQLiteHelper = uiDatabaseInterface.getDatabase();
-
-        uiDatabaseInterface.populateDatabase();
+        final ViewDataActivity viewDataActivity = this;
 
         GridView gridView = (GridView) (findViewById(R.id.dataViewGridView));
 
-        ViewDataAdapter viewDataAdapter = new ViewDataAdapter(mySQLiteHelper, this);
-
-        viewDataAdapter.getItem(0);
+        final ViewDataAdapter viewDataAdapter = new ViewDataAdapter(mySQLiteHelper, this, false);
 
         gridView.setAdapter(viewDataAdapter);
+
+        Button button = (Button) (findViewById(R.id.dataViewButton));
+        button.setText("View Match Table");
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v("ViewDataActivity", "Changing to match table");
+                Button button = (Button) (findViewById(R.id.dataViewButton));
+                GridView gridView = (GridView) (findViewById(R.id.dataViewGridView));
+                ViewDataAdapter adapter = (ViewDataAdapter)(gridView.getAdapter());
+                Log.v("ViewDataActivity", "Current button text is " + button.getText());
+                Log.v("ViewDataActivity", "Current isMatchTable is " + adapter.getIsMatchTable());
+                if(adapter.getIsMatchTable()){
+                    Log.v("ViewDataActivity", "Changing to team table");
+                    button.setText("View Match Table");
+                    final ViewDataAdapter viewDataAdapter = new ViewDataAdapter(mySQLiteHelper, viewDataActivity, false);
+                    gridView.setAdapter(viewDataAdapter);
+                }
+                if(!adapter.getIsMatchTable()){
+                    Log.v("ViewDataActivity", "Changing to match table");
+                    button.setText("View Team Table");
+                    final ViewDataAdapter newViewDataAdapter = new ViewDataAdapter(mySQLiteHelper, viewDataActivity, true);
+                    gridView.setAdapter(newViewDataAdapter);
+                }
+
+            }
+        });
+
     }
 
     @Override
