@@ -1,14 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
+
     <Teams>
         <int>Team_Number</int>
         <String>Defining_Characteristics</String>
         <int>Average_Score</int>
+        <String>High_School</String>
     </Teams>
+
     <Matches>
+        <int>Team_Number</int>
+        <int>Match_Number</int>
+        <Sting>Event_Name</Sting>
+        <int>Allie_One</int>
+        <int>Allie_Two</int>
+        <int>Opponent_One</int>
+        <int>Opponent_Two</int>
+        <int>Opponent_Three</int>
+    </Matches>
+
+    <Performance>
         <int>Team_Number</int>
         <int>Match_Number</int>
         <int>Score</int>
         <int>Performance</int>
-    </Matches>
+    </Performance>
+
+    <Events>
+        <String>Event_Name</String>
+        <String>Date</String>
+        <String>Location</String>
+    </Events>
+
 </config>

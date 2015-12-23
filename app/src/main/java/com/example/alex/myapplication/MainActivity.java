@@ -48,6 +48,11 @@ public class MainActivity extends ActionBarActivity {
 
         ListView listView = (ListView) (findViewById(R.id.list));
 
+        Log.v("Main", "there are " + uiDatabaseInterface.getDataEntryRows().length + " rows in dataEntryRows");
+
+        for(DataEntryRow row : uiDatabaseInterface.getDataEntryRows()){
+            Log.v("Main", "In dataEntryRows there is a row of type " + row.getType() + " with the column name of " + row.getColumnName());
+        }
         DataEntryAdapter adapter = new DataEntryAdapter(this.getBaseContext(), uiDatabaseInterface.getDataEntryRows());
         listView.setAdapter(adapter);
 

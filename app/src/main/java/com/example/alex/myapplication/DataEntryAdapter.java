@@ -33,7 +33,9 @@ public class DataEntryAdapter extends ArrayAdapter<DataEntryRow> {
 
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
         View rowView = null;
+
         if(values[position].getType().equals("String")){
             rowView = inflater.inflate(R.layout.string_entry, parent, false);
             TextView textView = (TextView) rowView.findViewById(R.id.string_entry_textView);

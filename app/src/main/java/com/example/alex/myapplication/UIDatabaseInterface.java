@@ -17,6 +17,7 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -33,32 +34,30 @@ public class UIDatabaseInterface {
 
     public static MySQLiteHelper database;
 
-    private static boolean doesTeamTableExist;
-    private static boolean doesMatchTableExist;
-
     private static DataEntryRow[] dataEntryRows;
 
     private static ArrayList<String> teamsInTeamTable;
 
+    private ArrayList<DatabaseTable> tables;
+
     public UIDatabaseInterface(Context context){
         this.database = new MySQLiteHelper(context);
+
+        database.onUpgrade(database.getWritableDatabase(), 0, 1);
 
         ConfigParser configParser = new ConfigParser();
         AssetManager am = context.getAssets();
         try {
             InputStream is = am.open("configuration_file");
-            ArrayList<DatabaseTable> tables = configParser.parse(is);
+            this.tables = configParser.parse(is);
 
-            this.teamTable = tables.get(0);
-            this.matchTable = tables.get(1);
+            for(DatabaseTable table : tables){
+                Log.v("UIDatabaseInterface", "Found table " + table.getName() + " to make");
 
-            if(teamTable.getName().equals("Teams")){
-                teamTableColumns = tables.get(0).getColumns();
+                if(!database.doesTableExists(table.getName())) {
+                    database.createTable(table);
+                }
             }
-            if(matchTable.getName().equals("Matches")){
-                matchTableColumns = tables.get(1).getColumns();
-            }
-
         } catch (XmlPullParserException e) {
             Log.e("UIDatabaseInterface", "XmlPullParserException");
             e.printStackTrace();
@@ -67,19 +66,19 @@ public class UIDatabaseInterface {
             Log.e("UIDatabaseInterface", "IOException");
         }
 
-        database.onUpgrade(database.getWritableDatabase(), 0, 1);
 
-        this.doesTeamTableExist = database.doesTableExists(teamTable.getName());
-        this.doesMatchTableExist = database.doesTableExists(matchTable.getName());
 
-        this.makeTables();
+        //this.doesTeamTableExist = database.doesTableExists(teamTable.getName());
+        //this.doesMatchTableExist = database.doesTableExists(matchTable.getName());
+
+        //this.makeTables();
 
         listTables();
 
         listMatchesColumns();
 
-        this.makeUI();
-        this.populateDatabase();
+        this.createDataEntryRows(tables);
+        //this.populateDatabase();
     }
 
     public static void listTables(){
@@ -102,66 +101,26 @@ public class UIDatabaseInterface {
             Log.v("UIdatabase", "COLUMN IN MATCHES : " + columnName);
         }
     }
-    public static void makeTables(){
-        if(!doesTeamTableExist) {
-            Log.v("UIdatabase", "Creating Matches table");
-            Iterator<ConfigEntry> teamTableIterator = teamTableColumns.iterator();
-            database.dropTable(teamTable.getName());
 
-            String createTeamTable = "CREATE TABLE  " + teamTable.getName() + "( _id INTEGER PRIMARY KEY ";
+    public static void createDataEntryRows(ArrayList<DatabaseTable> tables) {
+        Cursor performance = database.selectFromTable("Performance", "*");
+        int columnCount = performance.getColumnCount();
 
-            while (teamTableIterator.hasNext()) {
-                createTeamTable += ", ";
-                ConfigEntry entry = teamTableIterator.next();
-                String name = entry.getText();
-                String type = "";
-                if (entry.getType().equals("String")) {
-                    type = "TEXT";
-                }
-                if (entry.getType().equals("int")) {
-                    type = "INTEGER";
-                }
-                createTeamTable += name + " " + type;
+        //minus one because of id column
+        dataEntryRows = new DataEntryRow[columnCount - 1];
+
+        ArrayList<ConfigEntry> performanceTable = null;
+
+        for(DatabaseTable table : tables){
+            if(table.getName().equals(("Performance"))){
+                performanceTable = table.getColumns();
             }
-
-            createTeamTable += ")";
-
-            database.execSQL(createTeamTable);
         }
 
-        if(!doesMatchTableExist) {
-            Log.v("UIdatabase", "Creating Teams table");
-            Iterator<ConfigEntry> matchTableIterator = matchTableColumns.iterator();
-
-            database.dropTable(matchTable.getName());
-            String createMatchTable = "CREATE TABLE " + matchTable.getName() + "( _id INTEGER PRIMARY KEY ";
-            while (matchTableIterator.hasNext()) {
-                createMatchTable += ", ";
-                ConfigEntry entry = matchTableIterator.next();
-                String name = entry.getText();
-                String type = "";
-                if (entry.getType().equals("String")) {
-                    type = "TEXT";
-                }
-                if (entry.getType().equals("int")) {
-                    type = "INTEGER";
-                }
-                createMatchTable += name + " " + type;
-            }
-
-            createMatchTable += ")";
-
-            database.execSQL(createMatchTable);
-        }
-    }
-
-    public static void makeUI() {
-        dataEntryRows = new DataEntryRow[matchTableColumns.size()];
-
-        Iterator<ConfigEntry> matchIterator = matchTableColumns.iterator();
         int counter = 0;
-        while(matchIterator.hasNext()){
-            ConfigEntry entry = matchIterator.next();
+        for(ConfigEntry entry : performanceTable){
+
+            Log.v("UIDatabaseInterface", "Added an entry to DataEntryRow");
 
             String type = entry.getType();
             String columnName = entry.getText();

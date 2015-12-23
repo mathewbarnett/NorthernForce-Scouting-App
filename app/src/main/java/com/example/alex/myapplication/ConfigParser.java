@@ -43,12 +43,9 @@ public class ConfigParser {
 
             String name = parser.getName();
             // Starts by looking for the entry tag
-            if (name.equals("Teams")) {
-                tables.add(new DatabaseTable("Teams",readTeamTable(parser, new ArrayList<ConfigEntry>())));
+            if (!(name.equals("int") || name.equals("String") || name.equals("config"))) {
+                tables.add(new DatabaseTable(name, readTable(parser, new ArrayList<ConfigEntry>())));
                 //Log.v("ConfigParser", "added read team table");
-            } else if(name.equals("Matches")) {
-                tables.add(new DatabaseTable("Matches",readTeamTable(parser, new ArrayList<ConfigEntry>())));
-                //Log.v("ConfigParser", "added read match table");
             }
             else{
                 skip(parser);
@@ -58,27 +55,7 @@ public class ConfigParser {
         return tables;
     }
 
-    public ArrayList<ConfigEntry> readTeamTable(XmlPullParser parser, ArrayList<ConfigEntry> list) throws XmlPullParserException, IOException{
-        while (parser.next() != XmlPullParser.END_TAG) {
-            if (parser.getEventType() != XmlPullParser.START_TAG) {
-                continue;
-            }
-            ConfigEntry entry = new ConfigEntry();
-
-            String name = parser.getName();
-            entry.setType(name);
-            //Log.v("ConfigParser", name);
-
-            String text = readText(parser);
-            entry.setText(text);
-            //Log.v("ConfigParser", text);
-            list.add(entry);
-        }
-
-        return list;
-    }
-
-    public List<ConfigEntry> readMatchTable(XmlPullParser parser, List<ConfigEntry> list) throws XmlPullParserException, IOException{
+    public ArrayList<ConfigEntry> readTable(XmlPullParser parser, ArrayList<ConfigEntry> list) throws XmlPullParserException, IOException{
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
                 continue;

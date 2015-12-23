@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.Cursor;
 import android.util.Log;
+
+import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -36,6 +38,32 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                         + newVersion + ", which will destroy all old data");
         db.execSQL("DROP TABLE IF EXISTS " + MATCH_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + TEAM_TABLE);
+    }
+
+    public void createTable(DatabaseTable table){
+        ArrayList<ConfigEntry> columns = table.getColumns();
+
+        Iterator<ConfigEntry> columnsIterator = columns.iterator();
+
+        String createTeamTable = "CREATE TABLE  " + table.getName() + "( _id INTEGER PRIMARY KEY ";
+
+        while (columnsIterator.hasNext()) {
+            createTeamTable += ", ";
+            ConfigEntry entry = columnsIterator.next();
+            String name = entry.getText();
+            String type = "";
+            if (entry.getType().equals("String")) {
+                type = "TEXT";
+            }
+            if (entry.getType().equals("int")) {
+                type = "INTEGER";
+            }
+            createTeamTable += name + " " + type;
+        }
+
+        createTeamTable += ")";
+
+        this.execSQL(createTeamTable);
     }
 
     public void execSQL(String sqlCommand){
