@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DataEntryListView"
+            android:name=".EnterDataActivity"
             android:label="Data Entry" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -38,7 +38,7 @@ public class UIDatabaseInterface {
 
     private static ArrayList<String> teamsInTeamTable;
 
-    private ArrayList<DatabaseTable> tables;
+    private static ArrayList<DatabaseTable> tables;
 
     public UIDatabaseInterface(Context context){
         this.database = new MySQLiteHelper(context);
@@ -77,19 +77,28 @@ public class UIDatabaseInterface {
 
         listMatchesColumns();
 
-        this.createDataEntryRows(tables);
+        this.createDataEntryRows(tables, "Performance");
         //this.populateDatabase();
     }
 
     public static void listTables(){
-        Cursor tables = database.rawQuery("SELECT name FROM sqlite_master WHERE type='table'");
-        if(tables.moveToFirst()){
-            do{
-                Log.v("UIdatabase", "one table is " + tables.getString(0));
-            }while(tables.moveToNext());
+        for(String tableName : getTableNames()){
+            Log.v("UIdatabase", "one table is " + tableName);
         }
     }
 
+    public static ArrayList<String> getTableNames(){
+        ArrayList<String> tableList = new ArrayList<String>();
+
+        Cursor tables = database.rawQuery("SELECT name FROM sqlite_master WHERE type='table'");
+        if(tables.moveToFirst()){
+            do{
+                tableList.add(tables.getString(0));
+            }while(tables.moveToNext());
+        }
+
+        return tableList;
+    }
     public static void listMatchesColumns(){
         Cursor c = database.selectFromTable("Matches", "*");
         String columns[] = c.getColumnNames();
@@ -102,26 +111,23 @@ public class UIDatabaseInterface {
         }
     }
 
-    public static void createDataEntryRows(ArrayList<DatabaseTable> tables) {
-        Cursor performance = database.selectFromTable("Performance", "*");
+    public static void createDataEntryRows(ArrayList<DatabaseTable> tables, String tableName) {
+        Cursor performance = database.selectFromTable(tableName, "*");
         int columnCount = performance.getColumnCount();
 
         //minus one because of id column
         dataEntryRows = new DataEntryRow[columnCount - 1];
 
-        ArrayList<ConfigEntry> performanceTable = null;
+        ArrayList<ConfigEntry> columns = null;
 
         for(DatabaseTable table : tables){
-            if(table.getName().equals(("Performance"))){
-                performanceTable = table.getColumns();
+            if(table.getName().equals((tableName))){
+                columns = table.getColumns();
             }
         }
 
         int counter = 0;
-        for(ConfigEntry entry : performanceTable){
-
-            Log.v("UIDatabaseInterface", "Added an entry to DataEntryRow");
-
+        for(ConfigEntry entry : columns){
             String type = entry.getType();
             String columnName = entry.getText();
 
@@ -239,5 +245,9 @@ public class UIDatabaseInterface {
 
     public static MySQLiteHelper getDatabase(){
         return database;
+    }
+
+    public static ArrayList<DatabaseTable> getTableList(){
+        return tables;
     }
 }

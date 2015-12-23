@@ -22,18 +22,16 @@ public class ViewDataAdapter extends BaseAdapter {
     private MySQLiteHelper mySQLiteHelper;
     private int count;
     private ViewDataActivity viewDataActivity;
-    private boolean isMatchTable;
+    private String currentTable;
 
-    public ViewDataAdapter(MySQLiteHelper mySQLiteHelper, ViewDataActivity viewDataActivity, boolean isMatchTable){
-        this.isMatchTable = isMatchTable;
+    public ViewDataAdapter(MySQLiteHelper mySQLiteHelper, ViewDataActivity viewDataActivity, String tableName){
+        this.currentTable = tableName;
         this.mySQLiteHelper = mySQLiteHelper;
 
-        if(isMatchTable){
-            this.count = mySQLiteHelper.getMatchTableContactsCount();
-        }
-        else {
-            this.count = mySQLiteHelper.getTeamTableContactsCount();
-        }
+        Cursor c = mySQLiteHelper.selectFromTable(currentTable, "*");
+
+        this.count = c.getCount();
+
         this.viewDataActivity = viewDataActivity;
     }
 
@@ -44,20 +42,6 @@ public class ViewDataAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        if(isMatchTable){
-            if(mySQLiteHelper.getMatchTableContactsCount() >= position && mySQLiteHelper.getMatchTableContactsCount() > 0) {
-                Cursor cursor = mySQLiteHelper.getAllMatchTableRows();
-                cursor.moveToPosition(position);
-                Log.v("ViewDataAdapter", "cursor at postition " + position + " has team number of " + cursor.getString(1));
-            }
-        }
-        else {
-            if (mySQLiteHelper.getTeamTableContactsCount() >= position) {
-                Cursor cursor = mySQLiteHelper.getAllTeamTableRows();
-                cursor.moveToPosition(position);
-                Log.v("ViewDataAdapter", "cursor at postition " + position + " has team number of " + cursor.getString(1));
-            }
-        }
         return null;
     }
 
@@ -71,38 +55,14 @@ public class ViewDataAdapter extends BaseAdapter {
         TextView view = new TextView(viewDataActivity);
         view.setText("");
 
-        if(isMatchTable){
-            if (mySQLiteHelper.getMatchTableContactsCount() == 0) {
-                return null;
-            }
-
-            Cursor cursor = mySQLiteHelper.getAllMatchTableRows();
-            cursor.moveToPosition(position);
-            //Log.i("ViewDataAdapter", "column count is " + cursor.getColumnCount());
-            //i = 1 to skip _id column
-            for (int i = 1; i < cursor.getColumnCount(); i++) {
-                //Log.i("ViewDataAdapter", "adding following to text view " + cursor.getColumnName(i) + ": " + cursor.getString(i));
-                view.setText(view.getText() + "\n" + cursor.getColumnName(i) + ": " + cursor.getString(i));
-            }
+        Cursor cursor = mySQLiteHelper.selectFromTable(currentTable, "*");
+        cursor.moveToPosition(position);
+        //i = 1 to skip _id column
+        for (int i = 1; i < cursor.getColumnCount(); i++) {
+            //Log.i("ViewDataAdapter", "adding following to text view " + cursor.getColumnName(i) + ": " + cursor.getString(i));
+            view.setText(view.getText() + "\n" + cursor.getColumnName(i) + ": " + cursor.getString(i));
         }
-        else {
-            if (mySQLiteHelper.getTeamTableContactsCount() == 0) {
-                return null;
-            }
 
-            Cursor cursor = mySQLiteHelper.getAllTeamTableRows();
-            cursor.moveToPosition(position);
-            //Log.i("ViewDataAdapter", "column count is " + cursor.getColumnCount());
-            //i = 1 to skip _id column
-            for (int i = 1; i < cursor.getColumnCount(); i++) {
-                //Log.i("ViewDataAdapter", "adding following to text view " + cursor.getColumnName(i) + ": " + cursor.getString(i));
-                view.setText(view.getText() + "\n" + cursor.getColumnName(i) + ": " + cursor.getString(i));
-            }
-        }
         return view;
-    }
-
-    public boolean getIsMatchTable(){
-        return isMatchTable;
     }
 }

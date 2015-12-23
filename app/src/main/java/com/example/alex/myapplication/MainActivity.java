@@ -32,38 +32,43 @@ public class MainActivity extends ActionBarActivity {
     private MySQLiteHelper db;
     public static UIDatabaseInterface uiDatabaseInterface;
     boolean isStart = true;
+    private Context baseContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        this.baseContext = this.getBaseContext();
+
         //this.runTests();
 
         setContentView(R.layout.activity_main);
 
-        if(isStart) {
-            UIDatabaseInterface uidi = new UIDatabaseInterface(this.getBaseContext());
-            isStart = false;
-        }
+        uiDatabaseInterface = new UIDatabaseInterface(this.getBaseContext());
 
-        ListView listView = (ListView) (findViewById(R.id.list));
+        Button enterData = (Button) (findViewById(R.id.titleScreenEnterData));
+        enterData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context context = baseContext;
+                Intent i = new Intent(context, EnterDataActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        Log.v("Main", "there are " + uiDatabaseInterface.getDataEntryRows().length + " rows in dataEntryRows");
+                context.startActivity(i);
+            }
+        });
 
-        for(DataEntryRow row : uiDatabaseInterface.getDataEntryRows()){
-            Log.v("Main", "In dataEntryRows there is a row of type " + row.getType() + " with the column name of " + row.getColumnName());
-        }
-        DataEntryAdapter adapter = new DataEntryAdapter(this.getBaseContext(), uiDatabaseInterface.getDataEntryRows());
-        listView.setAdapter(adapter);
+        Button viewData = (Button) (findViewById(R.id.titleScreenViewData));
+        viewData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context context = baseContext;
+                Intent i = new Intent(context, ViewDataActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        Button submitButton = (Button) findViewById(R.id.submitButton);
-        submitButton.setOnClickListener(new View.OnClickListener() {
-                                           public void onClick(View v){
-                                               Log.v("MainActivity", "Submit was pressed");
-                                               UIDatabaseInterface.submitDataEntry(v);
-                                           }
-                                        });
-
+                context.startActivity(i);
+            }
+        });
     }
 
 

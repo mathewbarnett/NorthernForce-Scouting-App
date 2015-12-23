@@ -11,7 +11,7 @@
     <Matches>
         <int>Team_Number</int>
         <int>Match_Number</int>
-        <Sting>Event_Name</Sting>
+        <String>Event_Name</String>
         <int>Allie_One</int>
         <int>Allie_Two</int>
         <int>Opponent_One</int>
