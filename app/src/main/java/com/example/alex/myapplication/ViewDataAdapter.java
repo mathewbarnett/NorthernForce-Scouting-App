@@ -24,8 +24,8 @@ public class ViewDataAdapter extends BaseAdapter {
     private ViewDataActivity viewDataActivity;
     private String currentTable;
 
-    public ViewDataAdapter(MySQLiteHelper mySQLiteHelper, ViewDataActivity viewDataActivity, String tableName){
-        this.currentTable = tableName;
+    public ViewDataAdapter(MySQLiteHelper mySQLiteHelper, ViewDataActivity viewDataActivity){
+        this.currentTable = UIDatabaseInterface.getCurrentDataViewTable();
         this.mySQLiteHelper = mySQLiteHelper;
 
         Cursor c = mySQLiteHelper.selectFromTable(currentTable, "*");
@@ -64,5 +64,9 @@ public class ViewDataAdapter extends BaseAdapter {
         }
 
         return view;
+    }
+
+    public void setCurrentViewTable(String table){
+        this.currentTable = table;
     }
 }

@@ -44,7 +44,7 @@ public class EnterDataActivity extends ActionBarActivity implements AdapterView.
     }
 
     private void createListView(){
-        ListView listView = (ListView) (findViewById(R.id.dataEntryListView));
+        NestedListView listView = (NestedListView) (findViewById(R.id.dataEntryListView));
 
         DataEntryAdapter adapter = new DataEntryAdapter(this.getBaseContext(), uiDatabaseInterface.getDataEntryRows());
         listView.setAdapter(adapter);
@@ -95,7 +95,9 @@ public class EnterDataActivity extends ActionBarActivity implements AdapterView.
 
         Log.v("EnterDataActivity", "The spinner selected the table " + selectedTable);
 
-        uiDatabaseInterface.createDataEntryRows(uiDatabaseInterface.getTableList(), selectedTable);
+        uiDatabaseInterface.setCurrentDataEntryTable(selectedTable);
+
+        uiDatabaseInterface.createDataEntryRows(uiDatabaseInterface.getTableList());
 
         this.createListView();
     }

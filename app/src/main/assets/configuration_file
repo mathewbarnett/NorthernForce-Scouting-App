@@ -17,6 +17,16 @@
         <int>Opponent_One</int>
         <int>Opponent_Two</int>
         <int>Opponent_Three</int>
+        <int>Test1</int>
+        <int>Test2</int>
+        <int>Test3</int>
+        <int>Test4</int>
+        <int>Test5</int>
+        <int>Test6</int>
+        <int>Test7</int>
+        <int>Test8</int>
+        <int>Test9</int>
+        <int>Test0</int>
     </Matches>
 
     <Performance>

@@ -53,13 +53,13 @@ public class ViewDataActivity extends ActionBarActivity implements AdapterView.O
         tableSpinner.setOnItemSelectedListener(this);
 
 
-        this.createGridView((String) tableSpinner.getItemAtPosition(0));
+        this.createGridView();
     }
 
-    private void createGridView(String table){
+    private void createGridView(){
         GridView gridView = (GridView) (findViewById(R.id.dataViewGridView));
 
-        final ViewDataAdapter viewDataAdapter = new ViewDataAdapter(mySQLiteHelper, this, table);
+        final ViewDataAdapter viewDataAdapter = new ViewDataAdapter(mySQLiteHelper, this);
 
         gridView.setAdapter(viewDataAdapter);
     }
@@ -102,7 +102,9 @@ public class ViewDataActivity extends ActionBarActivity implements AdapterView.O
 
         Log.v("EnterDataActivity", "The spinner selected the table " + selectedTable);
 
-        this.createGridView(selectedTable);
+        UIDatabaseInterface.setCurrentDataViewTable(selectedTable);
+
+        this.createGridView();
     }
 
     @Override

@@ -40,6 +40,9 @@ public class UIDatabaseInterface {
 
     private static ArrayList<DatabaseTable> tables;
 
+    private static String currentDataEntryTable;
+    private static String currentDataViewTable;
+
     public UIDatabaseInterface(Context context){
         this.database = new MySQLiteHelper(context);
 
@@ -66,18 +69,14 @@ public class UIDatabaseInterface {
             Log.e("UIDatabaseInterface", "IOException");
         }
 
-
-
-        //this.doesTeamTableExist = database.doesTableExists(teamTable.getName());
-        //this.doesMatchTableExist = database.doesTableExists(matchTable.getName());
-
-        //this.makeTables();
-
         listTables();
 
         listMatchesColumns();
 
-        this.createDataEntryRows(tables, "Performance");
+        this.currentDataEntryTable = "Performance";
+        this.currentDataViewTable = "Performance";
+
+        this.createDataEntryRows(tables);
         //this.populateDatabase();
     }
 
@@ -111,8 +110,8 @@ public class UIDatabaseInterface {
         }
     }
 
-    public static void createDataEntryRows(ArrayList<DatabaseTable> tables, String tableName) {
-        Cursor performance = database.selectFromTable(tableName, "*");
+    public static void createDataEntryRows(ArrayList<DatabaseTable> tables) {
+        Cursor performance = database.selectFromTable(currentDataEntryTable, "*");
         int columnCount = performance.getColumnCount();
 
         //minus one because of id column
@@ -121,7 +120,7 @@ public class UIDatabaseInterface {
         ArrayList<ConfigEntry> columns = null;
 
         for(DatabaseTable table : tables){
-            if(table.getName().equals((tableName))){
+            if(table.getName().equals((currentDataEntryTable))){
                 columns = table.getColumns();
             }
         }
@@ -142,6 +141,7 @@ public class UIDatabaseInterface {
         SQLiteDatabase db = database.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+
         for (DataEntryRow row : dataEntryRows) {
             if (row.getType().equals("int")) {
                 if (row.getValue().equals("")) {
@@ -152,12 +152,12 @@ public class UIDatabaseInterface {
                 }
                 Log.v("Interface", "type was int, and column name was " + row.getColumnName());
             }
-            if (row.getType().equals(("string"))) {
+            if (row.getType().equals(("String"))) {
                 values.put(row.getColumnName(), row.getValue());
                 Log.v("Interface", "type was string");
             }
         }
-        database.addValues(matchTable.getName(), values);
+        database.addValues(currentDataEntryTable, values);
 
         updateTeamTable();
     }
@@ -213,7 +213,7 @@ public class UIDatabaseInterface {
                 database.updateCell(teamTable.getName(),
                         "Average_Score", "" + getAverageScoreForTeams(teams.getInt(teams.getColumnIndex("Team_Number"))),
                         "Team_Number = " + teams.getInt(teams.getColumnIndex("Team_Number")));
-            }while(teams.moveToNext());
+            } while (teams.moveToNext());
         }
     }
 
@@ -250,4 +250,21 @@ public class UIDatabaseInterface {
     public static ArrayList<DatabaseTable> getTableList(){
         return tables;
     }
+
+    public static String getCurrentDataEntryTable(){
+        return currentDataEntryTable;
+    }
+
+    public static void setCurrentDataEntryTable(String table){
+        currentDataEntryTable = table;
+    }
+
+    public static String getCurrentDataViewTable(){
+        return currentDataViewTable;
+    }
+
+    public static void setCurrentDataViewTable(String table){
+        currentDataViewTable = table;
+    }
+
 }
