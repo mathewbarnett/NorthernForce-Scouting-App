@@ -174,7 +174,7 @@ public class UIDatabaseInterface {
 
             database.addValues(matchTable.getName(), values);
 
-            Log.v("UIdatabase", "populated " + matchTable.getName() + " and size is: " + database.getTeamTableContactsCount());
+            Log.v("UIdatabase", "populated " + matchTable.getName() + " and size is: " + database.countRowsInTable("Teams"));
         }
         updateTeamTable();
     }

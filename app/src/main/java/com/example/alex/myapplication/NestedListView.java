@@ -11,10 +11,11 @@ import android.widget.ListView;
 /**
  * Created by AlexK on 12/23/2015.
  */
+/** Handmade ListView that only shows a certian number of elements at a time */
 public class NestedListView extends ListView implements AbsListView.OnScrollListener,
         View.OnTouchListener {
     private int listViewTouchAction;
-    private static final int MAXIMUM_LIST_ITEMS_VIEWABLE = 4;
+    private static final int MAXIMUM_LIST_ITEMS_VIEWABLE = 6;
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
