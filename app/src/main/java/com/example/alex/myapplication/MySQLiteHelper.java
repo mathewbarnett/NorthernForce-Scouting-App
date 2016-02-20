@@ -112,6 +112,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public Cursor rawQuery(String query){
         return db.rawQuery(query, null);
     }
+
     public Cursor selectFromTable(String table, String column){
         return db.rawQuery("SELECT " + column + " FROM " + table, null);
     }

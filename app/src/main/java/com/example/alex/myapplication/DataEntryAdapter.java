@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import java.util.Arrays;
@@ -84,6 +85,26 @@ public class DataEntryAdapter extends ArrayAdapter<DataEntryRow> {
                 }
             });
         }
+       /* if(values[position].getType().equals("YorN")){
+            rowView = inflater.inflate(R.layout.yes_or_no_entry, parent, false);
+            TextView textView = (TextView) rowView.findViewById(R.id.yes_or_no_entry_textView);
+            textView.setText(values[position].getColumnName());
+
+            RadioButton yesButton = (RadioButton) rowView.findViewById(R.id.yes_or_no_entry_yesButton);
+            yesButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    for (int i = 0;i<values.length;i++) {
+                        if (values[i].getColumnName().equals()) {
+                            Log.v("FOO", "The position you need in values is " + i);
+                            values[i].setValue(editText.getText().toString());
+                            return false;
+                        }
+                    }
+                    return false;
+                }
+            });
+        }*/
         if(rowView == null){
             Log.e("DataEntryAdapter", "rowView was null at position: " + position);
         }

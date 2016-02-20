@@ -12,21 +12,12 @@
         <int>Team_Number</int>
         <int>Match_Number</int>
         <String>Event_Name</String>
-        <int>Allie_One</int>
-        <int>Allie_Two</int>
-        <int>Opponent_One</int>
-        <int>Opponent_Two</int>
-        <int>Opponent_Three</int>
-        <int>Test1</int>
-        <int>Test2</int>
-        <int>Test3</int>
-        <int>Test4</int>
-        <int>Test5</int>
-        <int>Test6</int>
-        <int>Test7</int>
-        <int>Test8</int>
-        <int>Test9</int>
-        <int>Test0</int>
+        <int>Red_One</int>
+        <int>Red_Two</int>
+        <int>Red_Three</int>
+        <int>Blue_One</int>
+        <int>Blue_Two</int>
+        <int>Blue_Three</int>
     </Matches>
 
     <Performance>

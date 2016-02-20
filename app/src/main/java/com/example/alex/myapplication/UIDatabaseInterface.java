@@ -118,7 +118,7 @@ public class UIDatabaseInterface {
         dataEntryRows = new DataEntryRow[columnCount - 1];
 
         ArrayList<ConfigEntry> columns = null;
-
+        Log.v("AHHH", "current data entry table " + currentDataEntryTable);
         for(DatabaseTable table : tables){
             if(table.getName().equals((currentDataEntryTable))){
                 columns = table.getColumns();
