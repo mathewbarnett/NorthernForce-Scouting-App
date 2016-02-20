@@ -11,12 +11,6 @@
         android:id="@+id/dataEntryLinearLayout"
         android:orientation="vertical">
 
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/dataEntryTableSpinner">
-
-        </Spinner>
         <com.example.alex.myapplication.NestedListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

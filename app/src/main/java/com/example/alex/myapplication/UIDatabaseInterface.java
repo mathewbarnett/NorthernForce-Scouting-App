@@ -12,6 +12,7 @@ import com.example.alex.myapplication.ConfigParser.ConfigEntry;
 import com.example.alex.myapplication.ConfigParser.ConfigParser;
 import com.example.alex.myapplication.ConfigParser.DatabaseTable;
 import com.example.alex.myapplication.DataEntry.DataEntryRow;
+import com.example.alex.myapplication.TheBlueAlliance.event.SimpleEvent;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -95,6 +96,7 @@ public class UIDatabaseInterface {
 
         return tableList;
     }
+
     public static void listMatchesColumns(){
         Cursor c = database.selectFromTable("Matches", "*");
         String columns[] = c.getColumnNames();
@@ -174,6 +176,21 @@ public class UIDatabaseInterface {
             Log.v("UIdatabase", "populated " + matchTable.getName() + " and size is: " + database.countRowsInTable("Teams"));
         }
         updateTeamTable();
+    }
+
+    public static void populateEventsFromBlueAlliance(ArrayList<SimpleEvent> events){
+        for(SimpleEvent e : events){
+            ContentValues values = new ContentValues();
+
+            values.put("Event_Name", e.getName());
+            values.put("Short_Name", e.getShortName());
+            values.put("Key", e.getKey());
+            values.put("isOfficial", e.isOfficial());
+            values.put("Start_Date", e.getStartDate());
+            values.put("End_Date", e.getEndDate());
+
+            database.addValues("Events", values);
+        }
     }
 
     public static void updateTeamTable(){

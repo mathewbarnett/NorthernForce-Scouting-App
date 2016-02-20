@@ -29,8 +29,11 @@
 
     <Events>
         <String>Event_Name</String>
-        <String>Date</String>
-        <String>Location</String>
+        <String>Short_Name</String>
+        <String>Key</String>
+        <int>isOfficial</int>
+        <String>Start_Date</String>
+        <String>End_Date</String>
     </Events>
 
 </config>

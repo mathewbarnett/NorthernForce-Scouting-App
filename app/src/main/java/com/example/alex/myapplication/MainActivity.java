@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -12,6 +13,12 @@ import android.view.View;
 import com.example.alex.myapplication.DataEntry.EnterDataActivity;
 import com.example.alex.myapplication.DataView.ViewDataActivity;
 
+import com.example.alex.myapplication.TheBlueAlliance.*;
+import com.example.alex.myapplication.TheBlueAlliance.event.*;
+
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -57,6 +64,8 @@ public class MainActivity extends ActionBarActivity {
                 context.startActivity(i);
             }
         });
+
+        new BlueAllienceTest().execute(this);
     }
 
 

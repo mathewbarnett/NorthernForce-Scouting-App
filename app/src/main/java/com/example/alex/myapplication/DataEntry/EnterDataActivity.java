@@ -23,7 +23,7 @@ import java.util.ArrayList;
 /**
  * Created by AlexK on 12/22/2015.
  */
-public class EnterDataActivity extends ActionBarActivity implements AdapterView.OnItemSelectedListener {
+public class EnterDataActivity extends ActionBarActivity{
 
     private static UIDatabaseInterface uiDatabaseInterface;
 
@@ -35,16 +35,6 @@ public class EnterDataActivity extends ActionBarActivity implements AdapterView.
         this.uiDatabaseInterface = MainActivity.uiDatabaseInterface;
 
         this.createListView();
-
-        ArrayList<String> tables = uiDatabaseInterface.getTableNames();
-
-        tables.remove("android_metadata");
-
-        Spinner tableSpinner = (Spinner) (findViewById(R.id.dataEntryTableSpinner));
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this,  android.R.layout.simple_spinner_item, tables);
-        tableSpinner.setAdapter(spinnerAdapter);
-        tableSpinner.setOnItemSelectedListener(this);
-
     }
 
     private void createListView(){
@@ -93,21 +83,4 @@ public class EnterDataActivity extends ActionBarActivity implements AdapterView.
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        String selectedTable = (String) adapterView.getItemAtPosition(i);
-
-        Log.v("EnterDataActivity", "The spinner selected the table " + selectedTable);
-
-        uiDatabaseInterface.setCurrentDataEntryTable(selectedTable);
-
-        uiDatabaseInterface.createDataEntryRows(uiDatabaseInterface.getTableList());
-
-        this.createListView();
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
 }
