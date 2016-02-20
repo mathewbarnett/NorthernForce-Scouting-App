@@ -2,27 +2,15 @@ package com.example.alex.myapplication;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetManager;
-import android.provider.DocumentsContract;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.view.View;
 
-import java.io.IOException;
-import java.io.InputStream;
+import com.example.alex.myapplication.DataEntry.EnterDataActivity;
+import com.example.alex.myapplication.DataView.ViewDataActivity;
 
 
 public class MainActivity extends ActionBarActivity {

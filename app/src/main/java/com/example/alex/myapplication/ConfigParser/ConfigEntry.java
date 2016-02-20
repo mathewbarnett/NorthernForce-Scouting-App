@@ -1,4 +1,4 @@
-package com.example.alex.myapplication;
+package com.example.alex.myapplication.ConfigParser;
 
 /**
  * Created by alex on 4/18/15.

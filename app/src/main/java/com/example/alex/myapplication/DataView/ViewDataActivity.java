@@ -1,11 +1,6 @@
-package com.example.alex.myapplication;
+package com.example.alex.myapplication.DataView;
 
-import android.app.ListActivity;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabaseLockedException;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -14,17 +9,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.GridView;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 
 
-import java.util.ArrayList;
+import com.example.alex.myapplication.MainActivity;
+import com.example.alex.myapplication.MySQLiteHelper;
+import com.example.alex.myapplication.R;
+import com.example.alex.myapplication.UIDatabaseInterface;
 
-import static com.example.alex.myapplication.MySQLiteHelper.*;
+import java.util.ArrayList;
 
 /**
  * Created by alex on 3/9/15.

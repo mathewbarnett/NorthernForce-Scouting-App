@@ -1,13 +1,14 @@
-package com.example.alex.myapplication;
+package com.example.alex.myapplication.DataEntry;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.example.alex.myapplication.MainActivity;
+import com.example.alex.myapplication.R;
 
 /**
  * Created by alex on 4/19/15.

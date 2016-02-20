@@ -1,4 +1,4 @@
-package com.example.alex.myapplication;
+package com.example.alex.myapplication.DataView;
 
 import android.content.Context;
 import android.util.AttributeSet;

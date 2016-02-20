@@ -1,4 +1,4 @@
-package com.example.alex.myapplication;
+package com.example.alex.myapplication.Bluetooth;
 
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -11,6 +11,10 @@ import java.util.ArrayList;
 import java.util.UUID;
 import java.util.Set;
 import android.bluetooth.BluetoothAdapter;
+
+import com.example.alex.myapplication.ConfigParser.ConfigEntry;
+import com.example.alex.myapplication.MainActivity;
+
 import java.io.*;
 import java.util.*;
 import java.util.zip.ZipOutputStream;

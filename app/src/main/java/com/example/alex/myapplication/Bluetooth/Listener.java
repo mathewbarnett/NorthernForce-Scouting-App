@@ -1,19 +1,17 @@
-package com.example.alex.myapplication;
+package com.example.alex.myapplication.Bluetooth;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
-import android.graphics.Bitmap;
 import android.util.Log;
 
-import java.io.BufferedReader;
+import com.example.alex.myapplication.ConfigParser.ConfigEntry;
+
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.*;
 import java.io.*;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
 /**

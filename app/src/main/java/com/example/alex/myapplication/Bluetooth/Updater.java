@@ -1,4 +1,4 @@
-package com.example.alex.myapplication;
+package com.example.alex.myapplication.Bluetooth;
 
 import android.util.Log;
 

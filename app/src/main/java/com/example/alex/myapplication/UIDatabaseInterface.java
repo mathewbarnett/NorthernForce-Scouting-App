@@ -2,25 +2,22 @@ package com.example.alex.myapplication;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.LinearLayout;
+
+import com.example.alex.myapplication.ConfigParser.ConfigEntry;
+import com.example.alex.myapplication.ConfigParser.ConfigParser;
+import com.example.alex.myapplication.ConfigParser.DatabaseTable;
+import com.example.alex.myapplication.DataEntry.DataEntryRow;
 
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 
 /**
  * Created by alex on 4/18/15.

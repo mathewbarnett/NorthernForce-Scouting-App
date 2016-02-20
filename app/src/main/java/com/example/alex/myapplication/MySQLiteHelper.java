@@ -7,8 +7,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.Cursor;
 import android.util.Log;
 
+import com.example.alex.myapplication.ConfigParser.ConfigEntry;
+import com.example.alex.myapplication.ConfigParser.DatabaseTable;
+
 import java.util.Iterator;
-import java.util.List;
 import java.util.ArrayList;
 
 /** Class that acts as an interface between the database and the application */

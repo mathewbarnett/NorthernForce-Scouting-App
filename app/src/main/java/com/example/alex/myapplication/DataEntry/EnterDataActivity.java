@@ -1,6 +1,5 @@
-package com.example.alex.myapplication;
+package com.example.alex.myapplication.DataEntry;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -11,8 +10,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.Spinner;
+
+import com.example.alex.myapplication.DataEntry.DataEntryAdapter;
+import com.example.alex.myapplication.MainActivity;
+import com.example.alex.myapplication.NestedListView;
+import com.example.alex.myapplication.R;
+import com.example.alex.myapplication.UIDatabaseInterface;
 
 import java.util.ArrayList;
 

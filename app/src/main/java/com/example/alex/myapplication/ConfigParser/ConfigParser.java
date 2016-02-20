@@ -1,6 +1,5 @@
-package com.example.alex.myapplication;
+package com.example.alex.myapplication.ConfigParser;
 
-import android.util.Log;
 import android.util.Xml;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -9,7 +8,6 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by alex on 4/18/15.

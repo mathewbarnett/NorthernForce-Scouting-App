@@ -1,20 +1,16 @@
-package com.example.alex.myapplication;
+package com.example.alex.myapplication.DataEntry;
 
 import android.content.Context;
-import android.text.Editable;
-import android.text.method.KeyListener;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
-import java.util.Arrays;
+import com.example.alex.myapplication.R;
 
 /**
  * Created by alex on 4/20/15.
