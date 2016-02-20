@@ -1,9 +1,11 @@
 package com.example.alex.myapplication;
 
+import java.io.Serializable;
+
 /**
  * Created by alex on 4/18/15.
  */
-public class ConfigEntry{
+public class ConfigEntry implements Serializable{
 
     private String type;
     private String text;

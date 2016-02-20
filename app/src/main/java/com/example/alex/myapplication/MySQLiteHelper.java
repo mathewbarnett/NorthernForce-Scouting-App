@@ -17,7 +17,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     public static final String MATCH_TABLE = "Match_Table";
 
-    private SQLiteDatabase db;
+    public SQLiteDatabase db;
 
     public MySQLiteHelper(Context context) {
         super(context, "Scouting_Data", null, 1);

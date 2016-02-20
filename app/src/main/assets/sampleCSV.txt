@@ -1,2 +1,0 @@
-Team Name, Can It Lift Totes {bool}, Can It Lift Containers {bool}, How Many Totes Can It Lift {Num 1-5}
-

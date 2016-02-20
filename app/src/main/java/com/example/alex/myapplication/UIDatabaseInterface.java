@@ -1,5 +1,6 @@
 package com.example.alex.myapplication;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -43,6 +44,7 @@ public class UIDatabaseInterface {
     private boolean hasDatabaseBeenLoaded = false;
 
     public UIDatabaseInterface(Context context){
+       // BluetoothAdapter bL  = BluetoothAdapter.listenUsingRfcommWithServiceRecord();
         this.database = new MySQLiteHelper(context);
 
         ConfigParser configParser = new ConfigParser();
@@ -56,6 +58,7 @@ public class UIDatabaseInterface {
 
             if(teamTable.getName().equals("Team_Table")){
                 teamTableColumns = tables.get(0).getColumns();
+
             }
             if(matchTable.getName().equals("Match_Table")){
                 matchTableColumns = tables.get(1).getColumns();
@@ -212,6 +215,7 @@ public class UIDatabaseInterface {
         if(matches.moveToFirst()){
             do{
                average += matches.getInt(0);
+
             }while(matches.moveToNext());
         }
         average = average / count;
@@ -222,6 +226,23 @@ public class UIDatabaseInterface {
         Cursor teams = database.selectFromTableExcept("Team_Number", "Match_Table", "SELECT Team_Number FROM Team_Table");
         return teams;
     }
+
+    public void printDatabase(DatabaseTable db) {
+
+    ArrayList<ConfigEntry> taken = db.getColumns();
+
+        for(int i = 0; i < taken.size(); i++) {
+
+        Log.v("Mac Address", "-----------------------------");
+        Log.v("Mac Address", "TABLE " + i + " TYPE: " + taken.get(i).getType());
+        Log.v("Mac Address", "TABLE " + i + " TYPE: " + taken.get(i).getText());
+            Log.v("Mac Address", "-----------------------------");
+
+
+        }
+
+    }
+
 
     public static DataEntryRow[] getDataEntryRows(){
         return dataEntryRows;
