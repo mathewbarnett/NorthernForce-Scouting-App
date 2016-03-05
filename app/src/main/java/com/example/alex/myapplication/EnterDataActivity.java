@@ -1,11 +1,7 @@
 package com.example.alex.myapplication;
 
-import android.app.ListActivity;
-import android.content.ContentValues;
+import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabaseLockedException;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -15,55 +11,52 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CursorAdapter;
-import android.widget.GridView;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
-
 
 import java.util.ArrayList;
 
-import static com.example.alex.myapplication.MySQLiteHelper.*;
-
 /**
- * Created by alex on 3/9/15.
+ * Created by AlexK on 12/22/2015.
  */
-public class ViewDataActivity extends ActionBarActivity implements AdapterView.OnItemSelectedListener{
+public class EnterDataActivity extends ActionBarActivity implements AdapterView.OnItemSelectedListener {
 
-    private CursorAdapter dataSource;
-    private MySQLiteHelper mySQLiteHelper;
     private static UIDatabaseInterface uiDatabaseInterface;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.data_view);
+        setContentView(R.layout.data_entry_layout);
 
-        mySQLiteHelper = UIDatabaseInterface.getDatabase();
+        this.uiDatabaseInterface = MainActivity.uiDatabaseInterface;
 
-        final ViewDataActivity viewDataActivity = this;
+        this.createListView();
+
         ArrayList<String> tables = uiDatabaseInterface.getTableNames();
 
         tables.remove("android_metadata");
 
-        Spinner tableSpinner = (Spinner) (findViewById(R.id.dataViewTableSpinner));
+        Spinner tableSpinner = (Spinner) (findViewById(R.id.dataEntryTableSpinner));
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this,  android.R.layout.simple_spinner_item, tables);
         tableSpinner.setAdapter(spinnerAdapter);
         tableSpinner.setOnItemSelectedListener(this);
 
-
-        this.createGridView();
     }
 
-    private void createGridView(){
-        GridView gridView = (GridView) (findViewById(R.id.dataViewGridView));
+    private void createListView(){
+        NestedListView listView = (NestedListView) (findViewById(R.id.dataEntryListView));
 
-        final ViewDataAdapter viewDataAdapter = new ViewDataAdapter(mySQLiteHelper, this);
+        DataEntryAdapter adapter = new DataEntryAdapter(this.getBaseContext(), uiDatabaseInterface.getDataEntryRows());
+        listView.setAdapter(adapter);
 
-        gridView.setAdapter(viewDataAdapter);
+        Button submitButton = (Button) findViewById(R.id.submitButton);
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.v("EnterDataActivity", "Submit was pressed");
+                UIDatabaseInterface.submitDataEntry(v);
+            }
+        });
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -102,14 +95,15 @@ public class ViewDataActivity extends ActionBarActivity implements AdapterView.O
 
         Log.v("EnterDataActivity", "The spinner selected the table " + selectedTable);
 
-        UIDatabaseInterface.setCurrentDataViewTable(selectedTable);
+        uiDatabaseInterface.setCurrentDataEntryTable(selectedTable);
 
-        this.createGridView();
+        uiDatabaseInterface.createDataEntryRows(uiDatabaseInterface.getTableList());
+
+        this.createListView();
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
-
 }

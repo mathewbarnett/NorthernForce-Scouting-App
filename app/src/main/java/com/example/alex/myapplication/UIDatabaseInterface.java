@@ -1,6 +1,5 @@
 package com.example.alex.myapplication;
 
-import android.bluetooth.BluetoothAdapter;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +17,7 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -34,36 +34,33 @@ public class UIDatabaseInterface {
 
     public static MySQLiteHelper database;
 
-    private static boolean doesTeamTableExist;
-    private static boolean doesMatchTableExist;
-
     private static DataEntryRow[] dataEntryRows;
 
     private static ArrayList<String> teamsInTeamTable;
 
-    private boolean hasDatabaseBeenLoaded = false;
+    private static ArrayList<DatabaseTable> tables;
+
+    private static String currentDataEntryTable;
+    private static String currentDataViewTable;
 
     public UIDatabaseInterface(Context context){
-       // BluetoothAdapter bL  = BluetoothAdapter.listenUsingRfcommWithServiceRecord();
         this.database = new MySQLiteHelper(context);
+
+        database.onUpgrade(database.getWritableDatabase(), 0, 1);
 
         ConfigParser configParser = new ConfigParser();
         AssetManager am = context.getAssets();
         try {
             InputStream is = am.open("configuration_file");
-            ArrayList<DatabaseTable> tables = configParser.parse(is);
+            this.tables = configParser.parse(is);
 
-            this.teamTable = tables.get(0);
-            this.matchTable = tables.get(1);
+            for(DatabaseTable table : tables){
+                Log.v("UIDatabaseInterface", "Found table " + table.getName() + " to make");
 
-            if(teamTable.getName().equals("Team_Table")){
-                teamTableColumns = tables.get(0).getColumns();
-
+                if(!database.doesTableExists(table.getName())) {
+                    database.createTable(table);
+                }
             }
-            if(matchTable.getName().equals("Match_Table")){
-                matchTableColumns = tables.get(1).getColumns();
-            }
-
         } catch (XmlPullParserException e) {
             Log.e("UIDatabaseInterface", "XmlPullParserException");
             e.printStackTrace();
@@ -72,73 +69,64 @@ public class UIDatabaseInterface {
             Log.e("UIDatabaseInterface", "IOException");
         }
 
-        this.doesTeamTableExist = database.doesTableExists(teamTable.getName());
-        this.doesMatchTableExist = database.doesTableExists(matchTable.getName());
-        Log.w("AHHHHH", "team table name is " + teamTable.getName() + ", does Team Table Exist? " + doesTeamTableExist);
+        listTables();
 
-        this.makeTables();
-        this.makeUI();
-        this.populateDatabase();
+        listMatchesColumns();
+
+        this.currentDataEntryTable = "Performance";
+        this.currentDataViewTable = "Performance";
+
+        this.createDataEntryRows(tables);
+        //this.populateDatabase();
     }
 
-    public void makeTables(){
-        if(!doesTeamTableExist) {
-            Iterator<ConfigEntry> teamTableIterator = teamTableColumns.iterator();
-            database.dropTable(teamTable.getName());
-            String createTeamTable = "CREATE TABLE IF NOT EXISTS " + teamTable.getName() + "( _id INTEGER PRIMARY KEY ";
-
-            while (teamTableIterator.hasNext()) {
-                createTeamTable += ", ";
-                ConfigEntry entry = teamTableIterator.next();
-                String name = entry.getText();
-                String type = "";
-                if (entry.getType().equals("String")) {
-                    type = "TEXT";
-                }
-                if (entry.getType().equals("int")) {
-                    type = "INTEGER";
-                }
-                createTeamTable += name + " " + type;
-            }
-
-            createTeamTable += ")";
-
-            database.execSQL(createTeamTable);
-        }
-
-        if(!doesMatchTableExist) {
-            Iterator<ConfigEntry> matchTableIterator = matchTableColumns.iterator();
-
-            database.dropTable(matchTable.getName());
-            String createMatchTable = "CREATE TABLE IF NOT EXISTS " + matchTable.getName() + "( _id INTEGER PRIMARY KEY ";
-            while (matchTableIterator.hasNext()) {
-                createMatchTable += ", ";
-                ConfigEntry entry = matchTableIterator.next();
-                String name = entry.getText();
-                String type = "";
-                if (entry.getType().equals("String")) {
-                    type = "TEXT";
-                }
-                if (entry.getType().equals("int")) {
-                    type = "INTEGER";
-                }
-                createMatchTable += name + " " + type;
-            }
-
-            createMatchTable += ")";
-
-            database.execSQL(createMatchTable);
+    public static void listTables(){
+        for(String tableName : getTableNames()){
+            Log.v("UIdatabase", "one table is " + tableName);
         }
     }
 
-    public static void makeUI() {
-        dataEntryRows = new DataEntryRow[matchTableColumns.size()];
+    public static ArrayList<String> getTableNames(){
+        ArrayList<String> tableList = new ArrayList<String>();
 
-        Iterator<ConfigEntry> matchIterator = matchTableColumns.iterator();
+        Cursor tables = database.rawQuery("SELECT name FROM sqlite_master WHERE type='table'");
+        if(tables.moveToFirst()){
+            do{
+                tableList.add(tables.getString(0));
+            }while(tables.moveToNext());
+        }
+
+        return tableList;
+    }
+    public static void listMatchesColumns(){
+        Cursor c = database.selectFromTable("Matches", "*");
+        String columns[] = c.getColumnNames();
+
+        int columnCount = c.getColumnCount();
+        Log.v("UIdatabase", "Matches column count is " + columnCount);
+
+        for(String columnName : columns){
+            Log.v("UIdatabase", "COLUMN IN MATCHES : " + columnName);
+        }
+    }
+
+    public static void createDataEntryRows(ArrayList<DatabaseTable> tables) {
+        Cursor performance = database.selectFromTable(currentDataEntryTable, "*");
+        int columnCount = performance.getColumnCount();
+
+        //minus one because of id column
+        dataEntryRows = new DataEntryRow[columnCount - 1];
+
+        ArrayList<ConfigEntry> columns = null;
+        Log.v("AHHH", "current data entry table " + currentDataEntryTable);
+        for(DatabaseTable table : tables){
+            if(table.getName().equals((currentDataEntryTable))){
+                columns = table.getColumns();
+            }
+        }
+
         int counter = 0;
-        while(matchIterator.hasNext()){
-            ConfigEntry entry = matchIterator.next();
-
+        for(ConfigEntry entry : columns){
             String type = entry.getType();
             String columnName = entry.getText();
 
@@ -153,6 +141,7 @@ public class UIDatabaseInterface {
         SQLiteDatabase db = database.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+
         for (DataEntryRow row : dataEntryRows) {
             if (row.getType().equals("int")) {
                 if (row.getValue().equals("")) {
@@ -163,12 +152,12 @@ public class UIDatabaseInterface {
                 }
                 Log.v("Interface", "type was int, and column name was " + row.getColumnName());
             }
-            if (row.getType().equals(("string"))) {
+            if (row.getType().equals(("String"))) {
                 values.put(row.getColumnName(), row.getValue());
                 Log.v("Interface", "type was string");
             }
         }
-        database.addValues(matchTable.getName(), values);
+        database.addValues(currentDataEntryTable, values);
 
         updateTeamTable();
     }
@@ -176,10 +165,8 @@ public class UIDatabaseInterface {
     public static void populateDatabase(){
         for(int i = 0; i<10; i++){
             ContentValues values = new ContentValues();
-            if(i>5)
-                values.put("Team_Number", "1");
-            else
-                values.put("Team_Number", "2");
+
+            values.put("Team_Number", 1);
 
             values.put("Match_Number", "1");
             values.put("Score", "" + Math.ceil(Math.random()*100));
@@ -187,7 +174,7 @@ public class UIDatabaseInterface {
 
             database.addValues(matchTable.getName(), values);
 
-            Log.v("UIdatabase", "populated the database and size is: " + database.getTeamTableContactsCount());
+            Log.v("UIdatabase", "populated " + matchTable.getName() + " and size is: " + database.countRowsInTable("Teams"));
         }
         updateTeamTable();
     }
@@ -200,13 +187,38 @@ public class UIDatabaseInterface {
         if(teams.moveToFirst()){
             do{
                 Log.v("foo", "added team number " + teams.getString(0));
-                database.addTeamToTeamTable("Team_Number", teams.getString(0));
+                ContentValues values = new ContentValues();
+                values.put("Team_Number", teams.getString(0));
+                database.addValues(teamTable.getName(), values);
             }while(teams.moveToNext());
+        }
+        averageScoreForTeams();
+    }
+
+    public static Cursor getAllTeams(){
+        return database.selectFromTable("Matches", "Team_Number");
+    }
+
+    public static void averageScoreForTeams(){
+        Cursor teams = database.selectFromTable("Teams", "Team_Number");
+
+        int teamCount = teams.getCount();
+
+        if(teamCount == 0){
+            return;
+        }
+
+        if(teams.moveToFirst()){
+            do{
+                database.updateCell(teamTable.getName(),
+                        "Average_Score", "" + getAverageScoreForTeams(teams.getInt(teams.getColumnIndex("Team_Number"))),
+                        "Team_Number = " + teams.getInt(teams.getColumnIndex("Team_Number")));
+            } while (teams.moveToNext());
         }
     }
 
-    public static int averageScoreForTeam(String teamNumber){
-        Cursor matches = database.selectFromTableWhere("Score", "MatchTable", "TeamNumber = " + teamNumber);
+    public static int getAverageScoreForTeams(int teamNumber){
+        Cursor matches = database.selectFromTableWhere("Score", "Matches", "Team_Number = " + teamNumber);
         int count = matches.getCount();
         if(count == 0){
             return 0;
@@ -214,35 +226,18 @@ public class UIDatabaseInterface {
         int average = 0;
         if(matches.moveToFirst()){
             do{
-               average += matches.getInt(0);
-
+                average += matches.getInt(0);
             }while(matches.moveToNext());
         }
         average = average / count;
         return average;
     }
 
+
     public static Cursor getTeamsNotInTeamTable(){
-        Cursor teams = database.selectFromTableExcept("Team_Number", "Match_Table", "SELECT Team_Number FROM Team_Table");
+        Cursor teams = database.selectFromTableExcept("Team_Number", "Matches", "SELECT Team_Number FROM Teams");
         return teams;
     }
-
-    public void printDatabase(DatabaseTable db) {
-
-    ArrayList<ConfigEntry> taken = db.getColumns();
-
-        for(int i = 0; i < taken.size(); i++) {
-
-        Log.v("Mac Address", "-----------------------------");
-        Log.v("Mac Address", "TABLE " + i + " TYPE: " + taken.get(i).getType());
-        Log.v("Mac Address", "TABLE " + i + " TYPE: " + taken.get(i).getText());
-            Log.v("Mac Address", "-----------------------------");
-
-
-        }
-
-    }
-
 
     public static DataEntryRow[] getDataEntryRows(){
         return dataEntryRows;
@@ -251,4 +246,25 @@ public class UIDatabaseInterface {
     public static MySQLiteHelper getDatabase(){
         return database;
     }
+
+    public static ArrayList<DatabaseTable> getTableList(){
+        return tables;
+    }
+
+    public static String getCurrentDataEntryTable(){
+        return currentDataEntryTable;
+    }
+
+    public static void setCurrentDataEntryTable(String table){
+        currentDataEntryTable = table;
+    }
+
+    public static String getCurrentDataViewTable(){
+        return currentDataViewTable;
+    }
+
+    public static void setCurrentDataViewTable(String table){
+        currentDataViewTable = table;
+    }
+
 }

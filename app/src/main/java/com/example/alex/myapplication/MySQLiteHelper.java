@@ -6,18 +6,18 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.Cursor;
 import android.util.Log;
+
+import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 
+/** Class that acts as an interface between the database and the application */
 public class MySQLiteHelper extends SQLiteOpenHelper {
 
+    /** The name of the id column */
     public static final String ID = "_id";
 
-    public static final String TEAM_TABLE = "Team_Table";
-
-    public static final String MATCH_TABLE = "Match_Table";
-
-    public SQLiteDatabase db;
+    private SQLiteDatabase db;
 
     public MySQLiteHelper(Context context) {
         super(context, "Scouting_Data", null, 1);
@@ -30,16 +30,66 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     }
 
     @Override
+    /** deletes all tables from the database */
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.w(MySQLiteHelper.class.getName(),
                 "Upgrading database from version " + oldVersion + " to "
                         + newVersion + ", which will destroy all old data");
-        db.execSQL("DROP TABLE IF EXISTS " + MATCH_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + TEAM_TABLE);
+
+        for(String tableName : this.getTableNames()) {
+            this.doesTableExists(tableName);
+        }
     }
 
+    /** Uses the sqlite master table to return a list of table names
+     * @return An ArrayList of all table names */
+    public ArrayList<String> getTableNames(){
+        ArrayList<String> tableList = new ArrayList();
+
+        Cursor tables = this.rawQuery("SELECT name FROM sqlite_master WHERE type='table'");
+        if(tables.moveToFirst()){
+            do{
+                tableList.add(tables.getString(0));
+            }while(tables.moveToNext());
+        }
+
+        return tableList;
+    }
+
+    /** Makes a new table in the database gimen a DatabaseTable object
+     * @param table instance of the DatabaseTable class containing the name and colunmns of the table to be created*/
+    public void createTable(DatabaseTable table){
+        ArrayList<ConfigEntry> columns = table.getColumns();
+
+        Iterator<ConfigEntry> columnsIterator = columns.iterator();
+
+        String createTeamTable = "CREATE TABLE  " + table.getName() + "( _id INTEGER PRIMARY KEY ";
+
+        while (columnsIterator.hasNext()) {
+            createTeamTable += ", ";
+            ConfigEntry entry = columnsIterator.next();
+            String name = entry.getText();
+            String type = "";
+            if (entry.getType().equals("String")) {
+                type = "TEXT";
+            }
+            if (entry.getType().equals("int")) {
+                type = "INTEGER";
+            }
+            createTeamTable += name + " " + type;
+        }
+
+        createTeamTable += ")";
+
+        this.execSQL(createTeamTable);
+    }
+
+    /** Runs commands on the databas
+     * @param sqlCommand A String of the command to be executed
+     */
     public void execSQL(String sqlCommand){
         db.execSQL(sqlCommand);
+        Log.v("MySQLiteHelper", "Exec SQL :" + sqlCommand);
     }
 
     public void dropTable(String table){
@@ -49,7 +99,18 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public void addValues(String table ,ContentValues values){
         synchronized (db) {
             db.insert(table, null, values);
+            Log.v("MySQLiteHelper", "added a value to the database");
         }
+    }
+
+    public void updateCell(String table, String columnToChange, String newValue, String identifyStatement){
+        String sqlStatement = "update " + table + " set " + columnToChange + "='" + newValue + "' where " + identifyStatement;
+        Log.v("MySQLiteHelper", sqlStatement);
+        db.execSQL(sqlStatement);
+    }
+
+    public Cursor rawQuery(String query){
+        return db.rawQuery(query, null);
     }
 
     public Cursor selectFromTable(String table, String column){
@@ -64,63 +125,29 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         return db.rawQuery("SELECT " + column + " FROM " + table + " EXCEPT " + condition, null);
     }
 
+
+
     boolean doesTableExists(String tableName){
         Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE name = '" + tableName + "' and type='table'" , null);
-        Log.v("AAAHHH", "does " + tableName + " exists? cursor length is " + cursor.getCount());
+        //Log.v("AAAHHH", "does " + tableName + " exists? cursor length is " + cursor.getCount());
         if(cursor.getCount() == 1){
             return true;
         }
         return false;
     }
 
-    public void deleteTeamTableContact(TeamTable contact) {
-        db.delete(TEAM_TABLE, ID + " = ?",
-                new String[] { String.valueOf(contact.getID()) });
+    public void deleteRowFromTable(String tableName, String rowID){
+        db.delete(tableName, ID + " = ? ", new String[] {(String.valueOf(rowID))});
     }
 
-    public int getTeamTableContactsCount() {
-        String countQuery = "SELECT  * FROM " + TEAM_TABLE;
+    public int countRowsInTable(String tableName){
+        String countQuery = "SELECT  * FROM " + tableName;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
         int count = cursor.getCount();
         cursor.close();
 
         return count;
-    }
-
-    public int getMatchTableContactsCount(){
-        String countQuery = "SELECT  * FROM " + MATCH_TABLE;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
-        int count = cursor.getCount();
-
-        cursor.close();
-
-        return count;
-    }
-
-    public Cursor getAllMatchTableRows(){
-        String selectQuery = "SELECT  * FROM " + MATCH_TABLE;
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-
-        return cursor;
-    }
-
-    public Cursor getAllTeamTableRows(){
-        String selectQuery = "SELECT  * FROM " + TEAM_TABLE;
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-
-        return cursor;
-    }
-
-    public void addTeamToTeamTable(String teamNumberColumnName, String teamNumber){
-        ContentValues values = new ContentValues();
-        values.put(teamNumberColumnName, teamNumber);
-        db.insert(TEAM_TABLE, null, values);
     }
 
 }

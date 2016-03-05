@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="left|top"
+    android:layout_marginLeft="20px"
+    android:layout_marginTop="20px"
+    android:columnCount="4"
+    android:orientation="horizontal" >
+
+    <TextView
+    android:layout_gravity="fill"
+    android:text="Autonomous Mode:"
+    android:textStyle="bold"
+
+        android:layout_columnSpan="4"
+        android:id = "@+id/header"
+
+    />
+    <Button
+        android:id = "@+id/magico"
+
+        />
+    <include layout="@layout/yes_or_no_entry"
+        android:id="@+id/entry1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_columnSpan="4"
+
+        />
+    <include layout="@layout/yes_or_no_entry"
+        android:id="@+id/entry2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_columnSpan="4"
+
+        />
+
+    <include layout="@layout/yes_or_no_entry"
+        android:id="@+id/entry2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_columnSpan="4"
+
+        />
+
+    <EditText
+        android:layout_gravity="fill"
+        android:layout_rowSpan="1"
+        android:layout_columnSpan="4"
+        android:id = "@+id/magic"
+        android:inputType="textMultiLine"
+
+        android:lines="3"
+        android:minLines="3"
+        android:gravity="top|left"
+        android:maxLines="3"
+        android:scrollbars="vertical"
+        android:textSize="10pt"
+        android:hint = "Comments and Observations"
+        />
+
+
+
+</GridLayout>

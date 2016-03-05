@@ -59,77 +59,77 @@ public class Glib implements Runnable {
         }
 
 
-            if(l.contains("18:3B:D2:E1:88:59")) {
-                try {
-                    temp = bD.createRfcommSocketToServiceRecord(ui);
-                    bs = temp;
-                    Log.v("Mac Address", "Shouldn't have connected");
+        if(l.contains("18:3B:D2:E1:88:59")) {
+            try {
+                temp = bD.createRfcommSocketToServiceRecord(ui);
+                bs = temp;
+                Log.v("Mac Address", "Shouldn't have connected");
 
-                    Thread connectionThread  = new Thread(new Runnable() {
+                Thread connectionThread  = new Thread(new Runnable() {
 
-                        @Override
-                        public void run() {
+                    @Override
+                    public void run() {
 
 
-                            // Make a connection to the BluetoothSocket
+                        // Make a connection to the BluetoothSocket
+                        try {
+                            // This is a blocking call and will only return on a
+                            // successful connection or an exception
+                            bs.connect();
+                        } catch (IOException e) {
+                            //connection to device failed so close the socket
+                            Log.v("Mac Address", "Failure :(");
+                            failed = 1;
                             try {
-                                // This is a blocking call and will only return on a
-                                // successful connection or an exception
-                                bs.connect();
-                            } catch (IOException e) {
-                                //connection to device failed so close the socket
-                                Log.v("Mac Address", "Failure :(");
-                                failed = 1;
-                                try {
-                                    bs.close();
-                                } catch (IOException e2) {
-                                    e2.printStackTrace();
-                                }
+                                bs.close();
+                            } catch (IOException e2) {
+                                e2.printStackTrace();
                             }
-                            if(failed == 1) {
-
-                            }
-                            else {
-                                Log.v("Mac Address", "Success :)?");
-                                failed = 0;
-                            }
-
+                        }
+                        if(failed == 1) {
 
                         }
-                    });
-
-                    connectionThread.start();
-
-
-
-                    Log.v("Mac Address", "Should have connected");
-
-
-
-
-                    Thread communicationThread  = new Thread(new Runnable() {
-
-
-
-                        public void write(byte[] bytes) {
-                            try {
-                                Log.v("Mac Address", "WRITING CHA BOI");
-                                ObjectOutputStream oout = new ObjectOutputStream(os);
-                                oout.writeObject(bytes);
-                                oout.flush();
-                                //os.write(bytes);
-                                //os.flush();
-                            } catch (IOException e) { }
+                        else {
+                            Log.v("Mac Address", "Success :)?");
+                            failed = 0;
                         }
 
-                        @Override
-                        public void run() {
+
+                    }
+                });
+
+                connectionThread.start();
 
 
-                            int l = 3;
-                            try {
 
-                                while(l < 4) {
+                Log.v("Mac Address", "Should have connected");
+
+
+
+
+                Thread communicationThread  = new Thread(new Runnable() {
+
+
+
+                    public void write(byte[] bytes) {
+                        try {
+                            Log.v("Mac Address", "WRITING CHA BOI");
+                            ObjectOutputStream oout = new ObjectOutputStream(os);
+                            oout.writeObject(bytes);
+                            oout.flush();
+                            //os.write(bytes);
+                            //os.flush();
+                        } catch (IOException e) { }
+                    }
+
+                    @Override
+                    public void run() {
+
+
+                        int l = 3;
+                        try {
+
+                            while(l < 4) {
 
                                 if(failed == 0) {
 
@@ -160,7 +160,7 @@ public class Glib implements Runnable {
 
                                         ZipOutputStream zos = new ZipOutputStream(baos);
                                         ZipEntry entry = new ZipEntry("test.txt");
-                                      //  ObjectOutputStream obs = new ObjectOutputStream(zos);
+                                        //  ObjectOutputStream obs = new ObjectOutputStream(zos);
 
                                         zos.putNextEntry(entry);
 
@@ -184,31 +184,31 @@ public class Glib implements Runnable {
                                     os = bs.getOutputStream();
                                     byte[] ly = baos.toByteArray();
                                     String test = new String(ly, "UTF-8");
-                                  //  Log.v("Mac Address", test);
+                                    //  Log.v("Mac Address", test);
                                     Log.v("Mac Address", Arrays.toString(ly));
                                     write(ly);
-                                  //  haha = new PrintStream(haha, true);
-                                 //   haha.println("LOL");
+                                    //  haha = new PrintStream(haha, true);
+                                    //   haha.println("LOL");
                                     l++;
 
                                 }
 
-                                }
-
-                            } catch (IOException e) {
-                                //connection to device failed so close the socket
-
                             }
+
+                        } catch (IOException e) {
+                            //connection to device failed so close the socket
+
                         }
-                    });
+                    }
+                });
 
-                    communicationThread.start();
+                communicationThread.start();
 
 
 
-                }
+            }
 
-                catch (Exception e) {
+            catch (Exception e) {
 
 
             }
