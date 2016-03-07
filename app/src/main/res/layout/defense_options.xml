@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:columnCount="2"
+    android:orientation="horizontal"
+    android:id = "@+id/defenses"
+    android:layout_gravity="top|center"
+    android:layout_marginLeft="40px"
+    android:layout_marginTop="20px"
+    >
+    <CheckBox
+
+        android:layout_column="0"
+        android:layout_row="0"
+        android:text="Low Bar"
+        />
+
+    <CheckBox
+
+        android:layout_column="0"
+        android:layout_row="1"
+        android:text="Portcullis"
+        />
+
+    <CheckBox
+
+        android:layout_column="1"
+        android:layout_row="1"
+        android:text="Cheval de Frise"
+        />
+
+    <CheckBox
+
+        android:layout_column="0"
+        android:layout_row="2"
+        android:text="Moat"
+        />
+
+    <CheckBox
+
+        android:layout_column="1"
+        android:layout_row="2"
+        android:text="Ramparts"
+        />
+
+    <CheckBox
+
+        android:layout_column="0"
+        android:layout_row="3"
+        android:text="Drawbridge"
+        />
+
+    <CheckBox
+
+        android:layout_column="1"
+        android:layout_row="3"
+        android:text="Sally Port"
+        />
+
+    <CheckBox
+
+        android:layout_column="0"
+        android:layout_row="4"
+        android:text="Rock Wall"
+        />
+
+    <CheckBox
+
+        android:layout_column="1"
+        android:layout_row="4"
+        android:text="Rough Terrain"
+        />
+
+
+</GridLayout>

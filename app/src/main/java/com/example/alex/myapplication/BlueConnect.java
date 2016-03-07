@@ -46,7 +46,7 @@ public class BlueConnect {
 
             Log.v("Mac Address", "MASTER");
             b = "master";
-            mA.setDiscoverable();
+
             Listener listen = new Listener();
             listen.setUUID(j);
             Thread t = new Thread(listen);

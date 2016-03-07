@@ -1,20 +1,24 @@
 package com.example.alex.myapplication;
 
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.UUID;
+import java.util.Arrays;
 import java.util.Set;
-import android.bluetooth.BluetoothAdapter;
-import java.io.*;
-import java.util.*;
+import java.util.UUID;
+import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-import java.util.zip.*;
 
 /**
  * Created by Oombliocarius on 1/26/16.
@@ -25,10 +29,15 @@ public class Glib implements Runnable {
     BluetoothSocket bs, temp;
     OutputStream os;
     PrintStream haha;
+
     MainActivity ma;
     BluetoothDevice bD;
     private UUID ui;
     int failed = 2;
+    Object[] toWrite;
+    SQLiteDatabase db;
+    Cursor c;
+
 
     public Glib(UUID u, MainActivity mA, BluetoothDevice bd) {
 
@@ -40,7 +49,10 @@ public class Glib implements Runnable {
 
     }
 
+
+
     public void run() {
+
 
         ArrayList<String> l = new ArrayList<String>(10);
 
@@ -111,16 +123,7 @@ public class Glib implements Runnable {
 
 
 
-                    public void write(byte[] bytes) {
-                        try {
-                            Log.v("Mac Address", "WRITING CHA BOI");
-                            ObjectOutputStream oout = new ObjectOutputStream(os);
-                            oout.writeObject(bytes);
-                            oout.flush();
-                            //os.write(bytes);
-                            //os.flush();
-                        } catch (IOException e) { }
-                    }
+
 
                     @Override
                     public void run() {
@@ -134,7 +137,7 @@ public class Glib implements Runnable {
                                 if(failed == 0) {
 
 
-
+                                    c = UIDatabaseInterface.getDatabase().selectFromTable("*", "*");
 
                                     String s = "Tired, Exhausted";
                                     ConfigEntry con = new ConfigEntry("yo", "lol", 3);
@@ -146,17 +149,25 @@ public class Glib implements Runnable {
                                     byte[] yourBytes = null;
                                     try {
                                         out = new ObjectOutputStream(bos);
-                                        out.writeObject(con);
+
+                                        if(c != null) {
+                                            Log.v("Mac Address", "I was here");
+                                            out.writeObject(c);
+                                        }
+                                        else {
+                                            Log.v("Mac Address", "nullo");
+                                        }
                                         yourBytes =bos.toByteArray();
                                     }
                                     catch(Exception e) {
 
+                                        Log.e("Mac Address", "error was " + e.toString());
                                     }
                                     Log.v("Mac Address", Arrays.toString(yourBytes));
                                     try {
 
-  /* File is not on the disk, test.txt indicates
-     only the file name to be put into the zip */
+                                         /* File is not on the disk, test.txt indicates
+                                           only the file name to be put into the zip */
 
                                         ZipOutputStream zos = new ZipOutputStream(baos);
                                         ZipEntry entry = new ZipEntry("test.txt");
@@ -170,8 +181,8 @@ public class Glib implements Runnable {
                                         zos.closeEntry();
                                         zos.close();
 
-  /* use more Entries to add more files
-     and use closeEntry() to close each file entry */
+                                        /* use more Entries to add more files
+                                      and use closeEntry() to close each file entry */
 
                                     } catch(IOException ioe) {
                                         ioe.printStackTrace();
@@ -186,7 +197,15 @@ public class Glib implements Runnable {
                                     String test = new String(ly, "UTF-8");
                                     //  Log.v("Mac Address", test);
                                     Log.v("Mac Address", Arrays.toString(ly));
-                                    write(ly);
+                                    try {
+                                        Log.v("Mac Address", "WRITING CHA BOI");
+                                        ObjectOutputStream oout = new ObjectOutputStream(os);
+                                        oout.writeObject(ly);
+                                        oout.flush();
+                                        //os.write(bytes);
+                                        //os.flush();
+                                    } catch (IOException e) { }
+
                                     //  haha = new PrintStream(haha, true);
                                     //   haha.println("LOL");
                                     l++;

@@ -3,6 +3,7 @@ package com.example.alex.myapplication;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.util.Log;
 
@@ -15,6 +16,7 @@ import java.io.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
+import android.database.*;
 
 /**
  * Created by Oombliocarius on 11/4/15.
@@ -124,36 +126,29 @@ public class Listener implements Runnable {
                                     Log.v("Mac Address", "THIS FAR");
                                    // ZipFile zipFile = new ZipFile("text.zip");
                                     Log.v("Mac Address", "THIS FAR 1");
-                                   // InputStream inputStream = zipFile.getInputStream(entry);
-                                  //  byte[] magic = null;
-                                  //  Log.v("Mac Address", "THIS FAR 2");
-                                  //  inputStream.read(magic);
-                                 //   Log.v("Mac Address", Arrays.toString(magic));
-                               //     Scanner sc = new Scanner(zis);
-                                    ObjectInputStream ino = new ObjectInputStream(zis);
+                                     ObjectInputStream ino = new ObjectInputStream(zis);
                                     Object ob = ino.readObject();
 
                                     Log.v("Mac Address", ob.toString());
-                                    ConfigEntry con = (ConfigEntry) ob;
-                                    Log.v("Mac Address", con.getType());
+                                    if(ob instanceof ConfigEntry) {
+                                        ConfigEntry con = (ConfigEntry) ob;
+                                        Log.v("Mac Address", con.getText());
+                                    }
+                                    if(ob instanceof SQLiteDatabase) {
+                                        SQLiteDatabase con = (SQLiteDatabase) ob;
+                                        Log.v("Mac Address", con.toString());
+                                    }
+                                    if(ob instanceof Cursor) {
+                                        Cursor con = (Cursor) ob;
+                                        Log.v("Mac Address", con.toString());
+                                    }
+                                    if(ob instanceof String) {
+                                        String str = (String) ob;
+                                        Log.v("Mac Address", str);
+                                    }
 
-                                 //   byte[] magic = null;
-                                  //  zis.read(magic, 0, 0);
-                                   // Log.v("Mac Address", Arrays.toString(magic));
-                                    String joe = null;
-                                //    while(sc.hasNextLine()) {
-                                //        Log.v("Mac Address", "BIG BOI LOOP");
-                                 //       joe += sc.nextLine();
 
-                                  //  }
-                                 //   Log.v("Mac Address", s);
-                                 //   Log.v("Mac Address", entry.toString());
-                               //     Log.v("Mac Address", joe);
-                              //      byte[] magic = joe.getBytes();
-                               //     Log.v("Mac Address", Arrays.toString(magic));
-                                  //  Object con = deserialize(magic);
-                                  //  Log.v("Mac Address", con.toString());
-                               //     Log.v("Mac Address", joe);
+
                                 }
                             }
                             catch(Exception e) {

@@ -25,6 +25,7 @@
         <int>Match_Number</int>
         <int>Score</int>
         <int>Performance</int>
+        <YorN>TestMagic</YorN>
     </Performance>
 
     <Events>
