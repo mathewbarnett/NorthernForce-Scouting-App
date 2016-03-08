@@ -147,6 +147,10 @@ public class Listener implements Runnable {
                                         String str = (String) ob;
                                         Log.v("Mac Address", str);
                                     }
+                                    if(ob instanceof SubmissionData) {
+                                        SubmissionData str = (SubmissionData) ob;
+                                        Log.v("Mac Address", str.getData());
+                                    }
 
 
 

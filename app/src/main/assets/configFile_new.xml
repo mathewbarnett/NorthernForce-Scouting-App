@@ -93,10 +93,23 @@
 			text="Auto)High goal or low goal?"
 			options="HIGH, LOW"></column>
 		<column
+			name="didOvercome"
+			type="YorN"
+			text="(Tele)Did they breach any defenses, which?"></column>
+		<column
 			name="obstaclesOvercome"
 			type="Options_Spinner"
 			text="(Tele)Which obstacles did they overcome?"
-			options="PORTCULLIS,CHEVAL DE FRISE,MOAT,RAMPARTS,DRAWBRIDGE,SALLY PORT,ROCK WALL,ROUGH TERRAIN,LOW BAR"></column>			
+			options="PORTCULLIS,CHEVAL DE FRISE,MOAT,RAMPARTS,DRAWBRIDGE,SALLY PORT,ROCK WALL,ROUGH TERRAIN,LOW BAR"></column>
+		<column
+			name="failed"
+			type="YorN"
+			text="(Tele)Did they fail to overcome any defences?"></column>
+		<column
+			name="obstaclesFailed"
+			type="Options_Spinner"
+			text="(Tele)Which obstacles did they fail?"
+			options="PORTCULLIS,CHEVAL DE FRISE,MOAT,RAMPARTS,DRAWBRIDGE,SALLY PORT,ROCK WALL,ROUGH TERRAIN,LOW BAR"></column>
 		<column
 			name="highOrLowT"
 			type="Options_Spinner"

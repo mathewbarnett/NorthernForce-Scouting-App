@@ -15,7 +15,6 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.zip.ZipEntry;
@@ -123,6 +122,7 @@ public class Glib implements Runnable {
 
                     @Override
                     public void run() {
+                        db = UIDatabaseInterface.getDatabase().getReadableDatabase();
                         Cursor  cursor = db.rawQuery("SELECT * FROM Teams",null);
                         int cols = cursor.getColumnCount();
                         try {
@@ -139,7 +139,8 @@ public class Glib implements Runnable {
 
                                         String row = "";
                                         for (int i = 0; i < cols; i++) {
-                                            row = row + cursor.toString();
+                                            Log.v("Glib", "get string " + cursor.getString(i));
+                                            row = row + ("," + cursor.getString(i));
                                         }
                                         Log.v("Glib", "row is: " + row);
 
@@ -153,7 +154,7 @@ public class Glib implements Runnable {
                                 sb = new SubmissionData(data);
 
                                 Log.v("Mac Address", "Entered");
-                                String s = "Tired, Exhausted";
+                               // String s = "Tired, Exhausted";
                                 ConfigEntry con = new ConfigEntry("yo", "lol", "hey", "moo");
 
                                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -163,22 +164,22 @@ public class Glib implements Runnable {
                                 ByteArrayOutputStream bos1 = new ByteArrayOutputStream();
                                 ObjectOutput out = null;
 
-                                ObjectOutput out1 = null;
+
                                 byte[] yourBytes = null;
-                                byte[] yourBytes1 = null;
+
                                 try {
                                     out = new ObjectOutputStream(bos);
-                                    out1 = new ObjectOutputStream(bos1);
+
 
                                     Log.v("Mac Address", "I was here");
                                     out.writeObject(sb);
-                                    out1.writeObject(s);
+
 
 
                                     Log.v("Mac Address", "nullo");
 
                                     yourBytes = bos.toByteArray();
-                                    yourBytes1 = bos1.toByteArray();
+
                                 } catch (Exception e) {
 
                                     Log.e("Mac Address", "error was " + e.toString());
@@ -191,7 +192,7 @@ public class Glib implements Runnable {
 
                                     ZipOutputStream zos = new ZipOutputStream(baos);
                                     ZipEntry entry = new ZipEntry("test.txt");
-                                    ZipEntry entry1 = new ZipEntry("test1.txt");
+
                                     //  ObjectOutputStream obs = new ObjectOutputStream(zos);
 
                                     zos.putNextEntry(entry);
@@ -200,9 +201,7 @@ public class Glib implements Runnable {
                                     //obs.writeObject();
                                     //obs.close();
                                     zos.closeEntry();
-                                    zos.putNextEntry(entry1);
-                                    zos.write(yourBytes1);
-                                    zos.closeEntry();
+
                                     zos.close();
 
                                         /* use more Entries to add more files

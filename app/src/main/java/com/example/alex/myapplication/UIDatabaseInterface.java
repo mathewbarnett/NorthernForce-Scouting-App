@@ -36,7 +36,7 @@ public class UIDatabaseInterface {
     private static String currentDataViewTable;
 
     public UIDatabaseInterface(Context context){
-        database = new MySQLiteHelper(context);
+        this.database = new MySQLiteHelper(context);
 
         database.onUpgrade(database.getWritableDatabase(), 0, 1);
 
@@ -45,9 +45,9 @@ public class UIDatabaseInterface {
         try {
             InputStream is = am.open("configFile_new.xml");
             Log.v("UIDI", is.toString());
-            tables = configParser.parse(is);
+            this.tables = configParser.parse(is);
 
-            Log.v("UIDI", "the number of tables if " + tables.size());
+            Log.v("UIDI", "the number of tables if " + this.tables.size());
             for(DatabaseTable table : tables){
                 Log.v("UIDatabaseInterface", "Found table " + table.getName() + " to make");
 
@@ -65,15 +65,13 @@ public class UIDatabaseInterface {
 
         listTables();
 
-        //listMatchesColumns();
-        //listPerformanceColumns();
+        listMatchesColumns();
+        listPerformanceColumns();
 
-        listTeamsColumns();;
+        this.currentDataEntryTable = "Performance";
+        this.currentDataViewTable = "Performance";
 
-        currentDataEntryTable = "Performance";
-        currentDataViewTable = "Performance";
-
-        createDataEntryRows(tables);
+        this.createDataEntryRows(tables);
         this.populateDatabase();
     }
 
@@ -119,17 +117,6 @@ public class UIDatabaseInterface {
         }
     }
 
-    public static void listTeamsColumns(){
-        Cursor c = database.selectFromTable("Teams", "*");
-        String columns[] = c.getColumnNames();
-
-        int columnCount = c.getColumnCount();
-        Log.v("UIdatabase", "Teams column count is " + columnCount);
-
-        for(String columnName : columns){
-            Log.v("UIdatabase", "COLUMN IN Teams : " + columnName);
-        }
-    }
 
     public static void createDataEntryRows(ArrayList<DatabaseTable> tables) {
         Cursor performance = database.selectFromTable(currentDataEntryTable, "*");
@@ -187,7 +174,7 @@ public class UIDatabaseInterface {
         for(int i = 0; i<10; i++){
             ContentValues values = new ContentValues();
 
-            values.put("Team_Number", i);
+            values.put("Team_Number", 1);
 
             values.put("Team_Name", "1");
             values.put("High_School", "" + Math.ceil(Math.random()*100));

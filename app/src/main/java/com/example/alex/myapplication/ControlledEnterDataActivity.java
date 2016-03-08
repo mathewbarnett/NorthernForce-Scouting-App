@@ -3,6 +3,7 @@ package com.example.alex.myapplication;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -148,8 +149,8 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int teamNum;
-                int matchNum;
+                int teamNum = 0;
+                int matchNum = 0;
                 //YorNs
                 String outworks = "no";
                 String autoBreachDef = "no";
@@ -162,11 +163,22 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 //checkboxes
                 String whereShoot = "no";
                 String playStyle = "no";
+                //weirdo
+                String highOrLowA = "";
+                //defense list composite strings
+                String whichBreached = "";
+                String obstaclesOvercome = "";
+                String obstaclesFailed = "";
+                //comments
+                String comments = "";
+
                 //GET DATA SECTION ************************************************************************
                 EditText specifics = null;
                 String temp = "";
                 EnhancedRadioButton eh = null;
                 CheckBox junkCheck = null;
+
+                View defLists = null;
 
                 specifics = (EditText) findViewById(R.id.teamNumber);
                 temp = specifics.getText().toString();
@@ -176,6 +188,9 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 specifics = (EditText) findViewById(R.id.matchNumber);
                 temp = specifics.getText().toString();
                 matchNum = Integer.valueOf(temp);
+
+                specifics = (EditText) findViewById(R.id.comments);
+                comments = specifics.getText().toString();
 
 
                 eh = (EnhancedRadioButton) boolOptions[0][0].findViewById(R.id.yes_or_no_entry_yesButton);
@@ -271,9 +286,136 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 //Special checkboxes ( did they score in auto) and defense lists to go
 
 
+                defLists = (View) findViewById(R.id.defenses1);
+                junkCheck = (CheckBox) defLists.findViewById(R.id.defense1);
+                if(junkCheck.isChecked()) {
+                    whichBreached = whichBreached + " " + "lowbar";
+                }
+                junkCheck = (CheckBox) defLists.findViewById(R.id.defense2);
+                if(junkCheck.isChecked()) {
+                    whichBreached = whichBreached + " " + "portcullis";
+                }
+                junkCheck = (CheckBox) defLists.findViewById(R.id.defense3);
+                if(junkCheck.isChecked()) {
+                    whichBreached = whichBreached + " " + "chevaldefrise";
+                }
+                junkCheck = (CheckBox) defLists.findViewById(R.id.defense4);
+                if(junkCheck.isChecked()) {
+                    whichBreached = whichBreached + " " + "moat";
+                }
+                junkCheck = (CheckBox) defLists.findViewById(R.id.defense5);
+                if(junkCheck.isChecked()) {
+                    whichBreached = whichBreached + " " + "ramparts";
+                }
+                junkCheck = (CheckBox) defLists.findViewById(R.id.defense6);
+                if(junkCheck.isChecked()) {
+                    whichBreached = whichBreached + " " + "drawbridge";
+                }
+                junkCheck = (CheckBox) defLists.findViewById(R.id.defense7);
+                if(junkCheck.isChecked()) {
+                    whichBreached = whichBreached + " " + "sallyport";
+                }
+                junkCheck = (CheckBox) defLists.findViewById(R.id.defense8);
+                if(junkCheck.isChecked()) {
+                    whichBreached = whichBreached + " " + "rockwall";
+                }
+                junkCheck = (CheckBox) defLists.findViewById(R.id.defense9);
+                if(junkCheck.isChecked()) {
+                    whichBreached = whichBreached + " " + "roughterrain";
+                }
 
 
 
+
+                defLists = (View) findViewById(R.id.defenses2);
+                junkCheck = (CheckBox) defLists.findViewById(R.id.defense1);
+                if(junkCheck.isChecked()) {
+                    obstaclesOvercome = obstaclesOvercome + " " + "lowbar";
+                }
+                junkCheck = (CheckBox) defLists.findViewById(R.id.defense2);
+                if(junkCheck.isChecked()) {
+                    obstaclesOvercome = obstaclesOvercome + " " + "portcullis";
+                }
+                junkCheck = (CheckBox) defLists.findViewById(R.id.defense3);
+                if(junkCheck.isChecked()) {
+                    obstaclesOvercome = obstaclesOvercome + " " + "chevaldefrise";
+                }
+                junkCheck = (CheckBox) defLists.findViewById(R.id.defense4);
+                if(junkCheck.isChecked()) {
+                    obstaclesOvercome = obstaclesOvercome + " " + "moat";
+                }
+                junkCheck = (CheckBox) defLists.findViewById(R.id.defense5);
+                if(junkCheck.isChecked()) {
+                    obstaclesOvercome = obstaclesOvercome + " " + "ramparts";
+                }
+                junkCheck = (CheckBox) defLists.findViewById(R.id.defense6);
+                if(junkCheck.isChecked()) {
+                    obstaclesOvercome = obstaclesOvercome + " " + "drawbridge";
+                }
+                junkCheck = (CheckBox) defLists.findViewById(R.id.defense7);
+                if(junkCheck.isChecked()) {
+                    obstaclesOvercome = obstaclesOvercome + " " + "sallyport";
+                }
+                junkCheck = (CheckBox) defLists.findViewById(R.id.defense8);
+                if(junkCheck.isChecked()) {
+                    obstaclesOvercome = obstaclesOvercome + " " + "rockwall";
+                }
+                junkCheck = (CheckBox) defLists.findViewById(R.id.defense9);
+                if(junkCheck.isChecked()) {
+                    obstaclesOvercome = obstaclesOvercome + " " + "roughterrain";
+                }
+
+
+
+                defLists = (View) findViewById(R.id.defenses3);
+                junkCheck = (CheckBox) defLists.findViewById(R.id.defense1);
+                if(junkCheck.isChecked()) {
+                    obstaclesFailed = obstaclesFailed + " " + "lowbar";
+                }
+                junkCheck = (CheckBox) defLists.findViewById(R.id.defense2);
+                if(junkCheck.isChecked()) {
+                    obstaclesFailed = obstaclesFailed + " " + "portcullis";
+                }
+                junkCheck = (CheckBox) defLists.findViewById(R.id.defense3);
+                if(junkCheck.isChecked()) {
+                    obstaclesFailed = obstaclesFailed + " " + "chevaldefrise";
+                }
+                junkCheck = (CheckBox) defLists.findViewById(R.id.defense4);
+                if(junkCheck.isChecked()) {
+                    obstaclesFailed = obstaclesFailed + " " + "moat";
+                }
+                junkCheck = (CheckBox) defLists.findViewById(R.id.defense5);
+                if(junkCheck.isChecked()) {
+                    obstaclesFailed = obstaclesFailed + " " + "ramparts";
+                }
+                junkCheck = (CheckBox) defLists.findViewById(R.id.defense6);
+                if(junkCheck.isChecked()) {
+                    obstaclesFailed = obstaclesFailed + " " + "drawbridge";
+                }
+                junkCheck = (CheckBox) defLists.findViewById(R.id.defense7);
+                if(junkCheck.isChecked()) {
+                    obstaclesFailed = obstaclesFailed + " " + "sallyport";
+                }
+                junkCheck = (CheckBox) defLists.findViewById(R.id.defense8);
+                if(junkCheck.isChecked()) {
+                    obstaclesFailed = obstaclesFailed + " " + "rockwall";
+                }
+                junkCheck = (CheckBox) defLists.findViewById(R.id.defense9);
+                if(junkCheck.isChecked()) {
+                    obstaclesFailed = obstaclesFailed + " " + "roughterrain";
+                }
+
+
+
+                junkCheck = (CheckBox) findViewById(R.id.autoLow);
+                if(junkCheck.isChecked()) {
+                    highOrLowA = "low";
+                }
+
+                junkCheck = (CheckBox) findViewById(R.id.autoHigh);
+                if(junkCheck.isChecked()) {
+                    highOrLowA = "high";
+                }
 
 
 
@@ -352,6 +494,50 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
 
 
                 //END OF RESET LAYOUT SECTION ********************************************************************
+
+                //PRINT TIME ******************************************************************************************
+                Log.v("Mac Address", String.valueOf(teamNum));
+                Log.v("Mac Address", String.valueOf(matchNum));
+                Log.v("Mac Address", outworks);
+                Log.v("Mac Address", autoBreachDef);
+                Log.v("Mac Address", autoScore);
+                Log.v("Mac Address", teleBreachDef);
+                Log.v("Mac Address", attemptedDef);
+                Log.v("Mac Address", reliable);
+                Log.v("Mac Address", challenged);
+                Log.v("Mac Address", scaled);
+                Log.v("Mac Address", whereShoot);
+                Log.v("Mac Address", playStyle);
+                Log.v("Mac Address", highOrLowA);
+                Log.v("Mac Address", whichBreached);
+                Log.v("Mac Address", obstaclesOvercome);
+                Log.v("Mac Address", obstaclesFailed);
+                Log.v("Mac Address", comments);
+
+                ContentValues values = new ContentValues();
+
+           /*     values.put(,);
+                values.put(,);
+                values.put(,);
+                values.put(,);
+                values.put(,);
+                values.put(,);
+                values.put(,);
+                values.put(,);
+                values.put(,);
+                values.put(,);
+                values.put(,);
+                values.put(,);
+                values.put(,);
+                values.put(,);
+                values.put(,);
+                values.put(,);
+                values.put(,);
+                values.put(,);
+                values.put(,);
+                values.put(,);
+                */
+
 
 
             }
