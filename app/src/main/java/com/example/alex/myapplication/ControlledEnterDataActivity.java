@@ -529,6 +529,7 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 values.put("failed",attemptedDef);
                 values.put("obstaclesFailed",obstaclesFailed);
                 values.put("highOrLowT",whereShoot);
+                values.put("reliability", reliable);
                 values.put("offOrDef",playStyle);
                 values.put("didChallenge",challenged);
                 values.put("didScale",scaled);
