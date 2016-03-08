@@ -2,25 +2,17 @@ package com.example.alex.myapplication;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 
 /**
  * Created by alex on 4/18/15.
@@ -51,9 +43,11 @@ public class UIDatabaseInterface {
         ConfigParser configParser = new ConfigParser();
         AssetManager am = context.getAssets();
         try {
-            InputStream is = am.open("configuration_file");
+            InputStream is = am.open("configFile_new.xml");
+            Log.v("UIDI", is.toString());
             this.tables = configParser.parse(is);
 
+            Log.v("UIDI", "the number of tables if " + this.tables.size());
             for(DatabaseTable table : tables){
                 Log.v("UIDatabaseInterface", "Found table " + table.getName() + " to make");
 
@@ -72,6 +66,7 @@ public class UIDatabaseInterface {
         listTables();
 
         listMatchesColumns();
+        listPerformanceColumns();
 
         this.currentDataEntryTable = "Performance";
         this.currentDataViewTable = "Performance";
@@ -109,6 +104,19 @@ public class UIDatabaseInterface {
             Log.v("UIdatabase", "COLUMN IN MATCHES : " + columnName);
         }
     }
+
+    public static void listPerformanceColumns(){
+        Cursor c = database.selectFromTable("Performance", "*");
+        String columns[] = c.getColumnNames();
+
+        int columnCount = c.getColumnCount();
+        Log.v("UIdatabase", "Performance column count is " + columnCount);
+
+        for(String columnName : columns){
+            Log.v("UIdatabase", "COLUMN IN Performance : " + columnName);
+        }
+    }
+
 
     public static void createDataEntryRows(ArrayList<DatabaseTable> tables) {
         Cursor performance = database.selectFromTable(currentDataEntryTable, "*");

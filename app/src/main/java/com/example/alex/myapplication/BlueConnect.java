@@ -2,22 +2,20 @@ package com.example.alex.myapplication;
 
 
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
-import android.content.Intent;
 import android.content.Context;
 import android.provider.Settings;
 import android.util.Log;
-import java.util.UUID;
 
 import java.util.ArrayList;
+import java.util.UUID;
 //WHEN RUN ON DIFFERENT DEVICE WONT STOP CRASHING/ UTILS.MACADDRESS IS SUSPECTED
 /**
  * Created by Oombliocarius on 10/22/15.
  */
 public class BlueConnect {
     int q = 0;
-   MainActivity mA;
+    ControlledEnterDataActivity ced;
     UUID j = null;
     ArrayList<BluetoothSocket> connections = new ArrayList<BluetoothSocket>(7);
     String android_id;
@@ -25,13 +23,13 @@ public class BlueConnect {
 
     }
 
-    public BlueConnect(MainActivity the, UUID uuid, Context leggo) {
+    public BlueConnect(ControlledEnterDataActivity the, UUID uuid, Context leggo) {
 
 
     }
     String thisAddress = null;
-    public String run(MainActivity the, UUID uuid, Context leggo) {
-        mA = the;
+    public String run(ControlledEnterDataActivity ceda, UUID uuid, Context leggo) {
+        ced = ceda;
         String b = "";
 
         Utils.getMACAddress(null);

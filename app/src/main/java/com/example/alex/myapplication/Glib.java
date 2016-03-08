@@ -30,19 +30,21 @@ public class Glib implements Runnable {
     OutputStream os;
     PrintStream haha;
 
-    MainActivity ma;
+    ControlledEnterDataActivity ced;
     BluetoothDevice bD;
     private UUID ui;
     int failed = 2;
     Object[] toWrite;
     SQLiteDatabase db;
     Cursor c;
+    Thread communicationThread = null;
 
 
-    public Glib(UUID u, MainActivity mA, BluetoothDevice bd) {
+
+    public Glib(UUID u, ControlledEnterDataActivity ceda, BluetoothDevice bd) {
 
 
-        ma = mA;
+        ced = ceda;
         ui  = u;
         bD = bd;
 
@@ -104,6 +106,7 @@ public class Glib implements Runnable {
                         else {
                             Log.v("Mac Address", "Success :)?");
                             failed = 0;
+                            communicationThread.start();
                         }
 
 
@@ -117,9 +120,8 @@ public class Glib implements Runnable {
                 Log.v("Mac Address", "Should have connected");
 
 
-
-
-                Thread communicationThread  = new Thread(new Runnable() {
+                Log.v("Mac Address", "Slept");
+                communicationThread  = new Thread(new Runnable() {
 
 
 
@@ -129,35 +131,74 @@ public class Glib implements Runnable {
                     public void run() {
 
 
-                        int l = 3;
+
+                 //       Cursor  cursor = db.rawQuery("SELECT * FROM performance",null);
+                 //       int cols = cursor.getColumnCount();
+
                         try {
 
-                            while(l < 4) {
 
+                                Log.v("Mac Address", "At Least");
                                 if(failed == 0) {
 
 
-                                    c = UIDatabaseInterface.getDatabase().selectFromTable("*", "*");
+/*
+                                    List<String> list = new ArrayList<String>();
+                                    SubmissionData sb = new SubmissionData();
+                                    if (cursor.moveToFirst()) {
 
+                                        while (cursor.isAfterLast() == false) {
+                                            int team = 0;
+                                            int match = 0;
+                                            String[] submitted = new String[16];
+
+                                            for(int i = 0; i < cols; i++) {
+
+                                                if( i == 0) {
+                                                    team = cursor.getInt(0);
+                                                    submitted[0] = Integer.toString(team);
+                                                    match = cursor.getInt(1);
+                                                    i++;
+                                                    i++;
+                                                }
+
+                                                submitted[i] = cursor.getString(i);
+                                            }
+
+                                            sb.setSubmitData(match, submitted);
+                                        //    String name = cursor.getString(cursor.getColumnIndex(countyname));
+                                       //     list.add(name);
+                                            cursor.moveToNext();
+                                        }
+                                    }
+*/
+                                    Log.v("Mac Address", "Entered");
                                     String s = "Tired, Exhausted";
                                     ConfigEntry con = new ConfigEntry("yo", "lol", 3);
 
                                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
                                     ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+                                    ByteArrayOutputStream bos1 = new ByteArrayOutputStream();
                                     ObjectOutput out = null;
+
+                                    ObjectOutput out1 = null;
                                     byte[] yourBytes = null;
+                                    byte[] yourBytes1 = null;
                                     try {
                                         out = new ObjectOutputStream(bos);
+                                        out1 = new ObjectOutputStream(bos1);
 
-                                        if(c != null) {
                                             Log.v("Mac Address", "I was here");
-                                            out.writeObject(c);
-                                        }
-                                        else {
+                                        out.writeObject(con);
+                                            out1.writeObject(s);
+
+
                                             Log.v("Mac Address", "nullo");
-                                        }
+
                                         yourBytes =bos.toByteArray();
+                                        yourBytes1 = bos1.toByteArray();
                                     }
                                     catch(Exception e) {
 
@@ -171,6 +212,7 @@ public class Glib implements Runnable {
 
                                         ZipOutputStream zos = new ZipOutputStream(baos);
                                         ZipEntry entry = new ZipEntry("test.txt");
+                                        ZipEntry entry1 = new ZipEntry("test1.txt");
                                         //  ObjectOutputStream obs = new ObjectOutputStream(zos);
 
                                         zos.putNextEntry(entry);
@@ -179,12 +221,15 @@ public class Glib implements Runnable {
                                         //obs.writeObject();
                                         //obs.close();
                                         zos.closeEntry();
+                                        zos.putNextEntry(entry1);
+                                        zos.write(yourBytes1);
+                                        zos.closeEntry();
                                         zos.close();
 
                                         /* use more Entries to add more files
                                       and use closeEntry() to close each file entry */
 
-                                    } catch(IOException ioe) {
+                                    } catch(Exception ioe) {
                                         ioe.printStackTrace();
                                     }
 
@@ -208,9 +253,9 @@ public class Glib implements Runnable {
 
                                     //  haha = new PrintStream(haha, true);
                                     //   haha.println("LOL");
-                                    l++;
 
-                                }
+
+
 
                             }
 
@@ -220,8 +265,9 @@ public class Glib implements Runnable {
                         }
                     }
                 });
+                Log.v("Mac Address", "Writing Starting Soon");
 
-                communicationThread.start();
+
 
 
 

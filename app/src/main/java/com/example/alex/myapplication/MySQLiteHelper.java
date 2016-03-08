@@ -1,15 +1,14 @@
 package com.example.alex.myapplication;
 
-import android.content.Context;
 import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.Cursor;
 import android.util.Log;
 
-import java.util.Iterator;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /** Class that acts as an interface between the database and the application */
 public class MySQLiteHelper extends SQLiteOpenHelper {
@@ -68,9 +67,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         while (columnsIterator.hasNext()) {
             createTeamTable += ", ";
             ConfigEntry entry = columnsIterator.next();
-            String name = entry.getText();
+            String name = entry.getColName();
             String type = "";
-            if (entry.getType().equals("String")) {
+            if (entry.getType().equals("String") || entry.getType().equals("YorN") || entry.getType().equals("Options_Spinner")) {
                 type = "TEXT";
             }
             if (entry.getType().equals("int")) {
@@ -80,6 +79,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         }
 
         createTeamTable += ")";
+
+        Log.v("MYSQLiteHelper", "execing code " + createTeamTable);
 
         this.execSQL(createTeamTable);
     }

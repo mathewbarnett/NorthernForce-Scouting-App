@@ -3,20 +3,21 @@ package com.example.alex.myapplication;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
 import android.util.Log;
 
-import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.*;
-import java.io.*;
+import java.io.ObjectInputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.UUID;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
-import android.database.*;
 
 /**
  * Created by Oombliocarius on 11/4/15.
@@ -85,7 +86,7 @@ public class Listener implements Runnable {
                     try
                     {
                         int bytesAvailable = in.available();
-                     //   Log.v("Mac Address", "BYTES: " + bytesAvailable);
+                       //Log.v("Mac Address", "BYTES: " + bytesAvailable);
                         if(bytesAvailable > 0)
                         {
                             Log.v("Mac Address", "WE'RE UP IN THIS");
@@ -157,47 +158,6 @@ public class Listener implements Runnable {
                                 e.printStackTrace(new PrintWriter(errors));
                                 Log.v("Mac Address", errors.toString());
                             }
-                            /*
-                            ObjectInputStream obin = new ObjectInputStream(in);
-                            Object obo = null;
-                            try {
-                                 obo = obin.readObject();
-                            }
-                            catch(Exception e) {
-
-                            }
-                            byte[] hope = obo
-*/
-                    /*        ByteArrayInputStream bis = new ByteArrayInputStream(packetBytes);
-                            ObjectInput in = null;
-                            try {
-                                in = new ObjectInputStream(bis);
-                                Object o = in.readObject();
-                                ZipEntry e = (ZipEntry) o;
-                                Log.v("Mac Address", o.toString());
-                                bis.close();
-                            }
-                            catch (NullPointerException ex) {
-                                    // ignore close exception
-                                Log.v("Mac Address", "SIGH");
-                                //ex.printStackTrace();
-                                }
-                            catch (ClassNotFoundException eo) {
-                                // ignore close exception
-                                Log.v("Mac Address", "Weird");
-                                //ex.printStackTrace();
-                            }
-                            Log.v("Mac Address", "SIGH2");
-
-*/
-                           //         System.arraycopy(readBuffer, 0, packetBytes, 0, packetBytes.length);
-                        //    ByteArrayOutputStream obj = (ByteArrayOutputStream) deserialize(packetBytes);
-
-
-                     //               Log.v("Mac Address", obj.toString());
-
-
-
 
 
 

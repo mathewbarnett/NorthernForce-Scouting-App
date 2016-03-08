@@ -1,15 +1,13 @@
 package com.example.alex.myapplication;
 
-import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
-import java.lang.reflect.Method;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.lang.reflect.Method;
 import java.util.UUID;
-import android.content.*;
 
 /**
  * Created by Oombliocarius on 12/17/15.
@@ -19,15 +17,15 @@ public class Aggro implements Runnable {
     BluetoothSocket bs;
     OutputStream os;
     PrintStream haha;
-    MainActivity ma;
+    ControlledEnterDataActivity ced;
     BluetoothDevice bD;
 
 
 
 
 
-    public Aggro(UUID u, MainActivity mA, BluetoothDevice bd) {
-        ma = mA;
+    public Aggro(UUID u, ControlledEnterDataActivity ceda, BluetoothDevice bd) {
+        ced = ceda;
         ui  = u;
         bD = bd;
 
@@ -45,7 +43,7 @@ public class Aggro implements Runnable {
             Log.v("Mac Address", "Aggro Started");
           //  bD.createBond();
             Log.v("Mac Address", pairDevice(bD) + "  PAIRING STATUS");
-            Glib glib = new Glib(ui, ma, bD);
+            Glib glib = new Glib(ui, ced, bD);
             Thread to = new Thread(glib);
             to.run();
 
