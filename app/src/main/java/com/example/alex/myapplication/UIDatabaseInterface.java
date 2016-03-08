@@ -36,7 +36,7 @@ public class UIDatabaseInterface {
     private static String currentDataViewTable;
 
     public UIDatabaseInterface(Context context){
-        this.database = new MySQLiteHelper(context);
+        database = new MySQLiteHelper(context);
 
         database.onUpgrade(database.getWritableDatabase(), 0, 1);
 
@@ -45,9 +45,9 @@ public class UIDatabaseInterface {
         try {
             InputStream is = am.open("configFile_new.xml");
             Log.v("UIDI", is.toString());
-            this.tables = configParser.parse(is);
+            tables = configParser.parse(is);
 
-            Log.v("UIDI", "the number of tables if " + this.tables.size());
+            Log.v("UIDI", "the number of tables if " + tables.size());
             for(DatabaseTable table : tables){
                 Log.v("UIDatabaseInterface", "Found table " + table.getName() + " to make");
 
@@ -65,14 +65,16 @@ public class UIDatabaseInterface {
 
         listTables();
 
-        listMatchesColumns();
-        listPerformanceColumns();
+        //listMatchesColumns();
+        //listPerformanceColumns();
 
-        this.currentDataEntryTable = "Performance";
-        this.currentDataViewTable = "Performance";
+        listTeamsColumns();;
 
-        this.createDataEntryRows(tables);
-        //this.populateDatabase();
+        currentDataEntryTable = "Performance";
+        currentDataViewTable = "Performance";
+
+        createDataEntryRows(tables);
+        this.populateDatabase();
     }
 
     public static void listTables(){
@@ -117,6 +119,17 @@ public class UIDatabaseInterface {
         }
     }
 
+    public static void listTeamsColumns(){
+        Cursor c = database.selectFromTable("Teams", "*");
+        String columns[] = c.getColumnNames();
+
+        int columnCount = c.getColumnCount();
+        Log.v("UIdatabase", "Teams column count is " + columnCount);
+
+        for(String columnName : columns){
+            Log.v("UIdatabase", "COLUMN IN Teams : " + columnName);
+        }
+    }
 
     public static void createDataEntryRows(ArrayList<DatabaseTable> tables) {
         Cursor performance = database.selectFromTable(currentDataEntryTable, "*");
@@ -174,17 +187,16 @@ public class UIDatabaseInterface {
         for(int i = 0; i<10; i++){
             ContentValues values = new ContentValues();
 
-            values.put("Team_Number", 1);
+            values.put("Team_Number", i);
 
-            values.put("Match_Number", "1");
-            values.put("Score", "" + Math.ceil(Math.random()*100));
-            values.put("Performance", "5");
+            values.put("Team_Name", "1");
+            values.put("High_School", "" + Math.ceil(Math.random()*100));
 
-            database.addValues(matchTable.getName(), values);
+            database.addValues("Teams", values);
 
-            Log.v("UIdatabase", "populated " + matchTable.getName() + " and size is: " + database.countRowsInTable("Teams"));
+            Log.v("UIdatabase", "populated " + "teams" + " and size is: " + database.countRowsInTable("Teams"));
         }
-        updateTeamTable();
+        //updateTeamTable();
     }
 
     public static void updateTeamTable(){

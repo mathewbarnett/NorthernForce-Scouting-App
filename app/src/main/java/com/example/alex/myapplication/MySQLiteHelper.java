@@ -131,10 +131,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     boolean doesTableExists(String tableName){
         Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE name = '" + tableName + "' and type='table'" , null);
         //Log.v("AAAHHH", "does " + tableName + " exists? cursor length is " + cursor.getCount());
-        if(cursor.getCount() == 1){
-            return true;
-        }
-        return false;
+        return cursor.getCount() == 1;
     }
 
     public void deleteRowFromTable(String tableName, String rowID){

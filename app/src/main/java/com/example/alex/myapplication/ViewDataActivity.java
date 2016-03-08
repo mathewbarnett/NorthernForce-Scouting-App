@@ -43,7 +43,7 @@ public class ViewDataActivity extends ActionBarActivity implements AdapterView.O
         mySQLiteHelper = UIDatabaseInterface.getDatabase();
 
         final ViewDataActivity viewDataActivity = this;
-        ArrayList<String> tables = uiDatabaseInterface.getTableNames();
+        ArrayList<String> tables = UIDatabaseInterface.getTableNames();
 
         tables.remove("android_metadata");
 

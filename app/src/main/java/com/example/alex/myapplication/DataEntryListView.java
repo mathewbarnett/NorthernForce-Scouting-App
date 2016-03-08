@@ -31,7 +31,7 @@ public class DataEntryListView extends Activity  {
         // Third parameter - ID of the TextView to which the data is written
         // Forth - the Array of data
 
-        DataEntryAdapter adapter = new DataEntryAdapter(this, MainActivity.uiDatabaseInterface.getDataEntryRows());
+        DataEntryAdapter adapter = new DataEntryAdapter(this, UIDatabaseInterface.getDataEntryRows());
 
         // Assign adapter to ListView
         listView.setAdapter(adapter);

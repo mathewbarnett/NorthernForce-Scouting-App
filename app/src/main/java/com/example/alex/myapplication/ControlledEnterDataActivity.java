@@ -40,7 +40,7 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
             } else if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 //bluetooth device found
 
-                BluetoothDevice device = (BluetoothDevice) intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
 
                 //     Log.v("Mac Address", device.getName());
@@ -121,8 +121,8 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
 
         for(int i = 0; i < 8; i++) {
 
-            boolOptions[i][0] = (View) allBoolSets[i].findViewById(R.id.yes_or_no_entry_yesButton);
-            boolOptions[i][1] = (View) allBoolSets[i].findViewById(R.id.yes_or_no_entry_noButton);
+            boolOptions[i][0] = allBoolSets[i].findViewById(R.id.yes_or_no_entry_yesButton);
+            boolOptions[i][1] = allBoolSets[i].findViewById(R.id.yes_or_no_entry_noButton);
 
         }
         View offense = findViewById(R.id.offense);
@@ -290,7 +290,7 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                     bigId = bigId + (l+1);
                     bigNumId = getResources().getIdentifier(bigId, "id", getPackageName());
                     Log.v("Mac Address", "The big view is: " + bigId);
-                    View defOptions =   (View) findViewById(bigNumId);
+                    View defOptions = findViewById(bigNumId);
 
                     CheckBox cb = null;
 

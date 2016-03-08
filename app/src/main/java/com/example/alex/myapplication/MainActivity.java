@@ -165,6 +165,6 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public UIDatabaseInterface getUiDatabaseInterface(){
-        return this.uiDatabaseInterface;
+        return uiDatabaseInterface;
     }
 }

@@ -11,12 +11,21 @@ public class SubmissionData implements Serializable {
     //Auto
 
 
+    String data = new String();
     ArrayList<ArrayList<String>> twoDArrayList = new ArrayList<ArrayList<String>>();
 
     public SubmissionData() {
 
 
 
+    }
+
+    public SubmissionData(String s){
+        this.data = s;
+    }
+
+    public String getData(){
+        return this.data;
     }
 
     public void setSubmitData(int matchNu, String[] data) {
