@@ -516,28 +516,25 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
 
                 ContentValues values = new ContentValues();
 
-           /*     values.put(,);
-                values.put(,);
-                values.put(,);
-                values.put(,);
-                values.put(,);
-                values.put(,);
-                values.put(,);
-                values.put(,);
-                values.put(,);
-                values.put(,);
-                values.put(,);
-                values.put(,);
-                values.put(,);
-                values.put(,);
-                values.put(,);
-                values.put(,);
-                values.put(,);
-                values.put(,);
-                values.put(,);
-                values.put(,);
-                */
+                values.put("Team_Number",teamNum);
+                values.put("Match_Number",matchNum);
+                //values.put("Event_Name",);
+                values.put("crossOutW",outworks);
+                values.put("breachD",autoBreachDef);
+                values.put("whichBreached",whichBreached);
+                values.put("didScore",autoScore);
+                values.put("highOrLowA",highOrLowA);
+                values.put("didOvercome",teleBreachDef);
+                values.put("obstaclesOvercome",obstaclesOvercome);
+                values.put("failed",attemptedDef);
+                values.put("obstaclesFailed",obstaclesFailed);
+                values.put("highOrLowT",whereShoot);
+                values.put("offOrDef",playStyle);
+                values.put("didChallenge",challenged);
+                values.put("didScale",scaled);
+                values.put("Comments",comments);
 
+                UIDatabaseInterface.getDatabase().addValues("Performance", values);
 
 
             }
