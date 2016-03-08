@@ -5,6 +5,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 /**
@@ -16,7 +17,8 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
     EnhancedRadioButton testo = null;
 
     String[] boolQuestions = new String[8];
-
+    View[] allBoolSets = new View[8];
+    View[][] boolOptions = new View[10][2];
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,11 +37,31 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
         String id = "yesOrNo" + num;
             int resID = getResources().getIdentifier(id, "id", getPackageName());
             View test = findViewById(resID);
-
+            allBoolSets[i] = test;
             TextView text = (TextView) test.findViewById(R.id.yes_or_no_entry_textView);
             text.setText(boolQuestions[i].toCharArray(), 0, boolQuestions[i].length());
             num++;
         }
+
+        for(int i = 0; i < 8; i++) {
+
+            boolOptions[i][0] = (View) allBoolSets[i].findViewById(R.id.yes_or_no_entry_yesButton);
+            boolOptions[i][1] = (View) allBoolSets[i].findViewById(R.id.yes_or_no_entry_noButton);
+
+        }
+        View offense = findViewById(R.id.offense);
+        View defense = findViewById(R.id.defense);
+
+        final View low = findViewById(R.id.teleLow);
+        View high = findViewById(R.id.teleHigh);
+
+
+        boolOptions[8][0] = high;
+        boolOptions[8][1] = low;
+        boolOptions[9][0] = offense;
+        boolOptions[9][1] = defense;
+
+
 
 
         View test = findViewById(R.id.yesOrNo1);
@@ -84,34 +106,91 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
         TextView next7 = (TextView) test7.findViewById(R.id.yes_or_no_entry_textView);
         next7.setText("Did they scale the tower?".toCharArray(), 0, "Did they scale the tower?".length());
 */
-        Button equals = (Button) findViewById(R.id.bluetoothSync);
-        testo.setOnClickListener(new View.OnClickListener() {
 
+        View.OnClickListener checkToggles = new View.OnClickListener(){
+            public void  onClick  (View  v){
+                int con = 0;
+                int row = 0;
+                int col = 0;
+                con = findButtonInArray(v);
+                row = con/10;
+                col = con%10;
+                Log.v("Mac Address", "ROW IS: " + row);
+                Log.v("Mac Address", "COL IS: " + col);
+                if(v instanceof EnhancedRadioButton) {
+                    Log.v("Mac Address", "Button");
+                    if(col == 0) {
+                        EnhancedRadioButton ehr = (EnhancedRadioButton) boolOptions[row][1];
+                        if(ehr.isChecked()) {
+                            Log.v("Mac Address", "Tried to toggle the " + ehr.getText() + " button");
+                            ehr.setChecked(false);
+                        }
+                    }
 
-            @Override
-            public void onClick(View view) {
-                if (view.equals(testo)) {
-                    Log.v("Mac Address", "God Bless");
-
+                    if(col == 1) {
+                        EnhancedRadioButton ehr = (EnhancedRadioButton) boolOptions[row][0];
+                        if(ehr.isChecked()) {
+                            Log.v("Mac Address", "Tried to toggle the " + ehr.getText() + " button");
+                            ehr.setChecked(false);
+                        }
+                    }
                 }
-              /*  EnhancedRadioButton ehr = (EnhancedRadioButton) test.findViewById(R.id.yes_or_no_entry_yesButton);
-                if (view.equals(ehr)) {
-                    Log.v("Mac Address", "Second God Bless");
-                }*/
-                Log.v("Mac Address", "Shame");
-                //        View v = (View) findViewById(R.id.yesOrNo1);
-                //        EnhancedRadioButton eh = (EnhancedRadioButton) v.findViewById(R.id.yes_or_no_entry_yesButton);
-                //        Log.v("Mac Address", eh.);
-                //             EditText test2 = (EditText) findViewById(R.id.comments);
-                //            test2.setHeight(300);
+                if(v instanceof CheckBox) {
+                    Log.v("Mac Address", "CheckBox");
+                    if(col == 0) {
+                        CheckBox cb = (CheckBox) boolOptions[row][1];
+                        if(cb.isChecked()) {
+                            cb.setChecked(false);
+                        }
+                    }
+                    if(col == 1) {
+                        CheckBox cb = (CheckBox) boolOptions[row][0];
+                        if(cb.isChecked()) {
+                            cb.setChecked(false);
+                        }
+                    }
+                }
 
-//                test2.setVisibility(View.VISIBLE);
+            }
+        };
+
+        for(int i = 0; i < boolOptions.length; i++) {
+
+            for(int l = 0; l < boolOptions[i].length; l++) {
+                boolOptions[i][l].setOnClickListener(checkToggles);
 
             }
 
+        }
 
-        });
 
+
+
+
+
+
+
+
+        Button equals = (Button) findViewById(R.id.bluetoothSync);
+
+
+
+
+    }
+
+    public int findButtonInArray(View view) {
+        for(int i = 0; i < boolOptions.length; i++) {
+
+            for(int l = 0; l < boolOptions[i].length; l++) {
+
+                if(boolOptions[i][l].equals(view)) {
+                    return ((i*10) + l);
+                }
+
+            }
+
+        }
+        return 0;
 
 
     }
