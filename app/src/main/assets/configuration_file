@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+
+    <Teams>
+        <int>
+			<colName>Team_Number</colName>
+			<text>Team Number</text>
+		</int>
+		<String>
+			<colName>Team_Name></colName>
+			<text>Team Name</text>
+		</String>
+		
+        <String>
+			<colName>High_School</colName>
+			<text>High School</text>
+		</String>
+    </Teams>
+
+    <Matches>
+        <int>
+			<colName>Team_Number</colName>
+			<text>Team Number</text>
+		</int>
+        <int>
+			<colName>Match_Number</colName>
+			<text>Match Number</text>
+		</int>
+        <String>
+			<colName>Event_Name</colName>
+			<text>Event Name</text>
+		</String>
+        <int>
+			<colName>Red_One</colName>
+			<text>Red One</text>
+		</int>
+		<int>
+			<colName>Red_Two</colName>
+			<text>Red Two</text>
+		</int>
+		<int>
+			<colName>Red_Three</colName>
+			<text>Red Three</text>
+		</int>
+		<int>
+			<colName>Blue_One</colName>
+			<text>Blue One</text>
+		</int>
+		<int>
+			<colName>Blue_Two</colName>
+			<text>Blue Two</text>
+		</int>
+		<int>
+			<colName>Blue_Three</colName>
+			<text>Blue Three</text>
+		</int>
+    </Matches>
+
+    <Performance>
+        <int>
+			<colName>Team_Number</colName>
+			<text>Team Number</text>
+		</int>
+        <int>
+			<colName>Match_Number</colName>
+			<text>Match Number</text>
+		</int>
+		<String>
+			<colName>Event_Name</colName>
+			<text>Event Name</text>
+		</String>
+
+		<YorN>
+			<colName>crossOutW</colName>
+			<text>(Auto)Did they cross the out works?</text>
+		</YorN>
+		
+		<YorN>
+			<colName>breachD</colName>
+			<text>(Auto)Did they cross the out works?</text>
+		</YorN>
+		
+		<Options_Spinner>
+			<colName>whichBreached</colName>
+			<text>(Auto)If so which one?</text>
+			<option>PORTCULLIS</option>
+			<option>CHEVAL DE FRISE</option>
+			<option>MOAT</option>
+			<option>RAMPARTS</option>
+			<option>DRAWBRIDGE</option>
+			<option>SALLY PORT</option>
+			<option>ROCK WALL</option>
+			<option>ROUGH TERRAIN</option>
+			<option>LOW BAR</option>	
+		</Options_Spinner>
+		
+		<YorN>
+			<colName>didScore</colName>
+			<text>(Auto)Did they score?</text>
+		</YorN>
+		
+		<Options_Spinner>
+			<colName>highOrLowA</colName>
+			<text>(Auto)High goal or low goal?</text>
+			<option>HIGH</option>
+			<option>LOW</option>
+		</Options_Spinner>
+		
+		<Options_Spinner>
+			<colName>obstaclesOvercome</colName>
+			<text>(Tele)Which obstacles did they overcome?</text>
+			<option>PORTCULLIS</option>
+			<option>CHEVAL DE FRISE</option>
+			<option>MOAT</option>
+			<option>RAMPARTS</option>
+			<option>DRAWBRIDGE</option>
+			<option>SALLY PORT</option>
+			<option>ROCK WALL</option>
+			<option>ROUGH TERRAIN</option>
+			<option>LOW BAR</option>	
+		</Options_Spinner>	
+		
+		<Options_Spinner>
+			<colName>highOrLowT</colName>
+			<text>(Tele)Do they shoot high or score low?</text>
+			<option>SHOOT HIGH</option>
+			<option>SHOOT LOW</option>
+		</Options_Spinner>
+		
+		<YorN>
+			<colName>reliability</colName>
+			<text>(Tele)Are they a reliable scorer?</text>
+		</YorN>
+		
+		<Options_Spinner>
+			<colName>offOrDef</colName>
+			<text>(Tele)Do they tend to do offense or defense?</text>
+			<option>OFFENSE</option>
+			<option>DEFNESE</option>
+		</Options_Spinner>
+		
+		<YorN>
+			<colName>didChallenge</colName>
+			<text>(Tele)Did they challenge the tower?</text>
+		</YorN>
+		
+		<YorN>
+			<colName>didScale</colName>
+			<text>(Tele)Did they scale the tower?</text>
+		</YorN>
+		
+		<String>
+			<colName>Comments</colName>
+		</String>
+    </Performance>
+
+    <Events>
+        <String>
+			<colName>Event_Name</colName>
+			<text>Event Name</text>
+		</String>
+        <String>
+			<colName>Date</colName>
+			<text>Date</text>
+		</String>
+        <String>
+			<colName>Location</colName>
+			<text>Location</text>
+		</String>
+    </Events>
+
+</config>
