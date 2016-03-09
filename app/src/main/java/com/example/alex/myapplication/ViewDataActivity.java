@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabaseLockedException;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Editable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CursorAdapter;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -47,12 +49,6 @@ public class ViewDataActivity extends ActionBarActivity implements AdapterView.O
 
         tables.remove("android_metadata");
 
-        Spinner tableSpinner = (Spinner) (findViewById(R.id.dataViewTableSpinner));
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this,  android.R.layout.simple_spinner_item, tables);
-        tableSpinner.setAdapter(spinnerAdapter);
-        tableSpinner.setOnItemSelectedListener(this);
-
-
         this.createGridView();
     }
 
@@ -62,6 +58,25 @@ public class ViewDataActivity extends ActionBarActivity implements AdapterView.O
         final ViewDataAdapter viewDataAdapter = new ViewDataAdapter(mySQLiteHelper, this);
 
         gridView.setAdapter(viewDataAdapter);
+    }
+
+    public void searchForTeam(View v){
+        EditText editText= (EditText) findViewById(R.id.seachedTeam);
+        if(editText == null){
+            Log.v("Mac Address", "editText is null");
+        }
+        String text = editText.getText().toString();
+        if(text.equals("")){
+            Log.v("Mac Address", "setting searched team to null");
+            ViewDataAdapter.setSearchedTeam(null);
+        }
+        else{
+            Log.v("Mac Address", "seraching for team " + text);
+            ViewDataAdapter.setSearchedTeam(editText.getText().toString());
+        }
+
+        this.createGridView();
+
     }
 
     @Override

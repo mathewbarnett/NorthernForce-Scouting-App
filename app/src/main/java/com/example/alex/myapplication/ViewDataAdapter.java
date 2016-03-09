@@ -22,13 +22,15 @@ public class ViewDataAdapter extends BaseAdapter {
     private MySQLiteHelper mySQLiteHelper;
     private int count;
     private ViewDataActivity viewDataActivity;
-    private String currentTable;
+    private static String currentTable;
+
+    private static String searchedTeam;
 
     public ViewDataAdapter(MySQLiteHelper mySQLiteHelper, ViewDataActivity viewDataActivity){
         this.currentTable = UIDatabaseInterface.getCurrentDataViewTable();
         this.mySQLiteHelper = mySQLiteHelper;
 
-        Cursor c = mySQLiteHelper.selectFromTable(currentTable, "*");
+        Cursor c = mySQLiteHelper.selectFromTable("*", "Performance");
 
         this.count = c.getCount();
 
@@ -55,18 +57,38 @@ public class ViewDataAdapter extends BaseAdapter {
         TextView view = new TextView(viewDataActivity);
         view.setText("");
 
-        Cursor cursor = mySQLiteHelper.selectFromTable(currentTable, "*");
+        Cursor cursor;
+        if(searchedTeam != null){
+            cursor = mySQLiteHelper.selectFromTableWhere("*", "Performance", "Team_Number = " + searchedTeam);
+            this.count = cursor.getCount();
+        }
+        else{
+           cursor = mySQLiteHelper.selectFromTable("*", "Performance");
+            this.count = cursor.getCount();
+        }
+
+        if(position >= this.getCount()){
+            return new TextView(viewDataActivity);
+        }
         cursor.moveToPosition(position);
         //i = 1 to skip _id column
         for (int i = 1; i < cursor.getColumnCount(); i++) {
-            //Log.i("ViewDataAdapter", "adding following to text view " + cursor.getColumnName(i) + ": " + cursor.getString(i));
+            Log.v("VeiwDataAdapter", "the cursor column count is " + cursor.getColumnCount() + " and i = " + i);
+            Log.v("VeiwDataAdapter", "the cursor count is " + cursor.getCount() + " and i = " + i);
+            Log.v("ViewDataAdapter", "adding following to text view " + cursor.getColumnName(i) + ": " + cursor.getString(i));
             view.setText(view.getText() + "\n" + cursor.getColumnName(i) + ": " + cursor.getString(i));
+            Log.v("ViewDataAdapter", "view text has text of " + view.getText());
         }
 
         return view;
     }
 
-    public void setCurrentViewTable(String table){
-        this.currentTable = table;
+    public static String getSearchedTeam() {
+        return searchedTeam;
     }
+
+    public static void setSearchedTeam(String team) {
+        searchedTeam = team;
+    }
+
 }

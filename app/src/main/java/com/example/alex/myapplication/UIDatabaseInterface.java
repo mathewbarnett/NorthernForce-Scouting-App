@@ -95,7 +95,7 @@ public class UIDatabaseInterface {
         return tableList;
     }
     public static void listMatchesColumns(){
-        Cursor c = database.selectFromTable("Matches", "*");
+        Cursor c = database.selectFromTable("*", "Matches");
         String columns[] = c.getColumnNames();
 
         int columnCount = c.getColumnCount();
@@ -107,7 +107,7 @@ public class UIDatabaseInterface {
     }
 
     public static void listPerformanceColumns(){
-        Cursor c = database.selectFromTable("Performance", "*");
+        Cursor c = database.selectFromTable("*", "Performance");
         String columns[] = c.getColumnNames();
 
         int columnCount = c.getColumnCount();
@@ -119,7 +119,7 @@ public class UIDatabaseInterface {
     }
 
     public static String[] getPerformanceColumns(){
-        Cursor c = database.selectFromTable("Performance", "*");
+        Cursor c = database.selectFromTable("*", "Performance");
         String columns[] = c.getColumnNames();
 
         int columnCount = c.getColumnCount();
@@ -133,7 +133,7 @@ public class UIDatabaseInterface {
     }
 
     public static void createDataEntryRows(ArrayList<DatabaseTable> tables) {
-        Cursor performance = database.selectFromTable(currentDataEntryTable, "*");
+        Cursor performance = database.selectFromTable("*", currentDataEntryTable);
         int columnCount = performance.getColumnCount();
 
         //minus one because of id column
