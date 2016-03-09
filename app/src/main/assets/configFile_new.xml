@@ -67,10 +67,6 @@
 			type="int"
 			text="Match Number"></column>
 		<column
-			name="Event_Name"
-			type="String"
-			text="Event Name"></column>			
-		<column
 			name="crossOutW"
 			type="YorN"
 			text="(Auto)Did they cross the out works?"></column>

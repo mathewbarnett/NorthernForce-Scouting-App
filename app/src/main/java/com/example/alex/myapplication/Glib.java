@@ -123,7 +123,7 @@ public class Glib implements Runnable {
                     @Override
                     public void run() {
                         db = UIDatabaseInterface.getDatabase().getReadableDatabase();
-                        Cursor  cursor = db.rawQuery("SELECT * FROM Teams",null);
+                        Cursor  cursor = db.rawQuery("SELECT * FROM Performance",null);
                         int cols = cursor.getColumnCount();
                         try {
                             Log.v("Mac Address", "At Least");
@@ -133,21 +133,25 @@ public class Glib implements Runnable {
 
                                 if (cursor.moveToFirst()) {
                                     while (cursor.isAfterLast() == false) {
-                                        int team = 0;
-                                        int match = 0;
-                                        String[] submitted = new String[16];
 
+                                        boolean isFirst = true;
                                         String row = "";
                                         for (int i = 0; i < cols; i++) {
-                                            Log.v("Glib", "get string " + cursor.getString(i));
-                                            row = row + ("," + cursor.getString(i));
+                                            if(isFirst) {
+                                                row = cursor.getString(i);
+                                                Log.v("Mac Address", "get string " + cursor.getString(i));
+                                                isFirst = false;
+                                            }
+                                            else {
+                                                Log.v("Mac Address", "get string " + cursor.getString(i));
+                                                row = row + ("/" + cursor.getString(i));
+                                            }
+
                                         }
                                         Log.v("Glib", "row is: " + row);
 
                                         row = row + "\n";
                                         data = data + row;
-                                        //    String name = cursor.getString(cursor.getColumnIndex(countyname));
-                                        //     list.add(name);
                                         cursor.moveToNext();
                                     }
                                 }

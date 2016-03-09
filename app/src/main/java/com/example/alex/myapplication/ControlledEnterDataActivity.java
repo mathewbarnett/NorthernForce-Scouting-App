@@ -289,39 +289,39 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 defLists = (View) findViewById(R.id.defenses1);
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense1);
                 if(junkCheck.isChecked()) {
-                    whichBreached = whichBreached + " " + "lowbar";
+                    whichBreached = whichBreached + "," + "lowbar";
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense2);
                 if(junkCheck.isChecked()) {
-                    whichBreached = whichBreached + " " + "portcullis";
+                    whichBreached = whichBreached + "," + "portcullis";
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense3);
                 if(junkCheck.isChecked()) {
-                    whichBreached = whichBreached + " " + "chevaldefrise";
+                    whichBreached = whichBreached + "," + "chevaldefrise";
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense4);
                 if(junkCheck.isChecked()) {
-                    whichBreached = whichBreached + " " + "moat";
+                    whichBreached = whichBreached + "," + "moat";
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense5);
                 if(junkCheck.isChecked()) {
-                    whichBreached = whichBreached + " " + "ramparts";
+                    whichBreached = whichBreached + "," + "ramparts";
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense6);
                 if(junkCheck.isChecked()) {
-                    whichBreached = whichBreached + " " + "drawbridge";
+                    whichBreached = whichBreached + "," + "drawbridge";
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense7);
                 if(junkCheck.isChecked()) {
-                    whichBreached = whichBreached + " " + "sallyport";
+                    whichBreached = whichBreached + "," + "sallyport";
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense8);
                 if(junkCheck.isChecked()) {
-                    whichBreached = whichBreached + " " + "rockwall";
+                    whichBreached = whichBreached + "," + "rockwall";
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense9);
                 if(junkCheck.isChecked()) {
-                    whichBreached = whichBreached + " " + "roughterrain";
+                    whichBreached = whichBreached + "," + "roughterrain";
                 }
 
 
@@ -330,39 +330,39 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 defLists = (View) findViewById(R.id.defenses2);
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense1);
                 if(junkCheck.isChecked()) {
-                    obstaclesOvercome = obstaclesOvercome + " " + "lowbar";
+                    obstaclesOvercome = obstaclesOvercome + "," + "lowbar";
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense2);
                 if(junkCheck.isChecked()) {
-                    obstaclesOvercome = obstaclesOvercome + " " + "portcullis";
+                    obstaclesOvercome = obstaclesOvercome + "," + "portcullis";
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense3);
                 if(junkCheck.isChecked()) {
-                    obstaclesOvercome = obstaclesOvercome + " " + "chevaldefrise";
+                    obstaclesOvercome = obstaclesOvercome + "," + "chevaldefrise";
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense4);
                 if(junkCheck.isChecked()) {
-                    obstaclesOvercome = obstaclesOvercome + " " + "moat";
+                    obstaclesOvercome = obstaclesOvercome + "," + "moat";
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense5);
                 if(junkCheck.isChecked()) {
-                    obstaclesOvercome = obstaclesOvercome + " " + "ramparts";
+                    obstaclesOvercome = obstaclesOvercome + "," + "ramparts";
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense6);
                 if(junkCheck.isChecked()) {
-                    obstaclesOvercome = obstaclesOvercome + " " + "drawbridge";
+                    obstaclesOvercome = obstaclesOvercome + "," + "drawbridge";
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense7);
                 if(junkCheck.isChecked()) {
-                    obstaclesOvercome = obstaclesOvercome + " " + "sallyport";
+                    obstaclesOvercome = obstaclesOvercome + "," + "sallyport";
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense8);
                 if(junkCheck.isChecked()) {
-                    obstaclesOvercome = obstaclesOvercome + " " + "rockwall";
+                    obstaclesOvercome = obstaclesOvercome + "," + "rockwall";
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense9);
                 if(junkCheck.isChecked()) {
-                    obstaclesOvercome = obstaclesOvercome + " " + "roughterrain";
+                    obstaclesOvercome = obstaclesOvercome + "," + "roughterrain";
                 }
 
 
@@ -370,39 +370,39 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 defLists = (View) findViewById(R.id.defenses3);
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense1);
                 if(junkCheck.isChecked()) {
-                    obstaclesFailed = obstaclesFailed + " " + "lowbar";
+                    obstaclesFailed = obstaclesFailed + "," + "lowbar";
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense2);
                 if(junkCheck.isChecked()) {
-                    obstaclesFailed = obstaclesFailed + " " + "portcullis";
+                    obstaclesFailed = obstaclesFailed + "," + "portcullis";
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense3);
                 if(junkCheck.isChecked()) {
-                    obstaclesFailed = obstaclesFailed + " " + "chevaldefrise";
+                    obstaclesFailed = obstaclesFailed + "," + "chevaldefrise";
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense4);
                 if(junkCheck.isChecked()) {
-                    obstaclesFailed = obstaclesFailed + " " + "moat";
+                    obstaclesFailed = obstaclesFailed + "," + "moat";
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense5);
                 if(junkCheck.isChecked()) {
-                    obstaclesFailed = obstaclesFailed + " " + "ramparts";
+                    obstaclesFailed = obstaclesFailed + "," + "ramparts";
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense6);
                 if(junkCheck.isChecked()) {
-                    obstaclesFailed = obstaclesFailed + " " + "drawbridge";
+                    obstaclesFailed = obstaclesFailed + "," + "drawbridge";
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense7);
                 if(junkCheck.isChecked()) {
-                    obstaclesFailed = obstaclesFailed + " " + "sallyport";
+                    obstaclesFailed = obstaclesFailed + "," + "sallyport";
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense8);
                 if(junkCheck.isChecked()) {
-                    obstaclesFailed = obstaclesFailed + " " + "rockwall";
+                    obstaclesFailed = obstaclesFailed + "," + "rockwall";
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense9);
                 if(junkCheck.isChecked()) {
-                    obstaclesFailed = obstaclesFailed + " " + "roughterrain";
+                    obstaclesFailed = obstaclesFailed + "," + "roughterrain";
                 }
 
 

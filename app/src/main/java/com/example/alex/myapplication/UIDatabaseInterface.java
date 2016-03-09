@@ -13,6 +13,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by alex on 4/18/15.
@@ -66,7 +67,7 @@ public class UIDatabaseInterface {
         listTables();
 
         listMatchesColumns();
-        listPerformanceColumns();
+        getPerformanceColumns();
 
         this.currentDataEntryTable = "Performance";
         this.currentDataViewTable = "Performance";
@@ -117,6 +118,19 @@ public class UIDatabaseInterface {
         }
     }
 
+    public static String[] getPerformanceColumns(){
+        Cursor c = database.selectFromTable("Performance", "*");
+        String columns[] = c.getColumnNames();
+
+        int columnCount = c.getColumnCount();
+        Log.v("UIdatabase", "Performance column count is " + columnCount);
+
+        for(String columnName : columns){
+            Log.v("UIdatabase", "COLUMN IN Performance : " + columnName);
+        }
+
+        return columns;
+    }
 
     public static void createDataEntryRows(ArrayList<DatabaseTable> tables) {
         Cursor performance = database.selectFromTable(currentDataEntryTable, "*");
@@ -244,6 +258,38 @@ public class UIDatabaseInterface {
     public static Cursor getTeamsNotInTeamTable(){
         Cursor teams = database.selectFromTableExcept("Team_Number", "Matches", "SELECT Team_Number FROM Teams");
         return teams;
+    }
+
+    public static void mergeToDatabase(String data) {
+        String[] lines = data.split("\n");
+
+        for(String line: lines) {
+            //for each line make an sql query to figure out if the line is already in the database
+            String[] cols = line.split("/");
+            Log.v("Mac Address", Arrays.toString(cols));
+            String query = "SELECT * FROM Performance WHERE Team_Number = " + cols[1] + " AND Match_Number = " + cols[2];
+            Cursor c = database.rawQuery(query);
+            if(c.getCount() == 0) {
+                Log.v("Mac Address", "ROW IS ORIGINAL: " + line);
+
+                String[] columnNames = getPerformanceColumns();
+
+                ContentValues values = new ContentValues();
+                for(int i = 1; i < cols.length; i++){
+                    values.put(columnNames[i], cols[i]); //plus one to skip row id
+                }
+                Log.v("Mac Address", "There are " + values.size() + " values in the contentValues");
+                database.addValues("Performance", values);
+            }
+            else {
+                Log.v("Mac Address", "ROW IS DUPLICATE: " + line);
+            }
+
+
+
+        }
+
+
     }
 
     public static DataEntryRow[] getDataEntryRows(){

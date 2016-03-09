@@ -150,6 +150,7 @@ public class Listener implements Runnable {
                                     if(ob instanceof SubmissionData) {
                                         SubmissionData str = (SubmissionData) ob;
                                         Log.v("Mac Address", str.getData());
+                                        UIDatabaseInterface.mergeToDatabase(str.getData());
                                     }
 
 
