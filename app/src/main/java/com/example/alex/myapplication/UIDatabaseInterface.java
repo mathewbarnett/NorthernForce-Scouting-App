@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 
@@ -130,6 +132,24 @@ public class UIDatabaseInterface {
         }
 
         return columns;
+    }
+
+    public static String[] getFullNameForTable(String tableName){
+        String[] fullNames = null;
+        for(DatabaseTable table : tables){
+            if(table.getName().equals(tableName)){
+                ArrayList<ConfigEntry> columns = table.getColumns();
+
+                fullNames = new String[columns.size()];
+                int counter = 0;
+                for(ConfigEntry entry : columns){
+                    fullNames[counter] = entry.getText();
+                    counter++;
+                }
+
+            }
+        }
+        return fullNames;
     }
 
     public static void createDataEntryRows(ArrayList<DatabaseTable> tables) {

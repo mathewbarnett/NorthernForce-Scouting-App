@@ -71,12 +71,13 @@ public class ViewDataAdapter extends BaseAdapter {
             return new TextView(viewDataActivity);
         }
         cursor.moveToPosition(position);
+
+        String[] fullNames = UIDatabaseInterface.getFullNameForTable("Performance");
         //i = 1 to skip _id column
         for (int i = 1; i < cursor.getColumnCount(); i++) {
-            Log.v("VeiwDataAdapter", "the cursor column count is " + cursor.getColumnCount() + " and i = " + i);
             Log.v("VeiwDataAdapter", "the cursor count is " + cursor.getCount() + " and i = " + i);
-            Log.v("ViewDataAdapter", "adding following to text view " + cursor.getColumnName(i) + ": " + cursor.getString(i));
-            view.setText(view.getText() + "\n" + cursor.getColumnName(i) + ": " + cursor.getString(i));
+            Log.v("ViewDataAdapter", "adding following to text view " + fullNames[i - 1] + ": " + cursor.getString(i));
+            view.setText(view.getText() + "\n" + fullNames[i - 1] + ": " + cursor.getString(i));
             Log.v("ViewDataAdapter", "view text has text of " + view.getText());
         }
 
