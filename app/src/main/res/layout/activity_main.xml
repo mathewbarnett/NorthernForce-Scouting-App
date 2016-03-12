@@ -4,7 +4,9 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:orientation="vertical"
-    android:id = "@+id/titleScreen">
+    android:id = "@+id/titleScreen"
+    >
+
 
     <TextView
         android:layout_width="wrap_content"
@@ -34,6 +36,7 @@
         android:layout_below="@+id/titleScreenEnterData"
         android:textSize="24dp"
         android:text = "View Data"/>
+
 
 
 </RelativeLayout>

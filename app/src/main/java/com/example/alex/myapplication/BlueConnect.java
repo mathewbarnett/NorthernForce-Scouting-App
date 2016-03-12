@@ -2,11 +2,13 @@ package com.example.alex.myapplication;
 
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.provider.Settings;
 import android.util.Log;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.UUID;
 //WHEN RUN ON DIFFERENT DEVICE WONT STOP CRASHING/ UTILS.MACADDRESS IS SUSPECTED
@@ -19,6 +21,13 @@ public class BlueConnect {
     UUID j = null;
     ArrayList<BluetoothSocket> connections = new ArrayList<BluetoothSocket>(7);
     String android_id;
+    public static BluetoothDevice bD;
+
+    public static void setbD(BluetoothDevice b) {
+        bD = b;
+    }
+
+
     public BlueConnect() {
 
     }
@@ -32,13 +41,13 @@ public class BlueConnect {
         ced = ceda;
         String b = "";
 
-        Utils.getMACAddress(null);
+     //   Utils.getMACAddress(null);
         j = uuid;
         android_id = Settings.Secure.getString(leggo.getContentResolver(), Settings.Secure.ANDROID_ID);
-        String thisAddress = Utils.getMACAddress(null);
+   //     String thisAddress = Utils.getMACAddress(null);
         BluetoothAdapter bl = BluetoothAdapter.getDefaultAdapter();
 
-        Log.v("Mac Address", "B" + thisAddress);
+     //    Log.v("Mac Address", "B" + thisAddress);
 
         if (android_id.equalsIgnoreCase("ce5798be02b59464")) {
 
@@ -73,6 +82,15 @@ public class BlueConnect {
 
         }
     return b;
+    }
+    public static void unpairDevice() {
+        try {
+            Method m = bD.getClass()
+                    .getMethod("removeBond", (Class[]) null);
+            m.invoke(bD, (Object[]) null);
+        } catch (Exception e) {
+            Log.e("Mac Address", e.getMessage());
+        }
     }
 
 

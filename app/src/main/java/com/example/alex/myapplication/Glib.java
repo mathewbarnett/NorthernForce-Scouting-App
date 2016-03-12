@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
@@ -227,9 +228,13 @@ public class Glib implements Runnable {
                                     ObjectOutputStream oout = new ObjectOutputStream(os);
                                     oout.writeObject(ly);
                                     oout.flush();
+                                    ControlledEnterDataActivity.status.setTextColor(Color.GREEN);
+                                    ControlledEnterDataActivity.status.setText("Success");
                                     //os.write(bytes);
                                     //os.flush();
                                 } catch (IOException e) {
+                                    ControlledEnterDataActivity.status.setTextColor(Color.RED);
+                                    ControlledEnterDataActivity.status.setText("Failure");
                                 }
 
                                 //  haha = new PrintStream(haha, true);
@@ -240,6 +245,8 @@ public class Glib implements Runnable {
 
                         } catch (IOException e) {
                             //connection to device failed so close the socket
+                            ControlledEnterDataActivity.status.setTextColor(Color.RED);
+                            ControlledEnterDataActivity.status.setText("Failure");
 
                         }
                     }
@@ -248,8 +255,8 @@ public class Glib implements Runnable {
 
 
             } catch (Exception e) {
-
-
+                ControlledEnterDataActivity.status.setTextColor(Color.RED);
+                ControlledEnterDataActivity.status.setText("Failure");
             }
         } //if statement ending
 

@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.util.Log;
 
 import java.io.ByteArrayInputStream;
@@ -151,6 +152,8 @@ public class Listener implements Runnable {
                                         SubmissionData str = (SubmissionData) ob;
                                         Log.v("Mac Address", str.getData());
                                         UIDatabaseInterface.mergeToDatabase(str.getData());
+                                        ControlledEnterDataActivity.status.setTextColor(Color.GREEN);
+                                        ControlledEnterDataActivity.status.setText("Data Received");
                                     }
 
 
@@ -158,6 +161,8 @@ public class Listener implements Runnable {
                                 }
                             }
                             catch(Exception e) {
+                                ControlledEnterDataActivity.status.setTextColor(Color.RED);
+                                ControlledEnterDataActivity.status.setText("ERROR RECEIVING DATA");
                             Log.v("Mac Address", "OH BOI");
                                 StringWriter errors = new StringWriter();
                                 e.printStackTrace(new PrintWriter(errors));
@@ -176,6 +181,7 @@ public class Listener implements Runnable {
                         Log.v("Mac Address", "Uprising Failed");
                         stopWorker = true;
                     }
+                 //   BlueConnect.unpairDevice();
                 }
             }
         });
@@ -194,6 +200,8 @@ public class Listener implements Runnable {
         }
         return null;
     }
+
+
 
 
 }

@@ -1,4 +1,5 @@
 package com.example.alex.myapplication;
+//need to make checkboxes required
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -7,6 +8,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -20,18 +22,20 @@ import java.util.UUID;
 
 /**
  * Created by Oombliocarius on 3/6/16.
+ *
  */
 public class ControlledEnterDataActivity extends ActionBarActivity {
 
 
     BluetoothAdapter bl;
     ControlledEnterDataActivity ceda = this;
+    public static TextView status;
 
     UUID uuid = UUID.fromString("e720951a-a29e-4772-b32e-7c60264d5c9b");
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-
+            Log.v("Mac Address", "weird");
             if (BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)) {
                 //discovery starts, we can show progress dialog or perform other tasks
 
@@ -91,13 +95,128 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
     String[] boolQuestions = new String[8];
     View[] allBoolSets = new View[8];
     View[][] boolOptions = new View[10][2];
+    CheckBox[][] defenseCheck = new CheckBox[3][8];
+    View[] defenseOptions = new View[3];
     Button blueButton;
     Button submitButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.data_entry_controlled);
+        status = (TextView)  findViewById(R.id.bluetoothStatus);
+        status.setTextColor(Color.BLACK);
+        status.setText("No Bluetooth Operations");
+        View.OnClickListener checks = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.v("Mac Address", "LISTENED");
+
+                int result = findFrom2DArray(view, defenseCheck);
+                int row = result / 100;
+                int col = result % 10;
+                Log.v("Mac Address", Integer.toString(result));
+                if ((col % 2) == 0) {
+                    CheckBox cb = (CheckBox) defenseCheck[row][col+1];
+                    CheckBox orig = (CheckBox) defenseCheck[row][col];
+                    Log.v("Mac Address", "YOU HIT: " + orig.getText() + " OF ROW: " + row);
+                    if (cb.isChecked()) {
+                        cb.setChecked(false);
+                    }
+
+
+                }
+                if ((col % 2) == 1) {
+                    Log.v("Mac Address", "REMAINDER 1");
+                    //    Log.v("Mac Address", "ONE BEFORE IS: " + ("defense" + (col + 1)));
+                    //    int magicId = defenseOptions[row].getResources().getIdentifier("defense" + (col - 1), "id", getPackageName());
+                    CheckBox cb = (CheckBox) defenseCheck[row][col-1];
+                    CheckBox orig = (CheckBox) defenseCheck[row][col];
+                    Log.v("Mac Address", "YOU HIT: " + orig.getText() + " OF ROW: " + row);
+                    //    Log.v("Mac Address", "YOU HIT: " + cb.getText());
+                    if (cb.isChecked()) {
+                        cb.setChecked(false);
+                    }
+
+
+                }
+
+        Log.v("Mac Address", "Exiting");
+            }
+        };
+
+
+        defenseOptions[0] = (View) findViewById(R.id.defenses1);
+        defenseOptions[1] = (View) findViewById(R.id.defenses2);
+
+        defenseOptions[2] = (View) findViewById(R.id.defenses3);
+
+        int numo = 2;
+
+
+             for(int l = 0; l < defenseCheck[0].length; l++) {
+                 if(numo != 0) {
+                     int magicId = defenseOptions[0].getResources().getIdentifier("defense" + numo, "id", getPackageName());
+                 //    Log.v("Mac Address", "GETTING: " + "defense" + numo);
+                     defenseCheck[0][l] = (CheckBox) findViewById(magicId);
+                    defenseCheck[0][l].setOnClickListener(checks);
+                     numo++;
+                 }
+
+
+
+        }
+
+        defenseCheck[1][0] = (CheckBox) defenseOptions[1].findViewById(R.id.defense2);
+        defenseCheck[1][1] = (CheckBox) defenseOptions[1].findViewById(R.id.defense3);
+        defenseCheck[1][2] = (CheckBox) defenseOptions[1].findViewById(R.id.defense4);
+        defenseCheck[1][3] = (CheckBox) defenseOptions[1].findViewById(R.id.defense5);
+        defenseCheck[1][4] = (CheckBox) defenseOptions[1].findViewById(R.id.defense6);
+        defenseCheck[1][5] = (CheckBox) defenseOptions[1].findViewById(R.id.defense7);
+        defenseCheck[1][6] = (CheckBox) defenseOptions[1].findViewById(R.id.defense8);
+        defenseCheck[1][7] = (CheckBox) defenseOptions[1].findViewById(R.id.defense9);
+
+        defenseCheck[2][0] = (CheckBox) defenseOptions[2].findViewById(R.id.defense2);
+        defenseCheck[2][1] = (CheckBox) defenseOptions[2].findViewById(R.id.defense3);
+        defenseCheck[2][2] = (CheckBox) defenseOptions[2].findViewById(R.id.defense4);
+        defenseCheck[2][3] = (CheckBox) defenseOptions[2].findViewById(R.id.defense5);
+        defenseCheck[2][4] = (CheckBox) defenseOptions[2].findViewById(R.id.defense6);
+        defenseCheck[2][5] = (CheckBox) defenseOptions[2].findViewById(R.id.defense7);
+        defenseCheck[2][6] = (CheckBox) defenseOptions[2].findViewById(R.id.defense8);
+        defenseCheck[2][7] = (CheckBox) defenseOptions[2].findViewById(R.id.defense9);
+
+
+
+
+
+
+
+        ((CheckBox)defenseOptions[1].findViewById(R.id.defense2)).setOnClickListener(checks);
+        ((CheckBox)defenseOptions[1].findViewById(R.id.defense3)).setOnClickListener(checks);
+        ((CheckBox)defenseOptions[1].findViewById(R.id.defense4)).setOnClickListener(checks);
+        ((CheckBox)defenseOptions[1].findViewById(R.id.defense5)).setOnClickListener(checks);
+        ((CheckBox)defenseOptions[1].findViewById(R.id.defense6)).setOnClickListener(checks);
+        ((CheckBox)defenseOptions[1].findViewById(R.id.defense7)).setOnClickListener(checks);
+        ((CheckBox)defenseOptions[1].findViewById(R.id.defense8)).setOnClickListener(checks);
+        ((CheckBox)defenseOptions[1].findViewById(R.id.defense9)).setOnClickListener(checks);
+
+        ((CheckBox)defenseOptions[2].findViewById(R.id.defense2)).setOnClickListener(checks);
+        ((CheckBox)defenseOptions[2].findViewById(R.id.defense3)).setOnClickListener(checks);
+        ((CheckBox)defenseOptions[2].findViewById(R.id.defense4)).setOnClickListener(checks);
+        ((CheckBox)defenseOptions[2].findViewById(R.id.defense5)).setOnClickListener(checks);
+        ((CheckBox)defenseOptions[2].findViewById(R.id.defense6)).setOnClickListener(checks);
+        ((CheckBox)defenseOptions[2].findViewById(R.id.defense7)).setOnClickListener(checks);
+        ((CheckBox)defenseOptions[2].findViewById(R.id.defense8)).setOnClickListener(checks);
+        ((CheckBox)defenseOptions[2].findViewById(R.id.defense9)).setOnClickListener(checks);
+
+
+
+
+
+
+
+
         submitButton = (Button) findViewById(R.id.submit);
 
 
@@ -149,8 +268,9 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int teamNum = 0;
-                int matchNum = 0;
+                int teamNum = -1;
+                int matchNum = -1;
+                boolean isFirst = true;
                 //YorNs
                 String outworks = "no";
                 String autoBreachDef = "no";
@@ -164,13 +284,13 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 String whereShoot = "no";
                 String playStyle = "no";
                 //weirdo
-                String highOrLowA = "";
+                String highOrLowA = "no";
                 //defense list composite strings
-                String whichBreached = "";
-                String obstaclesOvercome = "";
-                String obstaclesFailed = "";
+                String whichBreached = "no";
+                String obstaclesOvercome = "no";
+                String obstaclesFailed = "no";
                 //comments
-                String comments = "";
+                String comments = "no";
 
                 //GET DATA SECTION ************************************************************************
                 EditText specifics = null;
@@ -180,14 +300,34 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
 
                 View defLists = null;
 
+
+                boolean canContinue = true;
+
+
+
+
+
                 specifics = (EditText) findViewById(R.id.teamNumber);
+
                 temp = specifics.getText().toString();
-                teamNum = Integer.valueOf(temp);
+                    if(!temp.equals("")) {
+                        teamNum = Integer.valueOf(temp);
+                    }
+                    else {
+                        canContinue = false;
+                    }
 
 
                 specifics = (EditText) findViewById(R.id.matchNumber);
-                temp = specifics.getText().toString();
-                matchNum = Integer.valueOf(temp);
+                    temp = specifics.getText().toString();
+                    if(!temp.equals("")) {
+                        matchNum = Integer.valueOf(temp);
+                    }
+                    else {
+                        canContinue = false;
+                    }
+
+
 
                 specifics = (EditText) findViewById(R.id.comments);
                 comments = specifics.getText().toString();
@@ -289,133 +429,297 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 defLists = (View) findViewById(R.id.defenses1);
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense1);
                 if(junkCheck.isChecked()) {
-                    whichBreached = whichBreached + "," + "lowbar";
+                    if(isFirst) {
+                        whichBreached = whichBreached + "Low Bar";
+                        isFirst = false;
+                    }
+                    else {
+                        whichBreached = whichBreached + "," + "Low Bar";
+                    }
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense2);
                 if(junkCheck.isChecked()) {
-                    whichBreached = whichBreached + "," + "portcullis";
+                    if(isFirst) {
+                        whichBreached = whichBreached + "Portcullis";
+                        isFirst = false;
+                    }
+                    else {
+                        whichBreached = whichBreached + "," + "Portcullis";
+                    }
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense3);
                 if(junkCheck.isChecked()) {
-                    whichBreached = whichBreached + "," + "chevaldefrise";
+                    if(isFirst) {
+                        whichBreached = whichBreached + "Cheval de Frise";
+                        isFirst = false;
+                    }
+                    else {
+                        whichBreached = whichBreached + "," + "Cheval de Frise";
+                    }
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense4);
                 if(junkCheck.isChecked()) {
-                    whichBreached = whichBreached + "," + "moat";
+                    if(isFirst) {
+                        whichBreached = whichBreached + "Moat";
+                        isFirst = false;
+                    }
+                    else {
+                        whichBreached = whichBreached + "," + "Moat";
+                    }
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense5);
                 if(junkCheck.isChecked()) {
-                    whichBreached = whichBreached + "," + "ramparts";
+                    if(isFirst) {
+                        whichBreached = whichBreached + "Ramparts";
+                        isFirst = false;
+                    }
+                    else {
+                        whichBreached = whichBreached + "," + "Ramparts";
+                    }
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense6);
                 if(junkCheck.isChecked()) {
-                    whichBreached = whichBreached + "," + "drawbridge";
+                    if(isFirst) {
+                        whichBreached = whichBreached + "Drawbridge";
+                        isFirst = false;
+                    }
+                    else {
+                        whichBreached = whichBreached + "," + "Drawbridge";
+                    }
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense7);
                 if(junkCheck.isChecked()) {
-                    whichBreached = whichBreached + "," + "sallyport";
+                    if(isFirst) {
+                        whichBreached = whichBreached + "Sally Port";
+                        isFirst = false;
+                    }
+                    else {
+                        whichBreached = whichBreached + "," + "Sally Port";
+                    }
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense8);
                 if(junkCheck.isChecked()) {
-                    whichBreached = whichBreached + "," + "rockwall";
+                    if(isFirst) {
+                        whichBreached = whichBreached + "Rock Wall";
+                        isFirst = false;
+                    }
+                    else {
+                        whichBreached = whichBreached + "," + "Rock Wall";
+                    }
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense9);
                 if(junkCheck.isChecked()) {
-                    whichBreached = whichBreached + "," + "roughterrain";
+                    if(isFirst) {
+                        whichBreached = whichBreached + "Rough Terrain";
+                        isFirst = false;
+                    }
+                    else {
+                        whichBreached = whichBreached + "," + "Rough Terrain";
+                    }
                 }
 
-
+                isFirst = true;
 
 
                 defLists = (View) findViewById(R.id.defenses2);
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense1);
                 if(junkCheck.isChecked()) {
-                    obstaclesOvercome = obstaclesOvercome + "," + "lowbar";
+                    if(isFirst) {
+                        obstaclesOvercome = obstaclesOvercome + "Low Bar";
+                        isFirst = false;
+                    }
+                    else {
+                        obstaclesOvercome = obstaclesOvercome + "," + "Low Bar";
+                    }
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense2);
                 if(junkCheck.isChecked()) {
-                    obstaclesOvercome = obstaclesOvercome + "," + "portcullis";
+                    if(isFirst) {
+                        obstaclesOvercome = obstaclesOvercome + "Portcullis";
+                        isFirst = false;
+                    }
+                    else {
+                        obstaclesOvercome = obstaclesOvercome + "," + "Portcullis";
+                    }
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense3);
                 if(junkCheck.isChecked()) {
-                    obstaclesOvercome = obstaclesOvercome + "," + "chevaldefrise";
+                    if(isFirst) {
+                        obstaclesOvercome = obstaclesOvercome + "Cheval de Frise";
+                        isFirst = false;
+                    }
+                    else {
+                        obstaclesOvercome = obstaclesOvercome + "," + "Cheval de Frise";
+                    }
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense4);
                 if(junkCheck.isChecked()) {
-                    obstaclesOvercome = obstaclesOvercome + "," + "moat";
+                    if(isFirst) {
+                        obstaclesOvercome = obstaclesOvercome + "Moat";
+                        isFirst = false;
+                    }
+                    else {
+                        obstaclesOvercome = obstaclesOvercome + "," + "Moat";
+                    }
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense5);
                 if(junkCheck.isChecked()) {
-                    obstaclesOvercome = obstaclesOvercome + "," + "ramparts";
+                    if(isFirst) {
+                        obstaclesOvercome = obstaclesOvercome + "Ramparts";
+                        isFirst = false;
+                    }
+                    else {
+                        obstaclesOvercome = obstaclesOvercome + "," + "Ramparts";
+                    }
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense6);
                 if(junkCheck.isChecked()) {
-                    obstaclesOvercome = obstaclesOvercome + "," + "drawbridge";
+                    if(isFirst) {
+                        obstaclesOvercome = obstaclesOvercome + "Drawbridge";
+                        isFirst = false;
+                    }
+                    else {
+                        obstaclesOvercome = obstaclesOvercome + "," + "Drawbridge";
+                    }
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense7);
                 if(junkCheck.isChecked()) {
-                    obstaclesOvercome = obstaclesOvercome + "," + "sallyport";
+                    if(isFirst) {
+                        obstaclesOvercome = obstaclesOvercome + "Sally Port";
+                        isFirst = false;
+                    }
+                    else {
+                        obstaclesOvercome = obstaclesOvercome + "," + "Sally Port";
+                    }
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense8);
                 if(junkCheck.isChecked()) {
-                    obstaclesOvercome = obstaclesOvercome + "," + "rockwall";
+                    if(isFirst) {
+                        obstaclesOvercome = obstaclesOvercome + "Rock Wall";
+                        isFirst = false;
+                    }
+                    else {
+                        obstaclesOvercome = obstaclesOvercome + "," + "Rock Wall";
+                    }
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense9);
                 if(junkCheck.isChecked()) {
-                    obstaclesOvercome = obstaclesOvercome + "," + "roughterrain";
+                    if(isFirst) {
+                        obstaclesOvercome = obstaclesOvercome + "Rough Terrain";
+                        isFirst = false;
+                    }
+                    else {
+                        obstaclesOvercome = obstaclesOvercome + "," + "Rough Terrain";
+                    }
                 }
 
-
+                isFirst = true;
 
                 defLists = (View) findViewById(R.id.defenses3);
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense1);
                 if(junkCheck.isChecked()) {
-                    obstaclesFailed = obstaclesFailed + "," + "lowbar";
+                    if(isFirst) {
+                        obstaclesFailed = obstaclesFailed + "Low Bar";
+                        isFirst = false;
+                    }
+                    else {
+                        obstaclesFailed = obstaclesFailed + "," + "Low Bar";
+                    }
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense2);
                 if(junkCheck.isChecked()) {
-                    obstaclesFailed = obstaclesFailed + "," + "portcullis";
+                    if(isFirst) {
+                        obstaclesFailed = obstaclesFailed + "Portcullis";
+                        isFirst = false;
+                    }
+                    else {
+                        obstaclesFailed = obstaclesFailed + "," + "Portcullis";
+                    }
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense3);
                 if(junkCheck.isChecked()) {
-                    obstaclesFailed = obstaclesFailed + "," + "chevaldefrise";
+                    if(isFirst) {
+                        obstaclesFailed = obstaclesFailed + "Cheval de Frise";
+                        isFirst = false;
+                    }
+                    else {
+                        obstaclesFailed = obstaclesFailed + "," + "Cheval de Frise";
+                    }
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense4);
                 if(junkCheck.isChecked()) {
-                    obstaclesFailed = obstaclesFailed + "," + "moat";
+                    if(isFirst) {
+                        obstaclesFailed = obstaclesFailed + "Moat";
+                        isFirst = false;
+                    }
+                    else {
+                        obstaclesFailed = obstaclesFailed + "," + "Moat";
+                    }
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense5);
                 if(junkCheck.isChecked()) {
-                    obstaclesFailed = obstaclesFailed + "," + "ramparts";
+                    if(isFirst) {
+                        obstaclesFailed = obstaclesFailed + "Ramparts";
+                        isFirst = false;
+                    }
+                    else {
+                        obstaclesFailed = obstaclesFailed + "," + "Ramparts";
+                    }
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense6);
                 if(junkCheck.isChecked()) {
-                    obstaclesFailed = obstaclesFailed + "," + "drawbridge";
+                    if(isFirst) {
+                        obstaclesFailed = obstaclesFailed + "Drawbridge";
+                        isFirst = false;
+                    }
+                    else {
+                        obstaclesFailed = obstaclesFailed + "," + "Drawbridge";
+                    }
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense7);
                 if(junkCheck.isChecked()) {
-                    obstaclesFailed = obstaclesFailed + "," + "sallyport";
+                    if(isFirst) {
+                        obstaclesFailed = obstaclesFailed + "Sally Port";
+                        isFirst = false;
+                    }
+                    else {
+                        obstaclesFailed = obstaclesFailed + "," + "Sally Port";
+                    }
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense8);
                 if(junkCheck.isChecked()) {
-                    obstaclesFailed = obstaclesFailed + "," + "rockwall";
+                    if(isFirst) {
+                        obstaclesFailed = obstaclesFailed + "Rock Wall";
+                        isFirst = false;
+                    }
+                    else {
+                        obstaclesFailed = obstaclesFailed + "," + "Rock Wall";
+                    }
                 }
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense9);
                 if(junkCheck.isChecked()) {
-                    obstaclesFailed = obstaclesFailed + "," + "roughterrain";
+                    if(isFirst) {
+                        obstaclesFailed = obstaclesFailed + "Rough Terrain";
+                        isFirst = false;
+                    }
+                    else {
+                        obstaclesFailed = obstaclesFailed + "," + "Rough Terrain";
+                    }
                 }
 
 
 
                 junkCheck = (CheckBox) findViewById(R.id.autoLow);
                 if(junkCheck.isChecked()) {
-                    highOrLowA = "low";
+                    highOrLowA += "low";
                 }
 
                 junkCheck = (CheckBox) findViewById(R.id.autoHigh);
                 if(junkCheck.isChecked()) {
-                    highOrLowA = "high";
+                    highOrLowA += "high";
                 }
+
+
 
 
 
@@ -423,18 +727,73 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
 
 
                 //END GET DATA SECTION ********************************************************************
+                //VERIFY ENTRY SECTION ********************************************************************
+
+
+                    if(teamNum == -1){canContinue = false;};
+                    if(matchNum == -1){canContinue = false;};
+                    if(outworks.equals("no")){canContinue = false;};
+                    if(autoBreachDef.equals("no")){canContinue = false;};
+                    if(autoScore.equals("no")){canContinue = false;};
+                    if(teleBreachDef.equals("no")){canContinue = false;};
+                    if(attemptedDef.equals("no")){canContinue = false;};
+                    if(reliable.equals("no")){canContinue = false;};
+                    if(challenged.equals("no")){canContinue = false;};
+                    if(scaled.equals("no")){canContinue = false;};
+                    if(playStyle.equals("no")){canContinue = false;};
+                    if(whereShoot.equals("no")) {canContinue = false;};
+
+                    if(autoScore.equals("true")) {
+                        if(highOrLowA.equals("no")) {
+                            canContinue = false;
+                        }
+                    }
+
+                    if(autoBreachDef.equals("false")) {
+                        whichBreached = "";
+                    }
+
+                    if(teleBreachDef.equals("false")) {
+                        obstaclesOvercome = "";
+                    }
+                    if(attemptedDef.equals("false")) {
+                        obstaclesFailed = "";
+                    }
+
+                if(autoBreachDef.equals("true")) {
+                    if(whichBreached.equals("no")) {
+                        canContinue = false;
+                    }
+                }
+
+                if(teleBreachDef.equals("true")) {
+                    if(obstaclesOvercome.equals("no")) {
+                        canContinue = false;
+                    }
+                }
+                if(attemptedDef.equals("true")) {
+                    if(obstaclesFailed.equals("no")) {
+                        canContinue = false;
+                    }
+                }
+
+
+
+
+                //END VERIFY ENTRY SECTION ****************************************************************
                 //RESET LAYOUT SECTION ********************************************************************
-                String bigId = "defenses";
-                int bigNumId = 0;
+                if(canContinue) {
+                    String bigId = "defenses";
+                    int bigNumId = 0;
 
-                for(int l = 0; l < 3; l++) {
+                    for (int l = 0; l < 3; l++) {
 
-                    bigId = bigId + (l+1);
-                    bigNumId = getResources().getIdentifier(bigId, "id", getPackageName());
-                    Log.v("Mac Address", "The big view is: " + bigId);
-                    View defOptions = findViewById(bigNumId);
+                        bigId = bigId + (l + 1);
+                        bigNumId = getResources().getIdentifier(bigId, "id", getPackageName());
+                        Log.v("Mac Address", "The big view is: " + bigId);
+                        View defOptions = findViewById(bigNumId);
 
-                    CheckBox cb = null;
+                        CheckBox cb = null;
 
                         cb = (CheckBox) defOptions.findViewById(R.id.defense1);
                         cb.setChecked(false);
@@ -455,88 +814,97 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                         cb = (CheckBox) defOptions.findViewById(R.id.defense9);
                         cb.setChecked(false);
 
-                    bigId = "defenses";
+                        bigId = "defenses";
+                    }
+                    CheckBox cb = null;
+                    cb = (CheckBox) findViewById(R.id.autoHigh);
+                    cb.setChecked(false);
+                    cb = (CheckBox) findViewById(R.id.autoLow);
+                    cb.setChecked(false);
+
+
+                    for (int i = 0; i < boolOptions.length; i++) {
+
+                        if (boolOptions[i][0] instanceof EnhancedRadioButton) {
+                            EnhancedRadioButton ehr = (EnhancedRadioButton) boolOptions[i][0];
+                            ehr.setChecked(false);
+                            ehr = (EnhancedRadioButton) boolOptions[i][1];
+                            ehr.setChecked(false);
+
+                        }
+                        if (boolOptions[i][0] instanceof CheckBox) {
+                            CheckBox ehr = (CheckBox) boolOptions[i][0];
+                            ehr.setChecked(false);
+                            ehr = (CheckBox) boolOptions[i][1];
+                            ehr.setChecked(false);
+
+                        }
+
+
+                    }
+
+                    EditText nums = (EditText) findViewById(R.id.matchNumber);
+
+                    nums.setText("".toCharArray(), 0, 0);
+                    nums = (EditText) findViewById(R.id.teamNumber);
+                    nums.setText("".toCharArray(), 0, 0);
+                    nums = (EditText) findViewById(R.id.comments);
+                    nums.setText("".toCharArray(), 0, 0);
+
+
+                    //END OF RESET LAYOUT SECTION ********************************************************************
+
+                    //PRINT TIME ******************************************************************************************
+                    Log.v("Mac Address", String.valueOf(teamNum));
+                    Log.v("Mac Address", String.valueOf(matchNum));
+                    Log.v("Mac Address", outworks);
+                    Log.v("Mac Address", autoBreachDef);
+                    Log.v("Mac Address", autoScore);
+                    Log.v("Mac Address", teleBreachDef);
+                    Log.v("Mac Address", attemptedDef);
+                    Log.v("Mac Address", reliable);
+                    Log.v("Mac Address", challenged);
+                    Log.v("Mac Address", scaled);
+                    Log.v("Mac Address", whereShoot);
+                    Log.v("Mac Address", playStyle);
+                    Log.v("Mac Address", highOrLowA);
+                    Log.v("Mac Address", whichBreached);
+                    Log.v("Mac Address", obstaclesOvercome);
+                    Log.v("Mac Address", obstaclesFailed);
+                    Log.v("Mac Address", comments);
+
+                    ContentValues values = new ContentValues();
+
+                    values.put("Team_Number", teamNum);
+                    values.put("Match_Number", matchNum);
+                    //values.put("Event_Name",);
+                    values.put("crossOutW", outworks);
+                    values.put("breachD", autoBreachDef);
+                    values.put("whichBreached", whichBreached);
+                    values.put("didScore", autoScore);
+                    values.put("highOrLowA", highOrLowA);
+                    values.put("didOvercome", teleBreachDef);
+                    values.put("obstaclesOvercome", obstaclesOvercome);
+                    values.put("failed", attemptedDef);
+                    values.put("obstaclesFailed", obstaclesFailed);
+                    values.put("highOrLowT", whereShoot);
+                    values.put("reliability", reliable);
+                    values.put("offOrDef", playStyle);
+                    values.put("didChallenge", challenged);
+                    values.put("didScale", scaled);
+                    values.put("Comments", comments);
+
+                    UIDatabaseInterface.getDatabase().addValues("Performance", values);
+                    TextView status = (TextView) findViewById(R.id.submitStatus);
+                    status.setTextColor(Color.GREEN);
+                    status.setText("Success: Submission Entered");
+
                 }
-                CheckBox cb = null;
-                cb = (CheckBox) findViewById(R.id.autoHigh);
-                cb.setChecked(false);
-                cb = (CheckBox) findViewById(R.id.autoLow);
-                cb.setChecked(false);
-
-
-            for(int i  = 0; i < boolOptions.length; i++) {
-
-            if(boolOptions[i][0] instanceof EnhancedRadioButton) {
-               EnhancedRadioButton ehr = (EnhancedRadioButton) boolOptions[i][0];
-                ehr.setChecked(false);
-                ehr = (EnhancedRadioButton) boolOptions[i][1];
-                ehr.setChecked(false);
-
-            }
-                if(boolOptions[i][0] instanceof CheckBox) {
-                    CheckBox ehr = (CheckBox) boolOptions[i][0];
-                    ehr.setChecked(false);
-                    ehr = (CheckBox) boolOptions[i][1];
-                    ehr.setChecked(false);
-
+                else {
+                    TextView status = (TextView) findViewById(R.id.submitStatus);
+                    status.setTextColor(Color.RED);
+                    status.setText("Failed: Missing Data".toCharArray(), 0, "Failed: Missing Data".length());
                 }
-
-
-            }
-
-                EditText nums = (EditText) findViewById(R.id.matchNumber);
-
-                nums.setText("".toCharArray(), 0, 0);
-                nums = (EditText) findViewById(R.id.teamNumber);
-                nums.setText("".toCharArray(), 0, 0);
-                nums = (EditText) findViewById(R.id.comments);
-                nums.setText("".toCharArray(), 0, 0);
-
-
-                //END OF RESET LAYOUT SECTION ********************************************************************
-
-                //PRINT TIME ******************************************************************************************
-                Log.v("Mac Address", String.valueOf(teamNum));
-                Log.v("Mac Address", String.valueOf(matchNum));
-                Log.v("Mac Address", outworks);
-                Log.v("Mac Address", autoBreachDef);
-                Log.v("Mac Address", autoScore);
-                Log.v("Mac Address", teleBreachDef);
-                Log.v("Mac Address", attemptedDef);
-                Log.v("Mac Address", reliable);
-                Log.v("Mac Address", challenged);
-                Log.v("Mac Address", scaled);
-                Log.v("Mac Address", whereShoot);
-                Log.v("Mac Address", playStyle);
-                Log.v("Mac Address", highOrLowA);
-                Log.v("Mac Address", whichBreached);
-                Log.v("Mac Address", obstaclesOvercome);
-                Log.v("Mac Address", obstaclesFailed);
-                Log.v("Mac Address", comments);
-
-                ContentValues values = new ContentValues();
-
-                values.put("Team_Number",teamNum);
-                values.put("Match_Number",matchNum);
-                //values.put("Event_Name",);
-                values.put("crossOutW",outworks);
-                values.put("breachD",autoBreachDef);
-                values.put("whichBreached",whichBreached);
-                values.put("didScore",autoScore);
-                values.put("highOrLowA",highOrLowA);
-                values.put("didOvercome",teleBreachDef);
-                values.put("obstaclesOvercome",obstaclesOvercome);
-                values.put("failed",attemptedDef);
-                values.put("obstaclesFailed",obstaclesFailed);
-                values.put("highOrLowT",whereShoot);
-                values.put("reliability", reliable);
-                values.put("offOrDef",playStyle);
-                values.put("didChallenge",challenged);
-                values.put("didScale",scaled);
-                values.put("Comments",comments);
-
-                UIDatabaseInterface.getDatabase().addValues("Performance", values);
-
 
             }
         });
@@ -544,6 +912,9 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
 
         View.OnClickListener checkToggles = new View.OnClickListener(){
             public void  onClick  (View  v){
+                TextView status = (TextView) findViewById(R.id.submitStatus);
+                status.setText("");
+                status.setTextColor(Color.BLACK);
                 int con = 0;
                 int row = 0;
                 int col = 0;
@@ -602,12 +973,22 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
             @Override
             public void onClick(View view) {
 
+
                 String oh = (new BlueConnect().run(ceda, uuid, ceda));
                 if(!oh.equals("master")) {
                     IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
                     registerReceiver(mReceiver, filter);
                     bl = BluetoothAdapter.getDefaultAdapter();
+                    Log.v("Mac Address", "Made it to listener");
 
+                    if (!bl.isEnabled()) {
+                        bl.enable();
+                        Log.v("Mac Address", "Had to");
+                    }
+                    if(!bl.isEnabled()) {
+                        bl.enable();
+                        Log.v("Mac Address", "WTF");
+                    }
                     bl.startDiscovery();
                 }
                 else {
@@ -646,6 +1027,25 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
 
         }
         return 0;
+
+
+    }
+
+    public int findFrom2DArray(View v,  CheckBox[][] data) {
+        CheckBox vo = (CheckBox) v;
+        for(int i = 0; i < data.length; i++) {
+
+            for(int l = 0; l < data[0].length; l++) {
+
+                if(vo.equals(data[i][l])) {
+                    return (i*100 + l);
+                }
+
+            }
+
+
+        }
+        return -1;
 
 
     }

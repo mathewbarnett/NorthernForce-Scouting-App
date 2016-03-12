@@ -39,7 +39,7 @@ public class Aggro implements Runnable {
 
 //
         try {
-
+            BlueConnect.setbD(bD);
             Log.v("Mac Address", "Aggro Started");
           //  bD.createBond();
             Log.v("Mac Address", pairDevice(bD) + "  PAIRING STATUS");
@@ -77,6 +77,8 @@ public class Aggro implements Runnable {
         }
         return false;
     }
+
+
 
 
 
