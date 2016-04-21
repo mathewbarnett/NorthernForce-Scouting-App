@@ -283,26 +283,30 @@ public class UIDatabaseInterface {
 
         for(String line: lines) {
             //for each line make an sql query to figure out if the line is already in the database
+
             String[] cols = line.split("/");
-            Log.v("Mac Address", Arrays.toString(cols));
-            String query = "SELECT * FROM Performance WHERE Team_Number = " + cols[1] + " AND Match_Number = " + cols[2];
-            Cursor c = database.rawQuery(query);
-            if(c.getCount() == 0) {
-                Log.v("Mac Address", "ROW IS ORIGINAL: " + line);
 
-                String[] columnNames = getPerformanceColumns();
+            if(cols.length != 1) {
+                Log.v("Mac Address", Arrays.toString(cols));
+                String query = "SELECT * FROM Performance WHERE Team_Number = " + cols[1] + " AND Match_Number = " + cols[2];
+                Cursor c = database.rawQuery(query);
+                if (c.getCount() == 0) {
+                    Log.v("Mac Address", "ROW IS ORIGINAL: " + line);
 
-                ContentValues values = new ContentValues();
-                for(int i = 1; i < cols.length; i++){
-                    values.put(columnNames[i], cols[i]); //plus one to skip row id
+                    String[] columnNames = getPerformanceColumns();
+
+                    ContentValues values = new ContentValues();
+                    for (int i = 1; i < cols.length; i++) {
+                        if(i != columnNames.length) {
+                            values.put(columnNames[i], cols[i]); //plus one to skip row id
+                        }
+                    }
+                    Log.v("Mac Address", "There are " + values.size() + " values in the contentValues");
+                    database.addValues("Performance", values);
+                } else {
+                    Log.v("Mac Address", "ROW IS DUPLICATE: " + line);
                 }
-                Log.v("Mac Address", "There are " + values.size() + " values in the contentValues");
-                database.addValues("Performance", values);
             }
-            else {
-                Log.v("Mac Address", "ROW IS DUPLICATE: " + line);
-            }
-
 
 
         }

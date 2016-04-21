@@ -1,14 +1,17 @@
 package com.example.alex.myapplication;
 //need to make checkboxes required
 
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -99,15 +102,45 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
     View[] defenseOptions = new View[3];
     Button blueButton;
     Button submitButton;
+    CheckBox scoreNone;
+    Button noShow;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+
+
         setContentView(R.layout.data_entry_controlled);
+      //
         status = (TextView)  findViewById(R.id.bluetoothStatus);
-        status.setTextColor(Color.BLACK);
-        status.setText("No Bluetooth Operations");
+        TextView type = (TextView) findViewById(R.id.deviceType);
+        type.setTypeface(Typeface.DEFAULT_BOLD);
+
+        noShow = (Button) findViewById(R.id.noShow);
+        CheckBox noScore = (CheckBox) findViewById(R.id.teleNone);
+        noScore.setVisibility(View.INVISIBLE);
+
+
+
+        String oh = (new BlueConnect().run(ceda, uuid, ceda));
+        if(!oh.equals("master")) {
+            TextView typo = (TextView) findViewById(R.id.deviceType);
+            typo.setText("Sending Device");
+        }
+        else {
+            TextView typo = (TextView) findViewById(R.id.deviceType);
+            typo.setText("Receiving Device");
+        }
+
+      //  status.setTextColor(Color.BLACK);
+       // status.setText("No Bluetooth Operations");
+
+
+
+
+
         View.OnClickListener checks = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -299,7 +332,7 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 CheckBox junkCheck = null;
 
                 View defLists = null;
-
+                CheckBox noScore = (CheckBox) findViewById(R.id.teleNone);
 
                 boolean canContinue = true;
 
@@ -334,6 +367,7 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
 
 
                 eh = (EnhancedRadioButton) boolOptions[0][0].findViewById(R.id.yes_or_no_entry_yesButton);
+
                 if(eh.isChecked()) {
                 outworks = "true";
                 }
@@ -407,11 +441,13 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 }
                 junkCheck = (CheckBox) boolOptions[8][0];
                 if(junkCheck.isChecked()) {
-                    whereShoot = "true";
+                    whereShoot = "tHiigh";
+                    Log.v("Mac Address", "Where shoot check 1");
                 }
                 junkCheck = (CheckBox) boolOptions[8][1];
                 if(junkCheck.isChecked()) {
-                    whereShoot = "false";
+                    whereShoot = "tLoow";
+                    Log.v("Mac Address", "Where shoot check 2");
                 }
 
                 junkCheck = (CheckBox) boolOptions[9][0];
@@ -430,6 +466,7 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense1);
                 if(junkCheck.isChecked()) {
                     if(isFirst) {
+                        whichBreached = "";
                         whichBreached = whichBreached + "Low Bar";
                         isFirst = false;
                     }
@@ -440,6 +477,7 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense2);
                 if(junkCheck.isChecked()) {
                     if(isFirst) {
+                        whichBreached = "";
                         whichBreached = whichBreached + "Portcullis";
                         isFirst = false;
                     }
@@ -450,6 +488,7 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense3);
                 if(junkCheck.isChecked()) {
                     if(isFirst) {
+                        whichBreached = "";
                         whichBreached = whichBreached + "Cheval de Frise";
                         isFirst = false;
                     }
@@ -460,6 +499,7 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense4);
                 if(junkCheck.isChecked()) {
                     if(isFirst) {
+                        whichBreached = "";
                         whichBreached = whichBreached + "Moat";
                         isFirst = false;
                     }
@@ -470,6 +510,7 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense5);
                 if(junkCheck.isChecked()) {
                     if(isFirst) {
+                        whichBreached = "";
                         whichBreached = whichBreached + "Ramparts";
                         isFirst = false;
                     }
@@ -480,6 +521,7 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense6);
                 if(junkCheck.isChecked()) {
                     if(isFirst) {
+                        whichBreached = "";
                         whichBreached = whichBreached + "Drawbridge";
                         isFirst = false;
                     }
@@ -490,6 +532,7 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense7);
                 if(junkCheck.isChecked()) {
                     if(isFirst) {
+                        whichBreached = "";
                         whichBreached = whichBreached + "Sally Port";
                         isFirst = false;
                     }
@@ -500,6 +543,7 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense8);
                 if(junkCheck.isChecked()) {
                     if(isFirst) {
+                        whichBreached = "";
                         whichBreached = whichBreached + "Rock Wall";
                         isFirst = false;
                     }
@@ -510,6 +554,7 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense9);
                 if(junkCheck.isChecked()) {
                     if(isFirst) {
+                        whichBreached = "";
                         whichBreached = whichBreached + "Rough Terrain";
                         isFirst = false;
                     }
@@ -525,6 +570,7 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense1);
                 if(junkCheck.isChecked()) {
                     if(isFirst) {
+                        obstaclesOvercome = "";
                         obstaclesOvercome = obstaclesOvercome + "Low Bar";
                         isFirst = false;
                     }
@@ -535,6 +581,7 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense2);
                 if(junkCheck.isChecked()) {
                     if(isFirst) {
+                        obstaclesOvercome = "";
                         obstaclesOvercome = obstaclesOvercome + "Portcullis";
                         isFirst = false;
                     }
@@ -545,6 +592,7 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense3);
                 if(junkCheck.isChecked()) {
                     if(isFirst) {
+                        obstaclesOvercome = "";
                         obstaclesOvercome = obstaclesOvercome + "Cheval de Frise";
                         isFirst = false;
                     }
@@ -555,6 +603,7 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense4);
                 if(junkCheck.isChecked()) {
                     if(isFirst) {
+                        obstaclesOvercome = "";
                         obstaclesOvercome = obstaclesOvercome + "Moat";
                         isFirst = false;
                     }
@@ -565,6 +614,7 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense5);
                 if(junkCheck.isChecked()) {
                     if(isFirst) {
+                        obstaclesOvercome = "";
                         obstaclesOvercome = obstaclesOvercome + "Ramparts";
                         isFirst = false;
                     }
@@ -575,6 +625,7 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense6);
                 if(junkCheck.isChecked()) {
                     if(isFirst) {
+                        obstaclesOvercome = "";
                         obstaclesOvercome = obstaclesOvercome + "Drawbridge";
                         isFirst = false;
                     }
@@ -585,6 +636,7 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense7);
                 if(junkCheck.isChecked()) {
                     if(isFirst) {
+                        obstaclesOvercome = "";
                         obstaclesOvercome = obstaclesOvercome + "Sally Port";
                         isFirst = false;
                     }
@@ -595,6 +647,7 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense8);
                 if(junkCheck.isChecked()) {
                     if(isFirst) {
+                        obstaclesOvercome = "";
                         obstaclesOvercome = obstaclesOvercome + "Rock Wall";
                         isFirst = false;
                     }
@@ -605,6 +658,7 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense9);
                 if(junkCheck.isChecked()) {
                     if(isFirst) {
+                        obstaclesOvercome = "";
                         obstaclesOvercome = obstaclesOvercome + "Rough Terrain";
                         isFirst = false;
                     }
@@ -619,6 +673,7 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense1);
                 if(junkCheck.isChecked()) {
                     if(isFirst) {
+                        obstaclesFailed = "";
                         obstaclesFailed = obstaclesFailed + "Low Bar";
                         isFirst = false;
                     }
@@ -629,6 +684,7 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense2);
                 if(junkCheck.isChecked()) {
                     if(isFirst) {
+                        obstaclesFailed = "";
                         obstaclesFailed = obstaclesFailed + "Portcullis";
                         isFirst = false;
                     }
@@ -639,6 +695,7 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense3);
                 if(junkCheck.isChecked()) {
                     if(isFirst) {
+                        obstaclesFailed = "";
                         obstaclesFailed = obstaclesFailed + "Cheval de Frise";
                         isFirst = false;
                     }
@@ -649,6 +706,7 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense4);
                 if(junkCheck.isChecked()) {
                     if(isFirst) {
+                        obstaclesFailed = "";
                         obstaclesFailed = obstaclesFailed + "Moat";
                         isFirst = false;
                     }
@@ -659,6 +717,7 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense5);
                 if(junkCheck.isChecked()) {
                     if(isFirst) {
+                        obstaclesFailed = "";
                         obstaclesFailed = obstaclesFailed + "Ramparts";
                         isFirst = false;
                     }
@@ -669,6 +728,7 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense6);
                 if(junkCheck.isChecked()) {
                     if(isFirst) {
+                        obstaclesFailed = "";
                         obstaclesFailed = obstaclesFailed + "Drawbridge";
                         isFirst = false;
                     }
@@ -679,6 +739,7 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense7);
                 if(junkCheck.isChecked()) {
                     if(isFirst) {
+                        obstaclesFailed = "";
                         obstaclesFailed = obstaclesFailed + "Sally Port";
                         isFirst = false;
                     }
@@ -689,6 +750,7 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense8);
                 if(junkCheck.isChecked()) {
                     if(isFirst) {
+                        obstaclesFailed = "";
                         obstaclesFailed = obstaclesFailed + "Rock Wall";
                         isFirst = false;
                     }
@@ -699,6 +761,7 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                 junkCheck = (CheckBox) defLists.findViewById(R.id.defense9);
                 if(junkCheck.isChecked()) {
                     if(isFirst) {
+                        obstaclesFailed = "";
                         obstaclesFailed = obstaclesFailed + "Rough Terrain";
                         isFirst = false;
                     }
@@ -711,12 +774,21 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
 
                 junkCheck = (CheckBox) findViewById(R.id.autoLow);
                 if(junkCheck.isChecked()) {
+                    highOrLowA = "";
                     highOrLowA += "low";
                 }
 
                 junkCheck = (CheckBox) findViewById(R.id.autoHigh);
                 if(junkCheck.isChecked()) {
-                    highOrLowA += "high";
+                    if(highOrLowA.equals("no")) {
+                        highOrLowA = "";
+                    }
+                    highOrLowA += ", high";
+                }
+
+                junkCheck = (CheckBox) findViewById(R.id.teleNone);
+                if(junkCheck.isChecked()) {
+                    whereShoot = "NONE";
                 }
 
 
@@ -741,7 +813,9 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                     if(challenged.equals("no")){canContinue = false;};
                     if(scaled.equals("no")){canContinue = false;};
                     if(playStyle.equals("no")){canContinue = false;};
-                    if(whereShoot.equals("no")) {canContinue = false;};
+                    if(whereShoot.equals("no")) {
+                        Log.v("Mac Address", "unexpected");
+                        canContinue = false;};
 
                     if(autoScore.equals("true")) {
                         if(highOrLowA.equals("no")) {
@@ -764,6 +838,10 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                     if(whichBreached.equals("no")) {
                         canContinue = false;
                     }
+                }
+
+                if(autoScore.equals("false")) {
+                    highOrLowA = "";
                 }
 
                 if(teleBreachDef.equals("true")) {
@@ -814,6 +892,10 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                         cb = (CheckBox) defOptions.findViewById(R.id.defense9);
                         cb.setChecked(false);
 
+
+                        cb = (CheckBox) findViewById(R.id.teleNone);
+                        cb.setChecked(false);
+
                         bigId = "defenses";
                     }
                     CheckBox cb = null;
@@ -821,6 +903,8 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                     cb.setChecked(false);
                     cb = (CheckBox) findViewById(R.id.autoLow);
                     cb.setChecked(false);
+
+
 
 
                     for (int i = 0; i < boolOptions.length; i++) {
@@ -833,10 +917,13 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
 
                         }
                         if (boolOptions[i][0] instanceof CheckBox) {
-                            CheckBox ehr = (CheckBox) boolOptions[i][0];
-                            ehr.setChecked(false);
-                            ehr = (CheckBox) boolOptions[i][1];
-                            ehr.setChecked(false);
+
+
+                                CheckBox ehr = (CheckBox) boolOptions[i][0];
+                                ehr.setChecked(false);
+                                ehr = (CheckBox) boolOptions[i][1];
+                                ehr.setChecked(false);
+
 
                         }
 
@@ -910,54 +997,198 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
         });
 
 
+        View.OnClickListener noPresence = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                EditText teamNum = (EditText) findViewById(R.id.teamNumber);
+                EditText matchNum = (EditText) findViewById(R.id.matchNumber);
+                if(!teamNum.getText().toString().equals("")) {
+                    if(!matchNum.getText().toString().equals("")) {
+
+                        String bigId = "defenses";
+                        int bigNumId = 0;
+
+
+                        for (int l = 0; l < 3; l++) {
+
+                            bigId = bigId + (l + 1);
+                            bigNumId = getResources().getIdentifier(bigId, "id", getPackageName());
+                            Log.v("Mac Address", "The big view is: " + bigId);
+                            View defOptions = findViewById(bigNumId);
+
+                            CheckBox cb = null;
+
+                            cb = (CheckBox) defOptions.findViewById(R.id.defense1);
+                            cb.setChecked(false);
+                            cb = (CheckBox) defOptions.findViewById(R.id.defense2);
+                            cb.setChecked(false);
+                            cb = (CheckBox) defOptions.findViewById(R.id.defense3);
+                            cb.setChecked(false);
+                            cb = (CheckBox) defOptions.findViewById(R.id.defense4);
+                            cb.setChecked(false);
+                            cb = (CheckBox) defOptions.findViewById(R.id.defense5);
+                            cb.setChecked(false);
+                            cb = (CheckBox) defOptions.findViewById(R.id.defense6);
+                            cb.setChecked(false);
+                            cb = (CheckBox) defOptions.findViewById(R.id.defense7);
+                            cb.setChecked(false);
+                            cb = (CheckBox) defOptions.findViewById(R.id.defense8);
+                            cb.setChecked(false);
+                            cb = (CheckBox) defOptions.findViewById(R.id.defense9);
+                            cb.setChecked(false);
+
+                            bigId = "defenses";
+                        }
+                        CheckBox cb = null;
+                        cb = (CheckBox) findViewById(R.id.autoHigh);
+                        cb.setChecked(false);
+                        cb = (CheckBox) findViewById(R.id.autoLow);
+                        cb.setChecked(false);
+
+
+
+
+                        for (int i = 0; i < boolOptions.length; i++) {
+
+                            if (boolOptions[i][0] instanceof EnhancedRadioButton) {
+                                EnhancedRadioButton ehr = (EnhancedRadioButton) boolOptions[i][0];
+                                ehr.setChecked(false);
+                                ehr = (EnhancedRadioButton) boolOptions[i][1];
+                                ehr.setChecked(false);
+
+                            }
+                            if (boolOptions[i][0] instanceof CheckBox) {
+
+
+                                CheckBox ehr = (CheckBox) boolOptions[i][0];
+                                ehr.setChecked(false);
+                                ehr = (CheckBox) boolOptions[i][1];
+                                ehr.setChecked(false);
+
+
+                            }
+                        }
+                            ContentValues values = new ContentValues();
+
+                            values.put("Team_Number", teamNum.getText().toString());
+                            values.put("Match_Number", matchNum.getText().toString());
+                            //values.put("Event_Name",);
+                            values.put("crossOutW", " ");
+                            values.put("breachD", " ");
+                            values.put("whichBreached", " ");
+                            values.put("didScore", " ");
+                            values.put("highOrLowA", " ");
+                            values.put("didOvercome", " ");
+                            values.put("obstaclesOvercome", " ");
+                            values.put("failed", " ");
+                            values.put("obstaclesFailed", " ");
+                            values.put("highOrLowT", " ");
+                            values.put("reliability", " ");
+                            values.put("offOrDef", " ");
+                            values.put("didChallenge", " ");
+                            values.put("didScale", " ");
+                            values.put("Comments", "NO SHOW");
+
+                            UIDatabaseInterface.getDatabase().addValues("Performance", values);
+
+
+
+
+
+
+
+
+
+
+                        TextView edo = (TextView) findViewById(R.id.noShowStatus);
+                        edo.setTextColor(Color.GREEN);
+                        edo.setText("Submission Successfully Entered");
+
+                    }
+
+                }
+                if(teamNum.getText().toString().equals("") || matchNum.getText().toString().equals("")) {
+
+                    TextView ed = (TextView) findViewById(R.id.noShowStatus);
+                    ed.setTextColor(Color.RED);
+                    ed.setText("Missing Data");
+
+                }
+                EditText nums = (EditText) findViewById(R.id.matchNumber);
+
+                nums.setText("".toCharArray(), 0, 0);
+                nums = (EditText) findViewById(R.id.teamNumber);
+                nums.setText("".toCharArray(), 0, 0);
+                nums = (EditText) findViewById(R.id.comments);
+                nums.setText("".toCharArray(), 0, 0);
+
+            }
+        };
+
+
+
+
+
+
         View.OnClickListener checkToggles = new View.OnClickListener(){
-            public void  onClick  (View  v){
+            public void  onClick  (View  v) {
                 TextView status = (TextView) findViewById(R.id.submitStatus);
                 status.setText("");
                 status.setTextColor(Color.BLACK);
-                int con = 0;
                 int row = 0;
                 int col = 0;
-                con = findButtonInArray(v);
-                row = con/10;
-                col = con%10;
-                Log.v("Mac Address", "ROW IS: " + row);
-                Log.v("Mac Address", "COL IS: " + col);
-                if(v instanceof EnhancedRadioButton) {
-                    Log.v("Mac Address", "Button");
-                    if(col == 0) {
-                        EnhancedRadioButton ehr = (EnhancedRadioButton) boolOptions[row][1];
-                        if(ehr.isChecked()) {
-                            Log.v("Mac Address", "Tried to toggle the " + ehr.getText() + " button");
-                            ehr.setChecked(false);
+
+                    int con = 0;
+
+                    con = findButtonInArray(v);
+                    row = con / 10;
+                    col = con % 10;
+                    Log.v("Mac Address", "ROW IS: " + row);
+                    Log.v("Mac Address", "COL IS: " + col);
+
+                    if (v instanceof EnhancedRadioButton) {
+                        Log.v("Mac Address", "Button");
+                        if (col == 0) {
+                            EnhancedRadioButton ehr = (EnhancedRadioButton) boolOptions[row][1];
+                            if (ehr.isChecked()) {
+                                Log.v("Mac Address", "Tried to toggle the " + ehr.getText() + " button");
+                                ehr.setChecked(false);
+                            }
+                        }
+
+                        if (col == 1) {
+                            EnhancedRadioButton ehr = (EnhancedRadioButton) boolOptions[row][0];
+                            if (ehr.isChecked()) {
+                                Log.v("Mac Address", "Tried to toggle the " + ehr.getText() + " button");
+                                ehr.setChecked(false);
+                            }
+                        }
+
+                    }
+
+                    if (v instanceof CheckBox) {
+                        Log.v("Mac Address", "CheckBox");
+
+
+                        if (col == 0) {
+                            CheckBox cb = (CheckBox) boolOptions[row][1];
+
+                            if (cb.isChecked()) {
+                                cb.setChecked(false);
+                            }
+                        }
+                        if (col == 1) {
+                            CheckBox cb = (CheckBox) boolOptions[row][0];
+
+                            if (cb.isChecked()) {
+                                cb.setChecked(false);
+                            }
                         }
                     }
 
-                    if(col == 1) {
-                        EnhancedRadioButton ehr = (EnhancedRadioButton) boolOptions[row][0];
-                        if(ehr.isChecked()) {
-                            Log.v("Mac Address", "Tried to toggle the " + ehr.getText() + " button");
-                            ehr.setChecked(false);
-                        }
-                    }
-                }
-                if(v instanceof CheckBox) {
-                    Log.v("Mac Address", "CheckBox");
-                    if(col == 0) {
-                        CheckBox cb = (CheckBox) boolOptions[row][1];
-                        if(cb.isChecked()) {
-                            cb.setChecked(false);
-                        }
-                    }
-                    if(col == 1) {
-                        CheckBox cb = (CheckBox) boolOptions[row][0];
-                        if(cb.isChecked()) {
-                            cb.setChecked(false);
-                        }
-                    }
                 }
 
-            }
         };
 
         for(int i = 0; i < boolOptions.length; i++) {
@@ -968,14 +1199,44 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
             }
 
         }
+        noShow.setOnClickListener(noPresence);
 
         blueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                status.setText("Trying to establish connection");
+
 
 
                 String oh = (new BlueConnect().run(ceda, uuid, ceda));
                 if(!oh.equals("master")) {
+                    new Thread()
+                    {
+                        public void run()
+                        {
+                            ceda.runOnUiThread(new Runnable() {
+                                public void run() {
+                                    //Do your UI operations like dialog opening or Toast here
+                                    status.setText("Trying to send...");
+                                    AlertDialog alertDialog = new AlertDialog.Builder(ceda).create();
+                                    alertDialog.setTitle("Alert");
+                                    alertDialog.setMessage("Beginning bluetooth data sending process");
+                                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.dismiss();
+                                                }
+                                            });
+                                    alertDialog.show();
+
+                                }
+                            });
+                        }
+                    }.start();
+
+
+
+
                     IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
                     registerReceiver(mReceiver, filter);
                     bl = BluetoothAdapter.getDefaultAdapter();
@@ -992,6 +1253,31 @@ public class ControlledEnterDataActivity extends ActionBarActivity {
                     bl.startDiscovery();
                 }
                 else {
+
+                    new Thread()
+                    {
+                        public void run()
+                        {
+                            ceda.runOnUiThread(new Runnable() {
+                                public void run() {
+                                    //Do your UI operations like dialog opening or Toast here
+                                    status.setText("Listening...");
+                                    AlertDialog alertDialog = new AlertDialog.Builder(ceda).create();
+                                    alertDialog.setTitle("Alert");
+                                    alertDialog.setMessage("Beginning bluetooth data receiving process");
+                                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.dismiss();
+                                                }
+                                            });
+                                    alertDialog.show();
+
+                                }
+                            });
+                        }
+                    }.start();
+
                     Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
                     discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 0);
                     startActivity(discoverableIntent);

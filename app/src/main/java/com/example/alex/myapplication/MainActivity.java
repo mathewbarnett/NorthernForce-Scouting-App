@@ -17,39 +17,6 @@ public class MainActivity extends ActionBarActivity {
     public static UIDatabaseInterface uiDatabaseInterface;
     boolean isStart = true;
     private Context baseContext;
-  /*  MainActivity jo = this;
-    BluetoothAdapter bl;
-
-    UUID uuid = UUID.fromString("e720951a-a29e-4772-b32e-7c60264d5c9b");
-    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-
-            if (BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)) {
-                //discovery starts, we can show progress dialog or perform other tasks
-
-            } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
-                //discovery finishes, dismis progress dialog
-
-            } else if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                //bluetooth device found
-
-                BluetoothDevice device = (BluetoothDevice) intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-
-
-                //     Log.v("Mac Address", device.getName());
-                if(device.getAddress().equalsIgnoreCase("18:3b:d2:e1:88:59")) {
-                    Log.v("Mac Address", device.getName() + "\n" + device.getAddress());
-                    Aggro ag = new Aggro(uuid, jo, device);
-                    Thread t = new Thread(ag);
-                    t.start();
-                    bl.cancelDiscovery();
-                    unregisterReceiver(mReceiver);
-                }
-            }
-        }
-    };
-*/
 
 
     @Override
@@ -65,22 +32,23 @@ public class MainActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_main);
 
-      //  View test = findViewById(R.id.entry1);
-      //  TextView next = (TextView) test.findViewById(R.id.yes_or_no_entry_textView);
-      //  String hm = "lol";
-      //  next.setText(hm.toCharArray(), 0, 3);
+        Button expData = (Button) findViewById(R.id.exportData);
+        expData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Context context = baseContext;
+                Intent i = new Intent(context, ExportDataActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                context.startActivity(i);
 
 
-     /*   EditText test1 = (EditText) findViewById(R.id.comments);
-
-        test1.setVisibility(View.INVISIBLE);
-
-
-    //    TextView text = (TextView) findViewById(R.id.header);
-    //    text.setTextColor(Color.parseColor("#000000"));
+            }
+        });
+        //expData.setVisibility(View.INVISIBLE);
 
 
-*/
         Button enterData = (Button) (findViewById(R.id.titleScreenEnterData));
         enterData.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,19 +73,18 @@ public class MainActivity extends ActionBarActivity {
                 context.startActivity(i);
             }
         });
-     /*   String oh = (new BlueConnect().run(this, uuid, this));
-        if(!oh.equals("master")) {
-            IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-            registerReceiver(mReceiver, filter);
-            bl = BluetoothAdapter.getDefaultAdapter();
 
-            bl.startDiscovery();
-        }
-        else {
-            Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 0);
-            startActivity(discoverableIntent);
-        }*/
+        Button makeLayout = (Button) (findViewById(R.id.makeLayout));
+        viewData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context context = baseContext;
+                Intent i = new Intent(context, ViewDataActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                context.startActivity(i);
+            }
+        });
 
     }
 

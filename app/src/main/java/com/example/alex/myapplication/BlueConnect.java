@@ -56,6 +56,7 @@ public class BlueConnect {
 
             Listener listen = new Listener();
             listen.setUUID(j);
+            listen.setCed(ced);
             Thread t = new Thread(listen);
             t.start();
             //  NetworkScanner scanner = new NetworkScanner();

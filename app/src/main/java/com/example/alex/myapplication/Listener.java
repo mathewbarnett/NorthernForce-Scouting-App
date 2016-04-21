@@ -1,11 +1,12 @@
 package com.example.alex.myapplication;
 
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.util.Log;
 
 import java.io.ByteArrayInputStream;
@@ -33,6 +34,12 @@ public class Listener implements Runnable {
     byte[] readBuffer;
     Thread workerThread;
 
+    public void setCed(ControlledEnterDataActivity ced) {
+        this.ced = ced;
+    }
+
+    ControlledEnterDataActivity ced;
+
     public void run() {
 
         BluetoothAdapter bL  = BluetoothAdapter.getDefaultAdapter();
@@ -41,13 +48,13 @@ public class Listener implements Runnable {
             Log.v("Mac Address", "Listening");
             bS = bSS.accept();
             Log.v("Mac Address", "Connection accepted");
-         //   bS.connect();
+            //   bS.connect();
             in =   bS.getInputStream();
             Log.v("Mac Address", "Sauron's Land");
             beginListenForData();
-         //   Updater up = new Updater(in);
-         //   Thread t = new Thread(up);
-          //  t.start();
+            //   Updater up = new Updater(in);
+            //   Thread t = new Thread(up);
+            //  t.start();
 
         }
         catch(Exception e) {
@@ -87,16 +94,16 @@ public class Listener implements Runnable {
                     try
                     {
                         int bytesAvailable = in.available();
-                       //Log.v("Mac Address", "BYTES: " + bytesAvailable);
+                        //Log.v("Mac Address", "BYTES: " + bytesAvailable);
                         if(bytesAvailable > 0)
                         {
                             Log.v("Mac Address", "WE'RE UP IN THIS");
                             byte[] packetBytes = new byte[in.available()];
-                          //
-                           // String data = new String(packetBytes, "UTF-8");
+                            //
+                            // String data = new String(packetBytes, "UTF-8");
                             Log.v("Mac Address", "AVAILABLE: " + in.available());
                             Log.v("Mac Address", Arrays.toString(packetBytes));
-                         //   in.read(packetBytes);
+                            //   in.read(packetBytes);
                             ObjectInputStream obin = new ObjectInputStream(in);
                             Object obo = null;
                             try {
@@ -109,15 +116,15 @@ public class Listener implements Runnable {
                             Log.v("Mac Address", Arrays.toString(hope));
 
 
-                         //   Log.v("Mac Address", String.valueOf(baos.size()));
+                            //   Log.v("Mac Address", String.valueOf(baos.size()));
                             ByteArrayInputStream bi = new ByteArrayInputStream(hope);
                             ZipInputStream zis = new ZipInputStream(bi);
                             Log.v("Mac Address", "HOPE: " + zis.available());
-                      //      zis.getNextEntry();
-                       //     byte[] results = null;
-                       //     zis.read(results, 0, 0);
-                       //     String please = new String(results, "UTF-8");
-                       //     Log.v("Mac Address", please);
+                            //      zis.getNextEntry();
+                            //     byte[] results = null;
+                            //     zis.read(results, 0, 0);
+                            //     String please = new String(results, "UTF-8");
+                            //     Log.v("Mac Address", please);
 
                             ZipEntry entry;
                             try {
@@ -126,9 +133,9 @@ public class Listener implements Runnable {
                                             entry.getName(), entry.getSize(),
                                             new Date(entry.getTime()));
                                     Log.v("Mac Address", "THIS FAR");
-                                   // ZipFile zipFile = new ZipFile("text.zip");
+                                    // ZipFile zipFile = new ZipFile("text.zip");
                                     Log.v("Mac Address", "THIS FAR 1");
-                                     ObjectInputStream ino = new ObjectInputStream(zis);
+                                    ObjectInputStream ino = new ObjectInputStream(zis);
                                     Object ob = ino.readObject();
 
                                     Log.v("Mac Address", ob.toString());
@@ -152,21 +159,67 @@ public class Listener implements Runnable {
                                         SubmissionData str = (SubmissionData) ob;
                                         Log.v("Mac Address", str.getData());
                                         UIDatabaseInterface.mergeToDatabase(str.getData());
-                                        ControlledEnterDataActivity.status.setTextColor(Color.GREEN);
-                                        ControlledEnterDataActivity.status.setText("Data Received");
                                     }
+
+                                    new Thread()
+                                    {
+                                        public void run()
+                                        {
+                                            ced.runOnUiThread(new Runnable() {
+                                                public void run() {
+                                                    //Do your UI operations like dialog opening or Toast here
+                                                    ced.status.setText("Data received");
+                                                    AlertDialog alertDialog = new AlertDialog.Builder(ced).create();
+                                                    alertDialog.setTitle("Alert");
+                                                    alertDialog.setMessage("Bluetooth data transfer completed");
+                                                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                                            new DialogInterface.OnClickListener() {
+                                                                public void onClick(DialogInterface dialog, int which) {
+                                                                    dialog.dismiss();
+                                                                }
+                                                            });
+                                                    alertDialog.show();
+
+                                                }
+                                            });
+                                        }
+                                    }.start();
+
+
 
 
 
                                 }
                             }
                             catch(Exception e) {
-                                ControlledEnterDataActivity.status.setTextColor(Color.RED);
-                                ControlledEnterDataActivity.status.setText("ERROR RECEIVING DATA");
-                            Log.v("Mac Address", "OH BOI");
+                                Log.v("Mac Address", "OH BOI");
                                 StringWriter errors = new StringWriter();
                                 e.printStackTrace(new PrintWriter(errors));
                                 Log.v("Mac Address", errors.toString());
+                                new Thread()
+                                {
+                                    public void run()
+                                    {
+                                        ced.runOnUiThread(new Runnable() {
+                                            public void run() {
+                                                //Do your UI operations like dialog opening or Toast here
+                                                ced.status.setText("Data transfer failed");
+                                                AlertDialog alertDialog = new AlertDialog.Builder(ced).create();
+                                                alertDialog.setTitle("Alert");
+                                                alertDialog.setMessage("Bluetooth data transfer failed");
+                                                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                                        new DialogInterface.OnClickListener() {
+                                                            public void onClick(DialogInterface dialog, int which) {
+                                                                dialog.dismiss();
+                                                            }
+                                                        });
+                                                alertDialog.show();
+
+                                            }
+                                        });
+                                    }
+                                }.start();
+
                             }
 
 
@@ -175,13 +228,37 @@ public class Listener implements Runnable {
                     }
                     catch (IOException ex)
                     {
+
+                        new Thread()
+                        {
+                            public void run()
+                            {
+                                ced.runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        //Do your UI operations like dialog opening or Toast here
+                                        ced.status.setText("Data transfer failed");
+                                        AlertDialog alertDialog = new AlertDialog.Builder(ced).create();
+                                        alertDialog.setTitle("Alert");
+                                        alertDialog.setMessage("Bluetooth data transfer failed");
+                                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                                new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        dialog.dismiss();
+                                                    }
+                                                });
+                                        alertDialog.show();
+
+                                    }
+                                });
+                            }
+                        }.start();
+
                         StringWriter errors = new StringWriter();
                         ex.printStackTrace(new PrintWriter(errors));
                         Log.v("Mac Address", errors.toString());
                         Log.v("Mac Address", "Uprising Failed");
                         stopWorker = true;
                     }
-                 //   BlueConnect.unpairDevice();
                 }
             }
         });
@@ -202,6 +279,5 @@ public class Listener implements Runnable {
     }
 
 
-
-
 }
+

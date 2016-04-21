@@ -1,17 +1,9 @@
 package com.example.alex.myapplication;
 
-import android.app.ActionBar;
-import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
@@ -63,7 +55,7 @@ public class ViewDataAdapter extends BaseAdapter {
             this.count = cursor.getCount();
         }
         else{
-           cursor = mySQLiteHelper.selectFromTable("*", "Performance");
+            cursor = mySQLiteHelper.selectFromTable("*", "Performance");
             this.count = cursor.getCount();
         }
 
@@ -71,13 +63,13 @@ public class ViewDataAdapter extends BaseAdapter {
             return new TextView(viewDataActivity);
         }
         cursor.moveToPosition(position);
+
+        String[] fullNames = UIDatabaseInterface.getFullNameForTable("Performance");
         //i = 1 to skip _id column
         for (int i = 1; i < cursor.getColumnCount(); i++) {
-            Log.v("VeiwDataAdapter", "the cursor column count is " + cursor.getColumnCount() + " and i = " + i);
-            Log.v("VeiwDataAdapter", "the cursor count is " + cursor.getCount() + " and i = " + i);
-            Log.v("ViewDataAdapter", "adding following to text view " + cursor.getColumnName(i) + ": " + cursor.getString(i));
-            view.setText(view.getText() + "\n" + cursor.getColumnName(i) + ": " + cursor.getString(i));
-            Log.v("ViewDataAdapter", "view text has text of " + view.getText());
+
+            view.setText(view.getText() + "\n" + fullNames[i - 1] + ": " + cursor.getString(i));
+
         }
 
         return view;
@@ -92,3 +84,4 @@ public class ViewDataAdapter extends BaseAdapter {
     }
 
 }
+

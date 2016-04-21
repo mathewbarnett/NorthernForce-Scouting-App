@@ -1,11 +1,12 @@
 package com.example.alex.myapplication;
 
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
@@ -93,6 +94,29 @@ public class Glib implements Runnable {
                             //connection to device failed so close the socket
                             Log.v("Mac Address", "Failure :(");
                             failed = 1;
+                            new Thread()
+                            {
+                                public void run()
+                                {
+                                    ced.runOnUiThread(new Runnable() {
+                                        public void run() {
+                                            //Do your UI operations like dialog opening or Toast here
+                                            ced.status.setText("Connection failed");
+                                            AlertDialog alertDialog = new AlertDialog.Builder(ced).create();
+                                            alertDialog.setTitle("Alert");
+                                            alertDialog.setMessage("Bluetooth data transfer failed");
+                                            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                                    new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            dialog.dismiss();
+                                                        }
+                                                    });
+                                            alertDialog.show();
+
+                                        }
+                                    });
+                                }
+                            }.start();
                             try {
                                 bs.close();
                             } catch (IOException e2) {
@@ -159,7 +183,7 @@ public class Glib implements Runnable {
                                 sb = new SubmissionData(data);
 
                                 Log.v("Mac Address", "Entered");
-                               // String s = "Tired, Exhausted";
+                                // String s = "Tired, Exhausted";
                                 ConfigEntry con = new ConfigEntry("yo", "lol", "hey", "moo");
 
                                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -228,13 +252,57 @@ public class Glib implements Runnable {
                                     ObjectOutputStream oout = new ObjectOutputStream(os);
                                     oout.writeObject(ly);
                                     oout.flush();
-                                    ControlledEnterDataActivity.status.setTextColor(Color.GREEN);
-                                    ControlledEnterDataActivity.status.setText("Success");
+
+                                    new Thread()
+                                    {
+                                        public void run()
+                                        {
+                                            ced.runOnUiThread(new Runnable() {
+                                                public void run() {
+                                                    //Do your UI operations like dialog opening or Toast here
+                                                    ced.status.setText("Data sent");
+                                                    AlertDialog alertDialog = new AlertDialog.Builder(ced).create();
+                                                    alertDialog.setTitle("Alert");
+                                                    alertDialog.setMessage("Bluetooth data successfully sent to Server Device");
+                                                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                                            new DialogInterface.OnClickListener() {
+                                                                public void onClick(DialogInterface dialog, int which) {
+                                                                    dialog.dismiss();
+                                                                }
+                                                            });
+                                                    alertDialog.show();
+
+                                                }
+                                            });
+                                        }
+                                    }.start();
+
                                     //os.write(bytes);
                                     //os.flush();
                                 } catch (IOException e) {
-                                    ControlledEnterDataActivity.status.setTextColor(Color.RED);
-                                    ControlledEnterDataActivity.status.setText("Failure");
+                                    new Thread()
+                                    {
+                                        public void run()
+                                        {
+                                            ced.runOnUiThread(new Runnable() {
+                                                public void run() {
+                                                    //Do your UI operations like dialog opening or Toast here
+                                                    ced.status.setText("Connection failed");
+                                                    AlertDialog alertDialog = new AlertDialog.Builder(ced).create();
+                                                    alertDialog.setTitle("Alert");
+                                                    alertDialog.setMessage("Bluetooth data transfer failed");
+                                                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                                            new DialogInterface.OnClickListener() {
+                                                                public void onClick(DialogInterface dialog, int which) {
+                                                                    dialog.dismiss();
+                                                                }
+                                                            });
+                                                    alertDialog.show();
+
+                                                }
+                                            });
+                                        }
+                                    }.start();
                                 }
 
                                 //  haha = new PrintStream(haha, true);
@@ -244,9 +312,31 @@ public class Glib implements Runnable {
                             }
 
                         } catch (IOException e) {
+                            new Thread()
+                            {
+                                public void run()
+                                {
+
+                                    ced.runOnUiThread(new Runnable() {
+                                        public void run() {
+                                            //Do your UI operations like dialog opening or Toast here
+                                            ced.status.setText("Connection failed");
+                                            AlertDialog alertDialog = new AlertDialog.Builder(ced).create();
+                                            alertDialog.setTitle("Alert");
+                                            alertDialog.setMessage("Bluetooth data transfer failed");
+                                            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                                    new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            dialog.dismiss();
+                                                        }
+                                                    });
+                                            alertDialog.show();
+
+                                        }
+                                    });
+                                }
+                            }.start();
                             //connection to device failed so close the socket
-                            ControlledEnterDataActivity.status.setTextColor(Color.RED);
-                            ControlledEnterDataActivity.status.setText("Failure");
 
                         }
                     }
@@ -255,8 +345,31 @@ public class Glib implements Runnable {
 
 
             } catch (Exception e) {
-                ControlledEnterDataActivity.status.setTextColor(Color.RED);
-                ControlledEnterDataActivity.status.setText("Failure");
+                new Thread()
+                {
+                    public void run()
+                    {
+                        ced.runOnUiThread(new Runnable() {
+                            public void run() {
+                                //Do your UI operations like dialog opening or Toast here
+                                ced.status.setText("Connection failed");
+                                AlertDialog alertDialog = new AlertDialog.Builder(ced).create();
+                                alertDialog.setTitle("Alert");
+                                alertDialog.setMessage("Bluetooth data transfer failed");
+                                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                alertDialog.show();
+
+                            }
+                        });
+                    }
+                }.start();
+
+
             }
         } //if statement ending
 
@@ -264,3 +377,4 @@ public class Glib implements Runnable {
     }
 
 }
+
