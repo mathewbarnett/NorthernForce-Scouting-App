@@ -1,18 +1,33 @@
 package com.example.alex.myapplication;
 
+import android.content.Context;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
 /**
  * Created by alex on 4/20/15.
  */
-public class DataEntryRow {
+public abstract class DataEntryRow {
 
-    private String type;
-    private String columnName;
-    private String value;
+    protected String type;
+    protected String columnName;
+    protected String text;
 
-    public DataEntryRow(String type, String columnName){
+    public DataEntryRow(String type, String columnName, String text){
         this.type = type;
         this.columnName = columnName;
+        this.text = text;
     }
+
+    public abstract View getView(Context c);
+
+    public abstract String getValue();
 
     public String getType(){
         return this.type;
@@ -22,11 +37,7 @@ public class DataEntryRow {
         return this.columnName;
     }
 
-    public String getValue(){
-        return value;
-    }
-
-    public void setValue(String value){
-        this.value = value;
+    public String getText() {
+        return text;
     }
 }

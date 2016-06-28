@@ -20,7 +20,7 @@ public class DataEntryListView extends Activity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.data_entry_layout);
+        /*setContentView(R.layout.data_entry_layout);
 
         // Get ListView object from xml
         listView = (ListView) findViewById(R.id.dataEntryListView);
@@ -31,7 +31,7 @@ public class DataEntryListView extends Activity  {
         // Third parameter - ID of the TextView to which the data is written
         // Forth - the Array of data
 
-        DataEntryAdapter adapter = new DataEntryAdapter(this, MainActivity.uiDatabaseInterface.getDataEntryRows());
+        DataEntryAdapter adapter = new DataEntryAdapter(this, UIDatabaseInterface.getDataEntryRows());
 
         // Assign adapter to ListView
         listView.setAdapter(adapter);
@@ -56,7 +56,7 @@ public class DataEntryListView extends Activity  {
 
             }
 
-        });
+        })*/
     }
 
 

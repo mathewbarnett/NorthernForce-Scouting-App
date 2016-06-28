@@ -40,7 +40,7 @@ public class MainActivity extends ActionBarActivity {
             } else if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 //bluetooth device found
 
-                BluetoothDevice device = (BluetoothDevice) intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
 
                 //     Log.v("Mac Address", device.getName());
@@ -92,7 +92,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 Context context = baseContext;
-                Intent i = new Intent(context, ControlledEnterDataActivity.class);
+                Intent i = new Intent(context, EnterDataActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                 context.startActivity(i);
@@ -171,6 +171,6 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public UIDatabaseInterface getUiDatabaseInterface(){
-        return this.uiDatabaseInterface;
+        return uiDatabaseInterface;
     }
 }

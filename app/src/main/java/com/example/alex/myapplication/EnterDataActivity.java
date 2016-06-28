@@ -1,16 +1,20 @@
 package com.example.alex.myapplication;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -22,17 +26,33 @@ import java.util.ArrayList;
 public class EnterDataActivity extends ActionBarActivity implements AdapterView.OnItemSelectedListener {
 
     private static UIDatabaseInterface uiDatabaseInterface;
+    private View dataEntryViews[];
+
+    private int viewBaseViews;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.data_entry_layout);
 
-        this.uiDatabaseInterface = MainActivity.uiDatabaseInterface;
+        LinearLayout linearLayout = (LinearLayout)findViewById(R.id.dataEntryLinearLayout);
+        viewBaseViews = linearLayout.getChildCount();
 
+        uiDatabaseInterface = MainActivity.uiDatabaseInterface;
+
+        DataEntryRow rows[] = uiDatabaseInterface.getDataEntryRows();
+        dataEntryViews = new View[rows.length];
+
+        Context c = this.getBaseContext();
+        for(int i = 0; i < rows.length; i++){
+            dataEntryViews[i] = rows[i].getView(c);
+        }
         this.createListView();
 
-        ArrayList<String> tables = uiDatabaseInterface.getTableNames();
+        //tables for the spinner
+        //ArrayList<String> tables = UIDatabaseInterface.getTableNames();
+        ArrayList<String> tables = new ArrayList<>();
+        tables.add("Performance");
 
         tables.remove("android_metadata");
 
@@ -43,11 +63,29 @@ public class EnterDataActivity extends ActionBarActivity implements AdapterView.
 
     }
 
+    //create the list view
     private void createListView(){
-        NestedListView listView = (NestedListView) (findViewById(R.id.dataEntryListView));
 
-        DataEntryAdapter adapter = new DataEntryAdapter(this.getBaseContext(), uiDatabaseInterface.getDataEntryRows());
-        listView.setAdapter(adapter);
+        LinearLayout linearLayout = (LinearLayout)findViewById(R.id.dataEntryLinearLayout);
+        int currentChildCount = linearLayout.getChildCount();
+        linearLayout.removeViewsInLayout(viewBaseViews, currentChildCount - viewBaseViews);
+
+        DataEntryRow rows[] = uiDatabaseInterface.getDataEntryRows();
+        Context c = this.getBaseContext();
+        for(int i = 0; i < rows.length; i++){
+            dataEntryViews[i] = rows[i].getView(c);
+        }
+
+        //goes through the rows and adds them to the linear layout
+        for(View view :dataEntryViews){
+            linearLayout.addView(view);
+            Log.v("EnterDataActivity", "added a row to the linear layout");
+
+        }
+
+        //DataEntryAdapter adapter = new DataEntryAdapter(this.getBaseContext(), UIDatabaseInterface.getDataEntryRows());
+        //listView.setAdapter(adapter);
+
 
         Button submitButton = (Button) findViewById(R.id.submitButton);
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -90,19 +128,21 @@ public class EnterDataActivity extends ActionBarActivity implements AdapterView.
     }
 
     @Override
+    //when they select something from the spinner at the top
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         String selectedTable = (String) adapterView.getItemAtPosition(i);
 
         Log.v("EnterDataActivity", "The spinner selected the table " + selectedTable);
 
-        uiDatabaseInterface.setCurrentDataEntryTable(selectedTable);
+        UIDatabaseInterface.setCurrentDataEntryTable(selectedTable);
 
-        uiDatabaseInterface.createDataEntryRows(uiDatabaseInterface.getTableList());
+        UIDatabaseInterface.createDataEntryRows(UIDatabaseInterface.getTableList());
 
         this.createListView();
     }
 
     @Override
+    //when they don't select something from the spinner at the top
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }

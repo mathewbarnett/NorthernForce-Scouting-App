@@ -2,6 +2,7 @@ package com.example.alex.myapplication;
 
 import android.content.Context;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -10,17 +11,15 @@ import android.widget.TextView;
 import com.example.alex.myapplication.DataEntryRow;
 
 public class numberDataEntryRow extends DataEntryRow {
-
-    Context c;
-
     TextView textView;
     EditText editText;
 
-    public numberDataEntryRow(String columnName, Context c){
-        super("String", columnName);
+    public numberDataEntryRow(String columnName, String text){
+        super("Number", columnName, text);
+    }
 
-        this.c = c;
-
+    public View getView(Context c){
+        Log.v("numberDataEntryRow", "getVIew was called");
         textView = new TextView(c);
         textView.setText(columnName);
 
@@ -28,12 +27,8 @@ public class numberDataEntryRow extends DataEntryRow {
         editText.setHint(columnName);
         editText.setInputType(InputType.TYPE_CLASS_NUMBER);
 
-
-
-    }
-
-    public View getView(){
         LinearLayout view = new LinearLayout(c);
+
         view.addView(this.textView);
         view.addView(this.editText);
 
@@ -41,6 +36,8 @@ public class numberDataEntryRow extends DataEntryRow {
     }
 
     public String getValue(){
-        return editText.getText().toString();
+        String value = editText.getText().toString();
+        Log.v("numberDataEntryRow", "in getValue() returning " + value);
+        return value;
     }
 }

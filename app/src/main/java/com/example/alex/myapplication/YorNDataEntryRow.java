@@ -2,26 +2,24 @@ package com.example.alex.myapplication;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.alex.myapplication.DataEntryRow;
 
 public class YorNDataEntryRow extends DataEntryRow {
-
-    Context c;
-
     TextView textView;
     RadioGroup radioGroup;
     RadioButton yesButton;
-    RadtioButton noButton;
+    RadioButton noButton;
 
-    public YorNDataEntryRow(String columnName, Context c){
-        super("String", columnName);
+    public YorNDataEntryRow(String columnName, String text){
+        super("YorN", columnName, text);
+    }
 
-        this.c = c;
-
+    public View getView(Context c){
         textView = new TextView(c);
         textView.setText(columnName);
 
@@ -30,12 +28,10 @@ public class YorNDataEntryRow extends DataEntryRow {
         yesButton = new RadioButton(c);
         noButton = new RadioButton(c);
 
-        radioGroup.laddView(yesButton);
+        radioGroup.addView(yesButton);
         radioGroup.addView(noButton);
 
-    }
 
-    public View getView(){
         LinearLayout view = new LinearLayout(c);
         view.addView(this.textView);
         view.addView(this.radioGroup);
@@ -44,11 +40,14 @@ public class YorNDataEntryRow extends DataEntryRow {
     }
 
     public String getValue(){
-        if(yestButton.isChecked()){
+        if(yesButton.isChecked()){
             return "yes";
         }
         if(noButton.isChecked()){
             return "no";
+        }
+        else{
+            return "";
         }
     }
 }

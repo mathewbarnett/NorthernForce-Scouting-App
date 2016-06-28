@@ -44,7 +44,7 @@ public class UIDatabaseInterface {
     private static String currentDataViewTable;
 
     public UIDatabaseInterface(Context context){
-        this.database = new MySQLiteHelper(context);
+        database = new MySQLiteHelper(context);
 
         database.onUpgrade(database.getWritableDatabase(), 0, 1);
 
@@ -53,9 +53,9 @@ public class UIDatabaseInterface {
         try {
             InputStream is = am.open("configFile_new.xml");
             Log.v("UIDI", is.toString());
-            this.tables = configParser.parse(is);
+            tables = configParser.parse(is);
 
-            Log.v("UIDI", "the number of tables if " + this.tables.size());
+            Log.v("UIDI", "the number of tables if " + tables.size());
             for(DatabaseTable table : tables){
                 Log.v("UIDatabaseInterface", "Found table " + table.getName() + " to make");
 
@@ -76,10 +76,10 @@ public class UIDatabaseInterface {
         listMatchesColumns();
         listPerformanceColumns();
 
-        this.currentDataEntryTable = "Performance";
-        this.currentDataViewTable = "Performance";
+        currentDataEntryTable = "Performance";
+        currentDataViewTable = "Performance";
 
-        this.createDataEntryRows(tables);
+        createDataEntryRows(tables);
         //this.populateDatabase();
     }
 
@@ -101,6 +101,7 @@ public class UIDatabaseInterface {
 
         return tableList;
     }
+
     public static void listMatchesColumns(){
         Cursor c = database.selectFromTable("Matches", "*");
         String columns[] = c.getColumnNames();
@@ -130,23 +131,46 @@ public class UIDatabaseInterface {
         Cursor performance = database.selectFromTable(currentDataEntryTable, "*");
         int columnCount = performance.getColumnCount();
 
+        for(String s : performance.getColumnNames()){
+            Log.v("column names", s);
+        }
         //minus one because of id column
         dataEntryRows = new DataEntryRow[columnCount - 1];
 
         ArrayList<ConfigEntry> columns = null;
         Log.v("AHHH", "current data entry table " + currentDataEntryTable);
+        Log.v("UIDatabase", "column count is " + columnCount);
         for(DatabaseTable table : tables){
             if(table.getName().equals((currentDataEntryTable))){
                 columns = table.getColumns();
             }
         }
 
+        Log.v("UIDatabase", "There are " + columns.size() + " columns");
+
         int counter = 0;
         for(ConfigEntry entry : columns){
             String type = entry.getType();
-            String columnName = entry.getText();
+            String columnName = entry.getColName();
+            String text = entry.getText();
 
-            DataEntryRow row = new DataEntryRow(type, columnName);
+            DataEntryRow row;
+            if(type.equals("String")){
+                row = new stringDataEntryRow(columnName, text);
+                Log.v("UIDatabase", "added a new for String");
+            }
+            else if(type.equals("Number")){
+                row = new numberDataEntryRow(columnName, text);
+                Log.v("UIDatabase", "added a new for number");
+            }
+            else if(type.equals("YorN")){
+                row = new YorNDataEntryRow(columnName, text);
+                Log.v("UIDatabase", "added a new for YorN");
+            }
+            else{
+                row = null;
+                Log.v("UIDatabase", "column was null with type " + type);
+            }
             dataEntryRows[counter] = row;
 
             counter++;
@@ -159,7 +183,7 @@ public class UIDatabaseInterface {
         ContentValues values = new ContentValues();
 
         for (DataEntryRow row : dataEntryRows) {
-            if (row.getType().equals("int")) {
+            /*if (row.getType().equals("Number")) {
                 if (row.getValue().equals("")) {
                     Log.v("Interface", "row for column name " + row.getColumnName() + " was empty");
                 }
@@ -171,7 +195,10 @@ public class UIDatabaseInterface {
             if (row.getType().equals(("String"))) {
                 values.put(row.getColumnName(), row.getValue());
                 Log.v("Interface", "type was string");
-            }
+            }*/
+            String value = row.getValue();
+            Log.v("UIDatabase", "submit value is " + value);
+            values.put(row.getColumnName(), value);
         }
         database.addValues(currentDataEntryTable, values);
 
