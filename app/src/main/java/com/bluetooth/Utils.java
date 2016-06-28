@@ -1,11 +1,9 @@
-package com.example.alex.myapplication;
+package com.Bluetooth;
 
 import android.util.Log;
 
-import java.io.*;
 import java.net.*;
 import java.util.*;
-import org.apache.http.conn.util.InetAddressUtils;
 
 public class Utils {
 

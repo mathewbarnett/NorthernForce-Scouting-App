@@ -13,6 +13,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.DataEntry.EnterDataActivity;
+import com.DataView.ViewDataActivity;
+import com.Bluetooth.Aggro;
+
 import java.util.UUID;
 
 public class MainActivity extends ActionBarActivity {
@@ -63,30 +67,12 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         uiDatabaseInterface = new UIDatabaseInterface(this.getBaseContext());
 
-
-
         this.baseContext = this.getBaseContext();
 
         this.runTests();
 
         setContentView(R.layout.activity_main);
 
-      //  View test = findViewById(R.id.entry1);
-      //  TextView next = (TextView) test.findViewById(R.id.yes_or_no_entry_textView);
-      //  String hm = "lol";
-      //  next.setText(hm.toCharArray(), 0, 3);
-
-
-     /*   EditText test1 = (EditText) findViewById(R.id.comments);
-
-        test1.setVisibility(View.INVISIBLE);
-
-
-    //    TextView text = (TextView) findViewById(R.id.header);
-    //    text.setTextColor(Color.parseColor("#000000"));
-
-
-*/
         Button enterData = (Button) (findViewById(R.id.titleScreenEnterData));
         enterData.setOnClickListener(new View.OnClickListener() {
             @Override

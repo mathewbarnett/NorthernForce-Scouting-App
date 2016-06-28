@@ -1,13 +1,14 @@
-package com.example.alex.myapplication;
+package com.Bluetooth;
 
 
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
-import android.content.Intent;
 import android.content.Context;
 import android.provider.Settings;
 import android.util.Log;
+
+import com.example.alex.myapplication.MainActivity;
+
 import java.util.UUID;
 
 import java.util.ArrayList;

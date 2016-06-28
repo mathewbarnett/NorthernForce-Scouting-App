@@ -25,7 +25,7 @@
 
 
         <activity
-            android:name=".ViewDataActivity"
+            android:name="com.DataView.ViewDataActivity"
             android:label="Data View" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,20 +36,8 @@
 
 
         <activity
-            android:name=".EnterDataActivity"
+            android:name="com.DataEntry.EnterDataActivity"
             android:label="Data Entry" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".ControlledEnterDataActivity"
-            android:windowSoftInputMode="stateHidden"
-            android:label="Controlled Data Entry" >
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,4 +1,4 @@
-package com.example.alex.myapplication;
+package com.DataEntry;
 
 import android.app.Activity;
 import android.content.Context;

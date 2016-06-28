@@ -1,18 +1,13 @@
-package com.example.alex.myapplication;
+package com.DataView;
 
-import android.app.ActionBar;
-import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.alex.myapplication.MySQLiteHelper;
+import com.example.alex.myapplication.UIDatabaseInterface;
 
 /**
  * Created by alex on 8/11/15.

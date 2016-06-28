@@ -1,6 +1,5 @@
-package com.example.alex.myapplication;
+package com.Bluetooth;
 
-import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
@@ -9,7 +8,8 @@ import java.lang.reflect.Method;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.UUID;
-import android.content.*;
+
+import com.example.alex.myapplication.MainActivity;
 
 /**
  * Created by Oombliocarius on 12/17/15.

@@ -2,16 +2,15 @@ package com.example.alex.myapplication;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.provider.ContactsContract;
 import android.util.Log;
+
+import com.Confg.ConfigEntry;
+import com.Confg.ConfigParser;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-
-import junit.framework.Assert;
 
 import org.xmlpull.v1.XmlPullParserException;
 

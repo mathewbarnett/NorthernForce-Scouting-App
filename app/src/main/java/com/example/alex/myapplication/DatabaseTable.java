@@ -1,9 +1,7 @@
 package com.example.alex.myapplication;
 
-import android.graphics.Bitmap;
-import android.provider.ContactsContract;
+import com.Confg.ConfigEntry;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**

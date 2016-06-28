@@ -1,13 +1,10 @@
-package com.example.alex.myapplication;
+package com.DataEntry;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,8 +12,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.Spinner;
+
+import com.DataEntry.DataEntryRow;
+import com.example.alex.myapplication.MainActivity;
+import com.example.alex.myapplication.R;
+import com.example.alex.myapplication.UIDatabaseInterface;
 
 import java.util.ArrayList;
 
@@ -40,7 +41,7 @@ public class EnterDataActivity extends ActionBarActivity implements AdapterView.
 
         uiDatabaseInterface = MainActivity.uiDatabaseInterface;
 
-        DataEntryRow rows[] = uiDatabaseInterface.getDataEntryRows();
+        DataEntryRow rows[] = UIDatabaseInterface.getDataEntryRows();
         dataEntryViews = new View[rows.length];
 
         Context c = this.getBaseContext();
@@ -70,7 +71,7 @@ public class EnterDataActivity extends ActionBarActivity implements AdapterView.
         int currentChildCount = linearLayout.getChildCount();
         linearLayout.removeViewsInLayout(viewBaseViews, currentChildCount - viewBaseViews);
 
-        DataEntryRow rows[] = uiDatabaseInterface.getDataEntryRows();
+        DataEntryRow rows[] = UIDatabaseInterface.getDataEntryRows();
         Context c = this.getBaseContext();
         for(int i = 0; i < rows.length; i++){
             dataEntryViews[i] = rows[i].getView(c);

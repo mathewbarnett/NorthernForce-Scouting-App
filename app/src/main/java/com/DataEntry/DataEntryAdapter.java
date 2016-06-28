@@ -1,16 +1,9 @@
-package com.example.alex.myapplication;
+package com.DataEntry;
 
 import android.content.Context;
-import android.provider.ContactsContract;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 /**
  * Created by alex on 4/20/15.

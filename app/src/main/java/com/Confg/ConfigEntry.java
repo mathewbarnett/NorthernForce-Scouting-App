@@ -1,4 +1,4 @@
-package com.example.alex.myapplication;
+package com.Confg;
 
 import java.io.Serializable;
 import java.util.LinkedList;

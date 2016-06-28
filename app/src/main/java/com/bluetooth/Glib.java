@@ -1,4 +1,4 @@
-package com.example.alex.myapplication;
+package com.Bluetooth;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -6,6 +6,9 @@ import android.bluetooth.BluetoothSocket;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+
+import com.example.alex.myapplication.MainActivity;
+import com.example.alex.myapplication.UIDatabaseInterface;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

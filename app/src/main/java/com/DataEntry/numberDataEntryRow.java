@@ -1,4 +1,4 @@
-package com.example.alex.myapplication;
+package com.DataEntry;
 
 import android.content.Context;
 import android.text.InputType;
@@ -8,7 +8,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.alex.myapplication.DataEntryRow;
+import com.DataEntry.DataEntryRow;
 
 public class numberDataEntryRow extends DataEntryRow {
     TextView textView;

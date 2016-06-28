@@ -1,7 +1,8 @@
-package com.example.alex.myapplication;
+package com.Confg;
 
 import android.util.Log;
-import android.util.Xml;
+
+import com.example.alex.myapplication.DatabaseTable;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -9,10 +10,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by alex on 4/18/15.

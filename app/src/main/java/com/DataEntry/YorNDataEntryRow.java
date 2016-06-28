@@ -1,4 +1,4 @@
-package com.example.alex.myapplication;
+package com.DataEntry;
 
 import android.content.Context;
 import android.view.View;
@@ -7,7 +7,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.example.alex.myapplication.DataEntryRow;
+import com.DataEntry.DataEntryRow;
 
 public class YorNDataEntryRow extends DataEntryRow {
     TextView textView;
